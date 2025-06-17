@@ -40,7 +40,14 @@ public class AttributeMapper {
     }
 
     public List<Attribute> list(String searchKey){
-
+        int pageSize = 10;
+        int curPage = 1;
+        RestTemplate restTemplate=new RestTemplate();
+        Result<List<Attribute>> result = restTemplate.getForObject("https://dme.cn-north-4.huaweicloud.com/" +
+                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/BOMUsesOccurrence/query/{pageSize}/{curPage}", Result.class,pageSize,curPage);
+        if (result != null) {
+            return result.data;
+        }
         return null;
     }
 }

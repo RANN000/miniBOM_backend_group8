@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 public class Result<T> {
     private int code;
     private String msg;
-    private T data;
+    public T data;
 
     public static <E> Result success(E data) {
         return new Result<>(0,"操作成功",data);
