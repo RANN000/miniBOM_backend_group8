@@ -1,17 +1,46 @@
 package com.miniBOM.mapper;
 
 import com.miniBOM.pojo.Attribute;
+import com.miniBOM.pojo.Result;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.boot.autoconfigure.jms.artemis.ArtemisAutoConfiguration;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
-public interface AttributeMapper {
-    void add(Attribute attribute);
+public class AttributeMapper {
+    public void add(Attribute attribute){
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("applicationId", "string");
+        paramMap.put("params", attribute);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
+                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Attribute/create", paramMap, Result.class);
+    }
 
-    void update(Attribute attribute);
+    public void update(Attribute attribute) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("applicationId", "string");
+        paramMap.put("params", attribute);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
+                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Attribute/update", paramMap, Result.class);
+    }
 
-    void delete(Attribute attribute);
+    public void delete(Attribute attribute){
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("applicationId", "string");
+        paramMap.put("params", attribute);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
+                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Attribute/delete", paramMap, Result.class);
+    }
 
-    List list(String searchKey);
+    public List<Attribute> list(String searchKey){
+
+        return null;
+    }
 }

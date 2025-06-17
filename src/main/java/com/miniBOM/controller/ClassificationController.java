@@ -2,6 +2,7 @@ package com.miniBOM.controller;
 
 
 import com.miniBOM.pojo.Attribute;
+import com.miniBOM.pojo.Classification;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.service.ClassificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ public class ClassificationController {
     private ClassificationService service;
 
     @PostMapping
-    public Result add(@RequestBody Attribute attribute) {
-        service.add(attribute);
+    public Result add(@RequestBody Classification classification) {
+        service.add(classification);
         return Result.success();
     }
 
@@ -28,14 +29,14 @@ public class ClassificationController {
     }
 
     @PutMapping
-    public Result update(@RequestBody Attribute attribute) {
-        service.update(attribute);
+    public Result update(@RequestBody Classification classification) {
+        service.update(classification);
         return Result.success();
     }
 
     @DeleteMapping
-    public Result delete(@RequestBody Attribute attribute) {
-        service.delete(attribute);
+    public Result delete(@RequestBody Classification classification) {
+        service.delete(classification);
         return Result.success();
     }
 }

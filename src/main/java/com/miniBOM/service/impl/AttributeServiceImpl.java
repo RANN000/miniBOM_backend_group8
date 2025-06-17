@@ -29,8 +29,7 @@ public class AttributeServiceImpl implements AttributeService {
 
     @Override
     public List<Attribute> list(String searchKey) {
-        attributeMapper.list(searchKey);
-        return null;
+        return attributeMapper.list(searchKey);
     }
 
 }

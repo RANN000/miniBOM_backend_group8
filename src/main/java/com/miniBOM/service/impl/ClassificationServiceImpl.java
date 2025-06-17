@@ -2,6 +2,7 @@ package com.miniBOM.service.impl;
 
 import com.miniBOM.mapper.ClassificationMapper;
 import com.miniBOM.pojo.Attribute;
+import com.miniBOM.pojo.Classification;
 import com.miniBOM.service.ClassificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,8 @@ public class ClassificationServiceImpl implements ClassificationService {
     private ClassificationMapper classificationMapper;
 
     @Override
-    public void add(Attribute attribute) {
-        classificationMapper.add(attribute);
+    public void add(Classification classification) {
+        classificationMapper.add(classification);
     }
 
     @Override
@@ -24,12 +25,12 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
     @Override
-    public void update(Attribute attribute) {
-        classificationMapper.update(attribute);
+    public void update(Classification classification) {
+        classificationMapper.update(classification);
     }
 
     @Override
-    public void delete(Attribute attribute) {
-        classificationMapper.delete(attribute);
+    public void delete(Classification classification) {
+        classificationMapper.delete(classification);
     }
 }

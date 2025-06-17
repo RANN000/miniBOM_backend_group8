@@ -1,15 +1,16 @@
 package com.miniBOM.service;
 
 import com.miniBOM.pojo.Attribute;
+import com.miniBOM.pojo.Classification;
 
 import java.util.List;
 
 public interface ClassificationService {
-    void add(Attribute attribute);
+    void add(Classification classification);
 
     List<Attribute> list(String searchKey);
 
-    void update(Attribute attribute);
+    void update(Classification classification);
 
-    void delete(Attribute attribute);
+    void delete(Classification classification);
 }
