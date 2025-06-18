@@ -1,41 +1,39 @@
 package com.miniBOM.controller;
 
-import com.miniBOM.service.impl.AuthServiceImpl;
+import com.miniBOM.pojo.Result;
+import com.miniBOM.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth")
-public class AuthController {
+@RequestMapping("/user")
+public class UserController {
 
-//    private final AuthServiceImpl authService;
-//
-//    public AuthController(AuthServiceImpl authService) {
-//        this.authService = authService;
-//    }
-//
-//    @PostMapping("/register")
-//    public ResponseEntity<?> registerUser(
-//            @RequestParam String username,
-//            @RequestParam String password,
-//            @RequestParam String telephone,
-//            @RequestParam String email) {
-//
-//        boolean result = authService.registerUser(username, email,telephone,password);
-//
-//        if (result) {
-//            return ResponseEntity.ok(Map.of(
-//                    "success", true,
-//                    "message", "用户注册成功"
-//            ));
-//        }
-//        return ResponseEntity.badRequest().body(Map.of(
-//                "success", false,
-//                "message", "用户注册失败"
-//        ));
-//    }
+    @Autowired
+    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    //用户注册
+    @PostMapping("/register")
+    public Result registerUser(
+            @RequestParam String username,
+            @RequestParam String password,
+            @RequestParam String phoneNumber,
+            @RequestParam String email) {
+
+        boolean result = userService.registerUser(username, password, email, phoneNumber);
+
+        if (result) {
+            return Result.success();
+        } else {
+            return Result.error("注册失败");
+        }
+    }
 //
 //    @PostMapping("/login")
 //    public ResponseEntity<?> loginUser(
