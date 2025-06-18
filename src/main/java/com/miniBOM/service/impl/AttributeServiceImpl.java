@@ -1,5 +1,5 @@
 package com.miniBOM.service.impl;
-import com.miniBOM.mapper.AttributeMapper;
+import com.miniBOM.dao.AttributeDao;
 import com.miniBOM.pojo.Attribute;
 import com.miniBOM.service.AttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,26 +10,26 @@ import java.util.List;
 @Service
 public class AttributeServiceImpl implements AttributeService {
     @Autowired
-    private AttributeMapper attributeMapper;
+    private AttributeDao attributeDao;
 
     @Override
     public void add(Attribute attribute) {
-        attributeMapper.add(attribute);
+        attributeDao.add(attribute);
     }
 
     @Override
     public void update(Attribute attribute) {
-        attributeMapper.update(attribute);
+        attributeDao.update(attribute);
     }
 
     @Override
     public void delete(Attribute attribute) {
-        attributeMapper.delete(attribute);
+        attributeDao.delete(attribute);
     }
 
     @Override
     public List<Attribute> list(String searchKey) {
-        return attributeMapper.list(searchKey);
+        return attributeDao.list(searchKey);
     }
 
 }

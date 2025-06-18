@@ -1,6 +1,6 @@
 package com.miniBOM.service.impl;
 
-import com.miniBOM.mapper.ClassificationMapper;
+import com.miniBOM.dao.ClassificationDao;
 import com.miniBOM.pojo.Attribute;
 import com.miniBOM.pojo.Classification;
 import com.miniBOM.service.ClassificationService;
@@ -12,25 +12,25 @@ import java.util.List;
 @Service
 public class ClassificationServiceImpl implements ClassificationService {
     @Autowired
-    private ClassificationMapper classificationMapper;
+    private ClassificationDao classificationDao;
 
     @Override
     public void add(Classification classification) {
-        classificationMapper.add(classification);
+        classificationDao.add(classification);
     }
 
     @Override
     public List<Attribute> list(String searchKey) {
-        return classificationMapper.list(searchKey);
+        return classificationDao.list(searchKey);
     }
 
     @Override
     public void update(Classification classification) {
-        classificationMapper.update(classification);
+        classificationDao.update(classification);
     }
 
     @Override
     public void delete(Classification classification) {
-        classificationMapper.delete(classification);
+        classificationDao.delete(classification);
     }
 }

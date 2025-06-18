@@ -1,6 +1,5 @@
-package com.miniBOM.mapper;
+package com.miniBOM.dao;
 
-import com.miniBOM.pojo.Attribute;
 import com.miniBOM.pojo.Classification;
 import com.miniBOM.pojo.Result;
 
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class ClassificationMapper {
+public class ClassificationDao {
     public void add(Classification classification){
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applicationId", "string");

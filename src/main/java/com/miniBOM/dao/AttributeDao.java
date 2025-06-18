@@ -1,4 +1,4 @@
-package com.miniBOM.mapper;
+package com.miniBOM.dao;
 
 import com.miniBOM.pojo.Attribute;
 import com.miniBOM.pojo.Result;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class AttributeMapper {
+public class AttributeDao {
     public void add(Attribute attribute){
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applicationId", "string");
