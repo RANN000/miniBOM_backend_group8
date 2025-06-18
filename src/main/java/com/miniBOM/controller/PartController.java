@@ -21,24 +21,24 @@ public class PartController {
         return Result.success();
     }
     @PostMapping("/find")
-    public Result find(@RequestBody Part part) {
-        partService.find(part);
-        return Result.success();
+    public Result<Part> find(@RequestBody Part part) {
+        Part p=partService.find(part);
+        return Result.success(p);
     }
     @PostMapping("/listAllVersion")
-    public Result listAllVersion(@RequestBody Part part) {
-        partService.listAllVersion(part);
-        return Result.success();
+    public Result<List<Part>> listAllVersion(@RequestBody Part part) {
+        List<Part> p=partService.listAllVersion(part);
+        return Result.success(p);
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public Result<List<Part>> list(String searchKey){
-        List<Part> at =partService.list(searchKey);
-        return Result.success(at);
+        List<Part> p =partService.list(searchKey);
+        return Result.success(p);
     }
 
 
-    @PutMapping
+    @PutMapping("/update")
     public Result update(@RequestBody Part part) {
         partService.update(part);
         return Result.success();
@@ -57,7 +57,7 @@ public class PartController {
         return Result.success();
     }
 
-    @DeleteMapping
+    @DeleteMapping("/delete")
     public Result delete(@RequestBody Part part) {
         partService.delete(part);
         return Result.success();
