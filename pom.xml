@@ -15,9 +15,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <!--路径要求为绝对路径 -->
-        <idme.jar.path>D:\develop\MiNiBom\minibom-1.0.0-optimization-SNAPSHOT-user</idme.jar.path>
-        <idme.app.name>minibom</idme.app.name>
+
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,11 +27,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>3.0.0</version>
-        </dependency>
+
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -41,78 +35,13 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>5.2.2.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.7</version>
-        </dependency>
-
-        <!--  华为云依赖      -->
-        <dependency>
-            <groupId>com.huawei.xdm</groupId>
-            <artifactId>core-sdk-api</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${idme.jar.path}/core-sdk-api-1.0.0-SNAPSHOT.jar</systemPath>
-        </dependency>
 
         <dependency>
-            <groupId>com.huawei.xdm</groupId>
-            <artifactId>rdm-common</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${idme.jar.path}/rdm-common-1.0.0-SNAPSHOT.jar</systemPath>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>5.2.1</version>
         </dependency>
-        <dependency>
-            <groupId>com.huawei.xdm</groupId>
-            <artifactId>rdm-delegate</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${idme.jar.path}/rdm-delegate-1.0.0-SNAPSHOT.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.huawei.xdm</groupId>
-            <artifactId>${idme.app.name}.api</artifactId>
-            <version>1.0.0-optimization-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${idme.jar.path}/${idme.app.name}.api-1.0.0-optimization-SNAPSHOT.jar</systemPath>
-        </dependency>
-        <!--        开源依赖-->
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>2.0.1.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>com.mikesamuel</groupId>
-            <artifactId>json-sanitizer</artifactId>
-            <version>1.2.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.13</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>5.6.9.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>32.1.1-jre</version>
-        </dependency>
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>0.10.2</version>
-        </dependency>
+
 
     </dependencies>
 
