@@ -14,29 +14,26 @@ import java.util.Map;
 public class ClassificationDao {
     public void add(Classification classification){
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("applicationId", "string");
         paramMap.put("params", classification);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
-                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Classification/create", paramMap, Result.class);
+        restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
+                "publicservices/rdm/basic/api/ClassificationNode/create", paramMap, Result.class);
     }
 
     public void update(Classification classification){
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("applicationId", "string");
         paramMap.put("params", classification);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
-                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Classification/update", paramMap, Result.class);
+        restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
+                "publicservices/rdm/basic/api/ClassificationNode/update", paramMap, Result.class);
     }
 
     public void delete(Classification classification){
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("applicationId", "string");
         paramMap.put("params", classification);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
-                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Classification/delete", paramMap, Result.class);
+        restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
+                "publicservices/rdm/basic/api/ClassificationNode/delete", paramMap, Result.class);
     }
 
     public List list(String searchKey){
