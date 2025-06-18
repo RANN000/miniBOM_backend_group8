@@ -2,15 +2,15 @@ package com.miniBOM.mapper;
 
 import com.miniBOM.pojo.Attribute;
 import com.miniBOM.pojo.Result;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.boot.autoconfigure.jms.artemis.ArtemisAutoConfiguration;
+
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Mapper
+@Component
 public class AttributeMapper {
     public void add(Attribute attribute){
         Map<String, Object> paramMap = new HashMap<>();
