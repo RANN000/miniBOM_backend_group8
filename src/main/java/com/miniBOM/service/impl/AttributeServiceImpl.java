@@ -1,11 +1,13 @@
 package com.miniBOM.service.impl;
 import com.miniBOM.dao.AttributeDao;
-import com.miniBOM.pojo.Attribute;
+import com.miniBOM.dto.CreateAttributeDto;
+import com.miniBOM.dto.DeleteAttributeDto;
+import com.miniBOM.dto.GetAttributeDto;
+import com.miniBOM.dto.UpdateAttributeDto;
+import com.miniBOM.pojo.Result;
 import com.miniBOM.service.AttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AttributeServiceImpl implements AttributeService {
@@ -13,23 +15,23 @@ public class AttributeServiceImpl implements AttributeService {
     private AttributeDao attributeDao;
 
     @Override
-    public void add(Attribute attribute) {
-        attributeDao.add(attribute);
+    public Result add(CreateAttributeDto attributeDto) {
+        return attributeDao.add(attributeDto);
     }
 
     @Override
-    public void update(Attribute attribute) {
-        attributeDao.update(attribute);
+    public Result update(UpdateAttributeDto attributeDto) {
+        return attributeDao.update(attributeDto);
     }
 
     @Override
-    public void delete(Attribute attribute) {
-        attributeDao.delete(attribute);
+    public Result delete(DeleteAttributeDto attributeDto) {
+        return attributeDao.delete(attributeDto);
     }
 
     @Override
-    public List<Attribute> list(String searchKey) {
-        return attributeDao.list(searchKey);
+    public Result list(GetAttributeDto attributeDto) {
+        return attributeDao.query(attributeDto);
     }
 
 }

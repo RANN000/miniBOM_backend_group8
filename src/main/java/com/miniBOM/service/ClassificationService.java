@@ -1,16 +1,18 @@
 package com.miniBOM.service;
 
-import com.miniBOM.pojo.Attribute;
-import com.miniBOM.pojo.Classification;
-
-import java.util.List;
+import com.miniBOM.dto.CreateClassificationDto;
+import com.miniBOM.dto.DeleteClassificationDto;
+import com.miniBOM.dto.GetClassicificationDto;
+import com.miniBOM.dto.UpdateClassificationDto;
+import com.miniBOM.pojo.Result;
 
 public interface ClassificationService {
-    void add(Classification classification);
 
-    List<Attribute> list(String searchKey);
+    Result add(CreateClassificationDto classificationDto);
 
-    void update(Classification classification);
+    Result query(GetClassicificationDto classificationDto);
 
-    void delete(Classification classification);
+    Result update(UpdateClassificationDto classificationDto);
+
+    Result delete(DeleteClassificationDto classificationDto);
 }

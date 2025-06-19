@@ -1,14 +1,14 @@
 package com.miniBOM.controller;
 
 
-import com.miniBOM.pojo.Attribute;
-import com.miniBOM.pojo.Classification;
+import com.miniBOM.dto.CreateClassificationDto;
+import com.miniBOM.dto.DeleteClassificationDto;
+import com.miniBOM.dto.GetClassicificationDto;
+import com.miniBOM.dto.UpdateClassificationDto;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.service.ClassificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/classification")
@@ -17,26 +17,22 @@ public class ClassificationController {
     private ClassificationService service;
 
     @PostMapping
-    public Result add(@RequestBody Classification classification) {
-        service.add(classification);
-        return Result.success();
+    public Result add(@RequestBody CreateClassificationDto classificationDto) {
+        return service.add(classificationDto);
     }
 
     @GetMapping
-    public Result<List<Attribute>> list(String searchKey){
-        List<Attribute> at =service.list(searchKey);
-        return Result.success(at);
+    public Result query(@RequestBody GetClassicificationDto classificationDto) {
+        return service.query(classificationDto);
     }
 
     @PutMapping
-    public Result update(@RequestBody Classification classification) {
-        service.update(classification);
-        return Result.success();
+    public Result update(@RequestBody UpdateClassificationDto classificationDto) {
+        return service.update(classificationDto);
     }
 
     @DeleteMapping
-    public Result delete(@RequestBody Classification classification) {
-        service.delete(classification);
-        return Result.success();
+    public Result delete(@RequestBody DeleteClassificationDto classificationDto) {
+        return service.delete(classificationDto);
     }
 }

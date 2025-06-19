@@ -1,15 +1,20 @@
 package com.miniBOM.service;
 
-import com.miniBOM.pojo.Attribute;
-
-import java.util.List;
+import com.miniBOM.dto.CreateAttributeDto;
+import com.miniBOM.dto.DeleteAttributeDto;
+import com.miniBOM.dto.GetAttributeDto;
+import com.miniBOM.dto.UpdateAttributeDto;
+import com.miniBOM.pojo.Result;
 
 public interface AttributeService {
-    void add(Attribute attribute);
 
-    void update(Attribute attribute);
 
-    void delete(Attribute attribute);
+    Result list(GetAttributeDto attributeDto);
 
-    List<Attribute> list(String searchKey);
+    Result update(UpdateAttributeDto attributeDto);
+
+    Result add(CreateAttributeDto attributeDto);
+
+    Result delete(DeleteAttributeDto attributeDto);
+
 }

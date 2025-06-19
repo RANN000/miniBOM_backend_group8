@@ -4,28 +4,34 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Result<T> {
-    private int code;
+public class Result <T> {
     private String msg;
     public T data;
-    //操作成功返回对象
-    public static <E> Result success(E data) {
-        return new Result<>(0,"操作成功",data);
+    public T error_data;
+
+    public static Result error(String msg){
+        return new Result(msg,null,null);
     }
-    //操作成功无返回
-    public static Result success() {
-        return new Result(0,"操作成功",null);
+
+    public static <E> Result<E> error(String msg, E error_data){
+        return new Result(msg,null,error_data);
     }
-    //操作失败
-    public static Result error(String msg) {
-        return new Result(1,msg,null);
+
+    public static Result success(){
+        return new Result("SUCCESS",null,null);
+    }
+
+    public static <E> Result<E> success(E data){
+        return new Result("SUCCESS",data,null);
     }
 
     //其他逻辑错误
     public static Result otherError(String msg){
-        return new Result(2,msg,null);
+        return new Result(msg,null,null);
     }
 }

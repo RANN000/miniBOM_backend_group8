@@ -1,6 +1,5 @@
 package com.miniBOM.controller;
 
-import com.miniBOM.pojo.Attribute;
 import com.miniBOM.pojo.Part;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.service.PartService;

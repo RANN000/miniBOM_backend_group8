@@ -1,42 +1,38 @@
 package com.miniBOM.dao;
 
-import com.miniBOM.pojo.Classification;
+import com.miniBOM.dto.CreateClassificationDto;
+import com.miniBOM.dto.DeleteClassificationDto;
+import com.miniBOM.dto.GetClassicificationDto;
+import com.miniBOM.dto.UpdateClassificationDto;
 import com.miniBOM.pojo.Result;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @Component
 public class ClassificationDao {
-    public void add(Classification classification){
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("params", classification);
+    public Result add(CreateClassificationDto classificationDto){
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
-                "publicservices/rdm/basic/api/ClassificationNode/create", paramMap, Result.class);
+                "publicservices/rdm/basic/api/ClassificationNode/create", classificationDto, Result.class);
+        return null;
     }
 
-    public void update(Classification classification){
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("params", classification);
+    public Result update(UpdateClassificationDto classificationDto){
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
-                "publicservices/rdm/basic/api/ClassificationNode/update", paramMap, Result.class);
+                "publicservices/rdm/basic/api/ClassificationNode/update", classificationDto, Result.class);
+        return null;
     }
 
-    public void delete(Classification classification){
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("params", classification);
+    public Result delete(DeleteClassificationDto classificationDto){
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
-                "publicservices/rdm/basic/api/ClassificationNode/delete", paramMap, Result.class);
+                "publicservices/rdm/basic/api/ClassificationNode/delete", classificationDto, Result.class);
+        return null;
     }
 
-    public List list(String searchKey){
+    public Result list(GetClassicificationDto classificationDto){
         return null;
     }
 }

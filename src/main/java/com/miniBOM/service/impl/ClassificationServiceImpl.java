@@ -1,13 +1,14 @@
 package com.miniBOM.service.impl;
 
 import com.miniBOM.dao.ClassificationDao;
-import com.miniBOM.pojo.Attribute;
-import com.miniBOM.pojo.Classification;
+import com.miniBOM.dto.CreateClassificationDto;
+import com.miniBOM.dto.DeleteClassificationDto;
+import com.miniBOM.dto.GetClassicificationDto;
+import com.miniBOM.dto.UpdateClassificationDto;
+import com.miniBOM.pojo.Result;
 import com.miniBOM.service.ClassificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ClassificationServiceImpl implements ClassificationService {
@@ -15,22 +16,22 @@ public class ClassificationServiceImpl implements ClassificationService {
     private ClassificationDao classificationDao;
 
     @Override
-    public void add(Classification classification) {
-        classificationDao.add(classification);
+    public Result add(CreateClassificationDto classificationDto) {
+        return classificationDao.add(classificationDto);
     }
 
     @Override
-    public List<Attribute> list(String searchKey) {
-        return classificationDao.list(searchKey);
+    public Result query(GetClassicificationDto classificationDto) {
+        return classificationDao.list(classificationDto);
     }
 
     @Override
-    public void update(Classification classification) {
-        classificationDao.update(classification);
+    public Result update(UpdateClassificationDto classificationDto) {
+        return classificationDao.update(classificationDto);
     }
 
     @Override
-    public void delete(Classification classification) {
-        classificationDao.delete(classification);
+    public Result delete(DeleteClassificationDto classificationDto) {
+        return classificationDao.delete(classificationDto);
     }
 }
