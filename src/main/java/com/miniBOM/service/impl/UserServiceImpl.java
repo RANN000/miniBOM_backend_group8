@@ -7,11 +7,17 @@ package com.miniBOM.service.impl;
 //import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.miniBOM.dao.UserDao;
+import com.miniBOM.pojo.Result;
 import com.miniBOM.pojo.User;
 import com.miniBOM.service.UserService;
+import com.miniBOM.utils.JwtUtil;
 import com.miniBOM.utils.Md5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,33 +30,12 @@ public class UserServiceImpl implements UserService {
         return userDao.getUserByUserName(name);
     }
 
-    // 用户名验证
-    // 验证中文功能待添加，处理异常待添加
-    private boolean isValidUsername(String name) {
-        return name != null &&
-                name.matches("^[a-zA-Z0-9]{2,32}$");
-        //字母和数字，2到32位
-    }
-
-    // 密码强度验证
-    private boolean isValidPassword(String password) {
-        return password != null &&
-                password.matches("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+]).{8,32}$");
-        //字母数字和特殊符号，8到32位
-    }
-
     // 用户注册
     @Override
-    public boolean registerUser(String username, String password, String email, String telephone) {
-        // 验证用户名格式
-        if (!isValidUsername(username)) {
-            throw new IllegalArgumentException("用户名格式无效或重复");
-        }
-
-        // 验证密码强度
-        if (!isValidPassword(password)) {
-            throw new IllegalArgumentException("密码必须包含字母、数字和特殊字符，长度8-32位");
-        }
+    public boolean registerUser(String username,
+                                String password,
+                                String email,
+                                String telephone) {
 
         //密码加密
         String psw = Md5Util.getMD5String(password);
@@ -58,50 +43,48 @@ public class UserServiceImpl implements UserService {
         return userDao.insertUser(username, email, telephone, psw);
     }
 
-//    //待启用
-//    private final AuthenticationManager authenticationManager;
-//    private final JwtUtils jwtUtils;
-//    private final IdmeUserClient idmeUserClient;
-//
-//    public AuthServiceImpl(AuthenticationManager authenticationManager,
-//                           JwtUtils jwtUtils,
-//                           IdmeUserClient idmeUserClient) {
-//        this.authenticationManager = authenticationManager;
-//        this.jwtUtils = jwtUtils;
-//        this.idmeUserClient = idmeUserClient;
-//    }
+    // 用户登录
+    @Override
+    public Result<String> loginUser(String username, String password) {
+        //验证用户名
+        User user = userDao.getUserByUserName(username);
+        if (user == null) {
+            return Result.error("用户不存在");
+        }
+        //验证密码
+        String psw = Md5Util.getMD5String(password);
+        if (user.getPassword().equals(psw)) {
+            //登录成功
+            Map<String, Object> claims = new HashMap<String, Object>();
+            claims.put("id", user.getId());
+            claims.put("name", user.getName());
+            String token = JwtUtil.genToken(claims);
 
+            return Result.success(token);
+        }
 
-//
-//    // 用户登录
-//    public Map<String, Object> loginUser(String username, String password) {
-//        // 1. 验证凭证
-//        boolean isValid = idmeUserClient.verifyCredentials(username, password);
-//        if (!isValid) {
-//            throw new IllegalArgumentException("用户名或密码错误");
-//        }
-//
-//        // 2. 创建认证令牌
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(username, password)
-//        );
-//
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//        // 3. 生成JWT
-//        String jwt = jwtUtils.generateToken(authentication);
-//
-//        // 4. 获取用户信息
-//        Map<String, Object> userInfo = idmeUserClient.getUserInfo(username);
-//
-//        // 5. 返回响应
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("token", jwt);
-//        response.put("username", username);
-//        response.put("message", "登录成功");
-//
-//        return response;
-//    }
-//
+        return Result.error("密码错误");
+    }
 
+    @Override
+    public void update(User user) {
+        userDao.update(user);
+    }
+
+    @Override
+    public Result updatePwd(String name, String old_pwd, String new_pwd) {
+        User user = userDao.getUserByUserName(name);
+        String psw1 = Md5Util.getMD5String(old_pwd);
+        if(!user.getPassword().equals(psw1)) {
+            return Result.error("原密码输入错误");
+        }
+        if(!new_pwd.matches("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+])\\S{6,20}$")){
+            return Result.error("新密码输入格式错误");
+        }
+
+        String psw2 = Md5Util.getMD5String(new_pwd);
+        user.setPassword(psw2);
+        userDao.update(user);
+        return Result.success();
+    }
 }

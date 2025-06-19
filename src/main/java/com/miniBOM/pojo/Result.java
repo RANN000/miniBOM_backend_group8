@@ -23,4 +23,9 @@ public class Result<T> {
     public static Result error(String msg) {
         return new Result(1,msg,null);
     }
+
+    //其他逻辑错误
+    public static Result otherError(String msg){
+        return new Result(2,msg,null);
+    }
 }

@@ -1,6 +1,10 @@
 package com.miniBOM.service;
 
+import com.miniBOM.pojo.Result;
 import com.miniBOM.pojo.User;
+import jakarta.validation.constraints.Pattern;
+
+import java.util.Map;
 
 public interface UserService {
 
@@ -8,5 +12,9 @@ public interface UserService {
 
     boolean registerUser(String username, String email, String telephone, String password);
 
+    Result<String> loginUser(String username, String password);
 
+    void update(User user);
+
+    Result updatePwd(String name,String old_pwd,String new_pwd);
 }
