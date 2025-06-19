@@ -29,28 +29,30 @@ public class PartDao {
         根据part名称或part编码查询part内容
         必填参数：版本唯一编码
      */
-    public void find(Part part){
+    public Part find(Part part){
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applicationId", "string");
         paramMap.put("params", part);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
+        Result<Part> result=restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
                 "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Part/get", paramMap, Result.class);
+        return result.data;
     }
 
     /*
-        part历史版本对象查询
+        查询part所有历史版本对象
         pageSizePath 页大小
         urPagePath 第几页 从1开始
 
      */
-    public void listAllVersion(Part part){
+    public List<Part> listAllVersion(Part part){
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applicationId", "string");
         paramMap.put("params", part);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
+        Result<List<Part>> result=restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
                 "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Part/getAllVersions/{pageSize}/{curPage}", paramMap, Result.class);
+        return result.data;
     }
 
     /*

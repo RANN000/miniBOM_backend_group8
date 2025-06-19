@@ -18,11 +18,31 @@ public class PartServiceImpl implements PartService {
     }
 
     @Override
+    public  Part find(Part part) {
+        return partDao.find(part);
+    }
+
+    @Override
+    public List<Part> listAllVersion(Part part) {
+        return partDao.listAllVersion(part);
+    }
+
+    @Override
     public List<Part> list(String searchKey){return partDao.list(searchKey);}
 
     @Override
     public void update(Part part) {
         partDao.update(part);
+    }
+
+    @Override
+    public void checkOut(Part part) {
+        partDao.checkOut(part);
+    }
+
+    @Override
+    public void checkIn(Part part) {
+        partDao.checkIn(part);
     }
 
     @Override
