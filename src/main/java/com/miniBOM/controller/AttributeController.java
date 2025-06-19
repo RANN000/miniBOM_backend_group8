@@ -4,6 +4,7 @@ import com.miniBOM.dto.CreateAttributeDto;
 import com.miniBOM.dto.DeleteAttributeDto;
 import com.miniBOM.dto.GetAttributeDto;
 import com.miniBOM.dto.UpdateAttributeDto;
+import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.service.AttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +17,22 @@ public class AttributeController {
     private AttributeService attributeService;
 
     @PostMapping("/create")
-    public Result add(@RequestBody CreateAttributeDto attributeDto) {
+    public Result<Pair> add(@RequestBody CreateAttributeDto attributeDto) {
         return attributeService.add(attributeDto);
     }
 
-    @GetMapping("/query")
-    public Result query(@RequestBody GetAttributeDto attributeDto){
-        return attributeService.list(attributeDto);
+    @GetMapping("/get")
+    public Result<Pair> get(@RequestBody GetAttributeDto attributeDto,short pageSize,short curPage){
+        return attributeService.get(attributeDto,pageSize,curPage);
     }
 
     @PutMapping("/update")
-    public Result update(@RequestBody UpdateAttributeDto attributeDto) {
+    public Result<Pair> update(@RequestBody UpdateAttributeDto attributeDto) {
         return attributeService.update(attributeDto);
     }
 
     @DeleteMapping("/delete")
-    public Result delete(@RequestBody DeleteAttributeDto attributeDto) {
+    public Result<Pair> delete(@RequestBody DeleteAttributeDto attributeDto) {
         return attributeService.delete(attributeDto);
     }
 }

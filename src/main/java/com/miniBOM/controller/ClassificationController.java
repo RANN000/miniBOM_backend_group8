@@ -5,6 +5,7 @@ import com.miniBOM.dto.CreateClassificationDto;
 import com.miniBOM.dto.DeleteClassificationDto;
 import com.miniBOM.dto.GetClassicificationDto;
 import com.miniBOM.dto.UpdateClassificationDto;
+import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.service.ClassificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +18,22 @@ public class ClassificationController {
     private ClassificationService service;
 
     @PostMapping
-    public Result add(@RequestBody CreateClassificationDto classificationDto) {
+    public Result<Pair> add(@RequestBody CreateClassificationDto classificationDto) {
         return service.add(classificationDto);
     }
 
     @GetMapping
-    public Result query(@RequestBody GetClassicificationDto classificationDto) {
-        return service.query(classificationDto);
+    public Result<Pair> get(@RequestBody GetClassicificationDto classificationDto) {
+        return service.get(classificationDto);
     }
 
     @PutMapping
-    public Result update(@RequestBody UpdateClassificationDto classificationDto) {
+    public Result<Pair> update(@RequestBody UpdateClassificationDto classificationDto) {
         return service.update(classificationDto);
     }
 
     @DeleteMapping
-    public Result delete(@RequestBody DeleteClassificationDto classificationDto) {
+    public Result<Pair> delete(@RequestBody DeleteClassificationDto classificationDto) {
         return service.delete(classificationDto);
     }
 }

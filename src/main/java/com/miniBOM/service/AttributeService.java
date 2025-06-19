@@ -4,17 +4,18 @@ import com.miniBOM.dto.CreateAttributeDto;
 import com.miniBOM.dto.DeleteAttributeDto;
 import com.miniBOM.dto.GetAttributeDto;
 import com.miniBOM.dto.UpdateAttributeDto;
+import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 
 public interface AttributeService {
 
 
-    Result list(GetAttributeDto attributeDto);
+    Result<Pair> get(GetAttributeDto attributeDto,short pageSize,short curPage);
 
-    Result update(UpdateAttributeDto attributeDto);
+    Result<Pair> update(UpdateAttributeDto attributeDto);
 
-    Result add(CreateAttributeDto attributeDto);
+    Result<Pair> add(CreateAttributeDto attributeDto);
 
-    Result delete(DeleteAttributeDto attributeDto);
+    Result<Pair> delete(DeleteAttributeDto attributeDto);
 
 }

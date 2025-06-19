@@ -4,6 +4,7 @@ import com.miniBOM.dto.CreateAttributeDto;
 import com.miniBOM.dto.DeleteAttributeDto;
 import com.miniBOM.dto.GetAttributeDto;
 import com.miniBOM.dto.UpdateAttributeDto;
+import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.service.AttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,23 +16,23 @@ public class AttributeServiceImpl implements AttributeService {
     private AttributeDao attributeDao;
 
     @Override
-    public Result add(CreateAttributeDto attributeDto) {
+    public Result<Pair> add(CreateAttributeDto attributeDto) {
         return attributeDao.add(attributeDto);
     }
 
     @Override
-    public Result update(UpdateAttributeDto attributeDto) {
+    public Result<Pair> update(UpdateAttributeDto attributeDto) {
         return attributeDao.update(attributeDto);
     }
 
     @Override
-    public Result delete(DeleteAttributeDto attributeDto) {
+    public Result<Pair> delete(DeleteAttributeDto attributeDto) {
         return attributeDao.delete(attributeDto);
     }
 
     @Override
-    public Result list(GetAttributeDto attributeDto) {
-        return attributeDao.query(attributeDto);
+    public Result<Pair> get(GetAttributeDto attributeDto,short pageSize,short curPage) {
+        return attributeDao.get(attributeDto,pageSize,curPage);
     }
 
 }
