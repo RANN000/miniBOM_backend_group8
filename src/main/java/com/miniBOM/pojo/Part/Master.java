@@ -1,4 +1,4 @@
-package com.miniBOM.pojo;
+package com.miniBOM.pojo.Part;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class branch {
+public class Master {
     String id;
 }

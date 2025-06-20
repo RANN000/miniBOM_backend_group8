@@ -1,4 +1,4 @@
-package com.miniBOM.pojo;
+package com.miniBOM.pojo.Part;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,14 +12,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Part {
     //add
-    String source;
-    String partType;
-    master master;
-    branch branch;
+    String id;
+//    String source;
+//    String partType;
+    String name;
+
+    Master master;
+    Branch branch;
     String applicationId;
 
     //get
-    String id;//版本id
+//    String id;//版本id
 
     //listAllVersion,checkOut,checkIn,delete
     String masterId;
