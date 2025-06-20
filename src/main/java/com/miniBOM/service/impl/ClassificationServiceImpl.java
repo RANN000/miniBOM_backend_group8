@@ -1,10 +1,7 @@
 package com.miniBOM.service.impl;
 
 import com.miniBOM.dao.ClassificationDao;
-import com.miniBOM.dto.CreateClassificationDto;
-import com.miniBOM.dto.DeleteClassificationDto;
-import com.miniBOM.dto.GetClassicificationDto;
-import com.miniBOM.dto.UpdateClassificationDto;
+import com.miniBOM.dto.*;
 import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.service.ClassificationService;
@@ -34,5 +31,20 @@ public class ClassificationServiceImpl implements ClassificationService {
     @Override
     public Result<Pair> delete(DeleteClassificationDto classificationDto) {
         return classificationDao.delete(classificationDto);
+    }
+
+    @Override
+    public Result<Pair> list(short pageSize,short curPage) {
+        return classificationDao.list(pageSize,curPage);
+    }
+
+    @Override
+    public Result addAttribute(AddClassificationNodeAttributeDto classificationNodeAttributeDto) {
+        return classificationDao.addAttribute(classificationNodeAttributeDto);
+    }
+
+    @Override
+    public Result deleteAttribute(DeleteClassificationNodeAttributeDto classificationNodeAttributeDto) {
+        return classificationDao.deleteAttribute(classificationNodeAttributeDto);
     }
 }
