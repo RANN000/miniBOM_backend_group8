@@ -1,12 +1,15 @@
 package com.miniBOM.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
+
 public class CreateClassificationDto {
     String name;
     String nameEn;

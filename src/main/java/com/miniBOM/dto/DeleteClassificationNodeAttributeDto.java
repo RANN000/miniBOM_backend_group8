@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
+import java.util.List;
+
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class GetClassicificationDto {
-    Long ID;
+public class DeleteClassificationNodeAttributeDto {
+    List<Integer> linkIds;
 }

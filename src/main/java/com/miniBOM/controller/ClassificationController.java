@@ -1,10 +1,7 @@
 package com.miniBOM.controller;
 
 
-import com.miniBOM.dto.CreateClassificationDto;
-import com.miniBOM.dto.DeleteClassificationDto;
-import com.miniBOM.dto.GetClassicificationDto;
-import com.miniBOM.dto.UpdateClassificationDto;
+import com.miniBOM.dto.*;
 import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.service.ClassificationService;
@@ -40,5 +37,15 @@ public class ClassificationController {
     @DeleteMapping("/delete")
     public Result<Pair> delete(@RequestBody DeleteClassificationDto classificationDto) {
         return service.delete(classificationDto);
+    }
+
+    @PostMapping("/add_attribute")
+    public Result addAttribute(@RequestBody AddClassificationNodeAttributeDto classificationNodeAttributeDto) {
+        return service.addAttribute(classificationNodeAttributeDto);
+    }
+
+    @DeleteMapping("delete_attribute")
+    public Result deleteAttribute(@RequestBody DeleteClassificationNodeAttributeDto classificationNodeAttributeDto) {
+        return service.deleteAttribute(classificationNodeAttributeDto);
     }
 }

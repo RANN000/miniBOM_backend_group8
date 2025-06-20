@@ -163,4 +163,18 @@ public class ClassificationDao {
             return Result.error("查询失败：" + e.getMessage());
         }
     }
+
+    public Result addAttribute(AddClassificationNodeAttributeDto params) {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
+                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/rdm/basic/api/" +
+                "ClassificationNode/attribute/add", params, Result.class);
+    }
+
+    public Result deleteAttribute(DeleteClassificationNodeAttributeDto params) {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
+                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/rdm/basic/api/" +
+                "ClassificationNode/attribute/remove", params, Result.class);
+    }
 }
