@@ -1,25 +1,29 @@
 package com.miniBOM.service;
 
 
-import com.miniBOM.pojo.Part;
+import com.miniBOM.pojo.Part.Part;
+import com.miniBOM.pojo.Part.PartCreate.PartCreateVO;
+import com.miniBOM.pojo.Part.PartCreate.PartCreateDTO;
+import com.miniBOM.pojo.Part.PartHistory.PartHistoryVO;
+import com.miniBOM.pojo.Part.PartUpdate.PartUpdateDTO;
 
 import java.util.List;
 
 
 public interface PartService {
-    void add(Part part);
+    PartCreateVO add(PartCreateDTO partCreateDTO);
 
     Part find(Part part);
 
-    List<Part> listAllVersion(Part part);
+    List<PartHistoryVO> listAllVersion(String masterId);
 
-    void update(Part part);
+    void update(PartUpdateDTO partUpdateDTO);
 
-    void checkOut(Part part);
+    void checkOut(String masterId);
 
-    void checkIn(Part part);
+    void checkIn(String masterId);
 
-    void delete(Part part);
+    void delete(String id);
 
     List<Part> list(String searchKey);
 

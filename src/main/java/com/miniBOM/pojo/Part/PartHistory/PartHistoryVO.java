@@ -1,4 +1,4 @@
-package com.miniBOM.pojo;
+package com.miniBOM.pojo.Part.PartHistory;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class master {
-    String id;
+public class PartHistoryVO {
+
+    //大版本+小版本
+    String version;
+    //更新时间
+    String updatedAt;
 }

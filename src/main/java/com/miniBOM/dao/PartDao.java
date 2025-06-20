@@ -1,6 +1,10 @@
 package com.miniBOM.dao;
 
-import com.miniBOM.pojo.Part;
+import com.miniBOM.pojo.Part.Part;
+import com.miniBOM.pojo.Part.PartCreate.PartCreateReqDTO;
+import com.miniBOM.pojo.Part.PartCreate.PartCreateVO;
+import com.miniBOM.pojo.Part.PartHistory.PartHistoryResDTO;
+import com.miniBOM.pojo.Part.PartUpdate.PartUpdateReqDTO;
 import com.miniBOM.pojo.Result;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -10,18 +14,20 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-
+//TODO appicaitionId
 public class PartDao {
     /*
         part创建
      */
-    public void add(Part part){
+    public PartCreateVO add(PartCreateReqDTO partCreateDTO){
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applicationId", "string");
-        paramMap.put("params", part);
+        paramMap.put("params", partCreateDTO);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
+        //TODO Part对华为云返回对象建模
+        Result<PartCreateVO> result=restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
                 "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Part/create", paramMap, Result.class);
+        return result.data;
     }
 
     /*
@@ -45,23 +51,26 @@ public class PartDao {
         urPagePath 第几页 从1开始
 
      */
-    public List<Part> listAllVersion(Part part){
+    public List<PartHistoryResDTO> listAllVersion(String masterId) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applicationId", "string");
-        paramMap.put("params", part);
+        Map<String,String> map=new HashMap<>();
+        map.put("masterId",masterId);
+        paramMap.put("params", map);
         RestTemplate restTemplate = new RestTemplate();
-        Result<List<Part>> result=restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
-                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Part/getAllVersions/{pageSize}/{curPage}", paramMap, Result.class);
+        //TODO 分页的大小和第几页默认写死了
+        Result<List<PartHistoryResDTO>> result=restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
+                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Part/getAllVersions/10/1", paramMap, Result.class);
         return result.data;
     }
 
     /*
         part修改，配合检入检出
      */
-    public void update(Part part){
+    public void update(PartUpdateReqDTO partUpdateReqDTO){
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applicationId", "string");
-        paramMap.put("params", part);
+        paramMap.put("params", partUpdateReqDTO);
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
                 "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Part/update", paramMap, Result.class);
@@ -71,10 +80,12 @@ public class PartDao {
     part修改必须先检出
     masterId必填
  */
-    public void checkOut(Part part){
+    public void checkOut(String masterId){
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applicationId", "string");
-        paramMap.put("params", part);
+        Map<String,String> map=new HashMap<>();
+        map.put("masterId",masterId);
+        paramMap.put("params", map);
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
                 "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Part/checkout", paramMap, Result.class);
@@ -86,10 +97,12 @@ public class PartDao {
         masterId必填
      */
 
-    public void checkIn(Part part){
+    public void checkIn(String masterId){
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applicationId", "string");
-        paramMap.put("params", part);
+        Map<String,String> map=new HashMap<>();
+        map.put("masterId",masterId);
+        paramMap.put("params", map);
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
                 "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Part/checkin", paramMap, Result.class);
@@ -97,11 +110,14 @@ public class PartDao {
     /*
         删除实例
      */
-    public void delete(Part part){
+    public void delete(String id){
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applicationId", "string");
-        paramMap.put("params", part);
+        Map<String,String> map=new HashMap<>();
+        map.put("id",id);
+        paramMap.put("params", map);
         RestTemplate restTemplate = new RestTemplate();
+        //TODO 删除失败的判断
         restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
                 "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Part/delete", paramMap, Result.class);
     }
