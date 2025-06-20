@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     // 用户注册
     @Override
-    public boolean registerUser(String username,
+    public Result registerUser(String username,
                                 String password,
                                 String email,
                                 String telephone) {
@@ -67,8 +67,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(User user) {
-        userDao.update(user);
+    public Result update(User user) {
+        return userDao.update(user);
     }
 
     @Override

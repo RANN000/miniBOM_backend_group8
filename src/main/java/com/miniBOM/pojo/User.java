@@ -6,7 +6,7 @@ import net.minidev.json.annotate.JsonIgnore;
 
 @Data
 public class User {
-    private Integer id;//->ID
+    private Long id;//->ID
     private String name;//->Name
     @JsonIgnore
     private String password;//->UserPassword

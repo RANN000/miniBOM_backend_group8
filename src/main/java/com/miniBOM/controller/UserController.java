@@ -1,5 +1,6 @@
 package com.miniBOM.controller;
 
+import com.huawei.innovation.rdm.minibom.dto.entity.UserCreateDTO;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.pojo.User;
 import com.miniBOM.service.UserService;
@@ -33,12 +34,10 @@ public class UserController {
             @RequestParam String phoneNumber,
             @RequestParam String email) {
 
-        boolean result = userService.registerUser(username, password, email, phoneNumber);
-
-        if (result) {
-            return Result.success();
-        } else {
-            return Result.error("注册失败");
+        try {
+            return userService.registerUser(username, password, email, phoneNumber);
+        }catch (Exception e) {
+            return Result.error(e.getMessage());
         }
     }
 
@@ -80,8 +79,7 @@ public class UserController {
             }
         }
 
-        userService.update(user);
-        return Result.success();
+        return userService.update(user);
     }
 
     @PatchMapping("/updatePwd")

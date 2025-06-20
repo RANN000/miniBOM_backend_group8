@@ -10,11 +10,11 @@ public interface UserService {
 
     User findByUsername(String name);
 
-    boolean registerUser(String username, String email, String telephone, String password);
+    Result registerUser(String username, String email, String telephone, String password);
 
     Result<String> loginUser(String username, String password);
 
-    void update(User user);
+    Result update(User user);
 
     Result updatePwd(String name,String old_pwd,String new_pwd);
 }
