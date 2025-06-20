@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetAttributeDto {
+public class QueryAttributeDto {
     String name;
     String nameEn;
 }

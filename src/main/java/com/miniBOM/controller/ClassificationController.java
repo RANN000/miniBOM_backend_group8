@@ -17,22 +17,27 @@ public class ClassificationController {
     @Autowired
     private ClassificationService service;
 
-    @PostMapping
+    @PostMapping("/create")
     public Result<Pair> add(@RequestBody CreateClassificationDto classificationDto) {
         return service.add(classificationDto);
     }
 
-    @GetMapping
+    @GetMapping("/get")
     public Result<Pair> get(@RequestBody GetClassicificationDto classificationDto) {
         return service.get(classificationDto);
     }
 
-    @PutMapping
+    @GetMapping("/list")
+    public Result<Pair> list(short pageSize,short curPage) {
+        return service.list(pageSize,curPage);
+    }
+
+    @PutMapping("/update")
     public Result<Pair> update(@RequestBody UpdateClassificationDto classificationDto) {
         return service.update(classificationDto);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/delete")
     public Result<Pair> delete(@RequestBody DeleteClassificationDto classificationDto) {
         return service.delete(classificationDto);
     }

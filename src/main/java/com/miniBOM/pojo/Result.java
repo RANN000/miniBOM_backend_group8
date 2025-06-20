@@ -11,16 +11,16 @@ import java.util.List;
 @Data
 public class Result <T> {
     private int code = 0;
-    private String msg;
+    private String result;
     public T data;
-    public T error_data;
+    public T errors=null;
 
-    public static Result error(String msg){
-        return new Result(1,msg,null,null);
+    public static Result error(String result){
+        return new Result(1,result,null,null);
     }
 
-    public static <E> Result<E> error(String msg, E error_data){
-        return new Result(1,msg,null,error_data);
+    public static <E> Result<E> error(String result, E errors){
+        return new Result(1,result,null,errors);
     }
 
     public static Result success(){
@@ -32,7 +32,7 @@ public class Result <T> {
     }
 
     //其他逻辑错误
-    public static Result otherError(String msg){
-        return new Result(2,msg,null,null);
+    public static Result otherError(String result){
+        return new Result(2,result,null,null);
     }
 }

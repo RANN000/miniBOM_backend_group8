@@ -16,4 +16,6 @@ public interface ClassificationService {
     Result<Pair> update(UpdateClassificationDto classificationDto);
 
     Result<Pair> delete(DeleteClassificationDto classificationDto);
+
+    Result<Pair> list(short pageSize,short curPage);
 }

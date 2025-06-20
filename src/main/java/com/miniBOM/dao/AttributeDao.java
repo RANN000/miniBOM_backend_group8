@@ -2,7 +2,7 @@ package com.miniBOM.dao;
 
 import com.miniBOM.dto.CreateAttributeDto;
 import com.miniBOM.dto.DeleteAttributeDto;
-import com.miniBOM.dto.GetAttributeDto;
+import com.miniBOM.dto.QueryAttributeDto;
 import com.miniBOM.dto.UpdateAttributeDto;
 import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class AttributeDao {
-    public Result<Pair> add(CreateAttributeDto attributeDto){
+    public Result<Pair> add(CreateAttributeDto params){
         try {
             RestTemplate restTemplate = new RestTemplate();
 
@@ -27,7 +27,7 @@ public class AttributeDao {
             headers.setContentType(MediaType.APPLICATION_JSON);
 
             // 封装请求体
-            HttpEntity<CreateAttributeDto> request = new HttpEntity<>(attributeDto, headers);
+            HttpEntity<CreateAttributeDto> request = new HttpEntity<>(params, headers);
 
             // 使用 ParameterizedTypeReference 保留泛型信息
             ResponseEntity<Result<Pair>> response = restTemplate.exchange(
@@ -44,7 +44,7 @@ public class AttributeDao {
         }
     }
 
-    public Result<Pair> update(UpdateAttributeDto attributeDto) {
+    public Result<Pair> update(UpdateAttributeDto params) {
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
                 "publicservices/rdm/basic/api/EXADefinition/update";
@@ -52,7 +52,7 @@ public class AttributeDao {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<UpdateAttributeDto> request = new HttpEntity<>(attributeDto, headers);
+        HttpEntity<UpdateAttributeDto> request = new HttpEntity<>(params, headers);
 
         try {
             ResponseEntity<Result<Pair>> response = restTemplate.exchange(
@@ -68,7 +68,7 @@ public class AttributeDao {
         }
     }
 
-    public Result<Pair> delete(DeleteAttributeDto attributeDto) {
+    public Result<Pair> delete(DeleteAttributeDto params) {
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
                 "publicservices/rdm/common/api/EXADefinition/delete";
@@ -76,7 +76,7 @@ public class AttributeDao {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<DeleteAttributeDto> request = new HttpEntity<>(attributeDto, headers);
+        HttpEntity<DeleteAttributeDto> request = new HttpEntity<>(params, headers);
 
         try {
             ResponseEntity<Result<Pair>> response = restTemplate.exchange(
@@ -92,19 +92,19 @@ public class AttributeDao {
         }
     }
 
-    public Result<Pair> get(GetAttributeDto attributeDto, short pageSize, short curPage) {
+    public Result<Pair> query(QueryAttributeDto params, short pageSize, short curPage) {
         try {
             RestTemplate restTemplate = new RestTemplate();
             // 构建带路径参数的URL
             String url = "https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
-                    "publicservices/rdm/basic/api/EXADefinition/find/{pageSize}/{curPage}";
+                    "publicservices/rdm/basic/api/EXADefinition/query/{pageSize}/{curPage}";
 
             // 设置请求头
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 
             // 将DTO对象作为请求体（API要求将查询条件放在body中）
-            HttpEntity<GetAttributeDto> requestEntity = new HttpEntity<>(attributeDto, headers);
+            HttpEntity<QueryAttributeDto> requestEntity = new HttpEntity<>(params, headers);
 
             // 发送请求并指定路径参数
             ResponseEntity<Result<Pair>> response = restTemplate.exchange(

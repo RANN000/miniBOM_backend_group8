@@ -35,4 +35,9 @@ public class ClassificationServiceImpl implements ClassificationService {
     public Result<Pair> delete(DeleteClassificationDto classificationDto) {
         return classificationDao.delete(classificationDto);
     }
+
+    @Override
+    public Result<Pair> list(short pageSize,short curPage) {
+        return classificationDao.list(pageSize,curPage);
+    }
 }
