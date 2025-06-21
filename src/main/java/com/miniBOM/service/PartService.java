@@ -5,6 +5,8 @@ import com.miniBOM.pojo.Part.Part;
 import com.miniBOM.pojo.Part.PartCreate.PartCreateVO;
 import com.miniBOM.pojo.Part.PartCreate.PartCreateDTO;
 import com.miniBOM.pojo.Part.PartHistory.PartHistoryVO;
+import com.miniBOM.pojo.Part.PartSearch.PartSearchDTO;
+import com.miniBOM.pojo.Part.PartSearch.PartSerchVO;
 import com.miniBOM.pojo.Part.PartUpdate.PartUpdateDTO;
 
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
 public interface PartService {
     PartCreateVO add(PartCreateDTO partCreateDTO);
 
-    Part find(Part part);
+    List<PartSerchVO> find(PartSearchDTO partSearchDTO);
 
     List<PartHistoryVO> listAllVersion(String masterId);
 
@@ -28,6 +30,5 @@ public interface PartService {
     List<Part> list(String searchKey);
 
 
-
-
+    List<String> listCategoryAttr(String categoryId);
 }

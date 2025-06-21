@@ -1,14 +1,19 @@
 package com.miniBOM.dao;
 
 import com.miniBOM.pojo.Part.Part;
+import com.miniBOM.pojo.Part.PartCategoryAttr.PartCategoryAttrReqVO;
 import com.miniBOM.pojo.Part.PartCreate.PartCreateReqDTO;
 import com.miniBOM.pojo.Part.PartCreate.PartCreateVO;
 import com.miniBOM.pojo.Part.PartHistory.PartHistoryResDTO;
+import com.miniBOM.pojo.Part.PartSearch.PartSearchReqVO;
+import com.miniBOM.pojo.Part.PartSearch.PartSearchCondition;
+import com.miniBOM.pojo.Part.PartSearch.PartSearchDTO;
 import com.miniBOM.pojo.Part.PartUpdate.PartUpdateReqDTO;
 import com.miniBOM.pojo.Result;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,13 +40,38 @@ public class PartDao {
         根据part名称或part编码查询part内容
         必填参数：版本唯一编码
      */
-    public Part find(Part part){
+    public List<PartSearchReqVO> find(PartSearchDTO partSearchDTO){
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applicationId", "string");
-        paramMap.put("params", part);
+        Map<String,Object> map = new HashMap<>();
+        Map<String,Object> submap = new HashMap<>();
+        submap.put("joiner","and");
+        List<PartSearchCondition> conditions = new ArrayList<>();
+
+        if(partSearchDTO.getCode()!=null&& !partSearchDTO.getCode().isEmpty()){
+            PartSearchCondition partSearchCondition = new PartSearchCondition();
+            partSearchCondition.setConditionName("id");
+            List<String> searchValues = new ArrayList<>();
+            searchValues.add(partSearchDTO.getCode());
+            partSearchCondition.setConditionValue(searchValues);
+            conditions.add(partSearchCondition);
+        }
+
+        if(partSearchDTO.getName()!=null&& !partSearchDTO.getName().isEmpty()){
+            PartSearchCondition partSearchCondition = new PartSearchCondition();
+            partSearchCondition.setConditionName("name");
+            List<String> searchValues = new ArrayList<>();
+            searchValues.add(partSearchDTO.getName());
+            partSearchCondition.setConditionValue(searchValues);
+            conditions.add(partSearchCondition);
+        }
+
+        submap.put("conditions",conditions);
+        map.put("filter", submap);
+        paramMap.put("params", map);
         RestTemplate restTemplate = new RestTemplate();
-        Result<Part> result=restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
-                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Part/get", paramMap, Result.class);
+        Result<List<PartSearchReqVO>> result=restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
+                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Part/find/10/1", paramMap, Result.class);
         return result.data;
     }
 
@@ -143,4 +173,17 @@ public class PartDao {
     }
 
 
+    public List<PartCategoryAttrReqVO> listCategoryAttr(String categoryId) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("applicationId", "string");
+        Map<String,String> map=new HashMap<>();
+        map.put("nodeId",categoryId);
+        paramMap.put("params", map);
+        RestTemplate restTemplate = new RestTemplate();
+        //TODO 分页的大小和第几页默认写死了
+        Result<List<PartCategoryAttrReqVO>> result=restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
+                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/rdm/basic/api/ClassificationNode/getAttributesInfos/10/1", paramMap, Result.class);
+        return result.data;
+
+    }
 }
