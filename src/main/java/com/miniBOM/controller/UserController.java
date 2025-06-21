@@ -5,7 +5,7 @@ import com.miniBOM.pojo.Result;
 import com.miniBOM.pojo.User;
 import com.miniBOM.service.UserService;
 import com.miniBOM.utils.JwtUtil;
-import jakarta.validation.constraints.Pattern;
+import javax.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;

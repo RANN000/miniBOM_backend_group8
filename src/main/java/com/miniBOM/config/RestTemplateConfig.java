@@ -1,100 +1,100 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+ */
+
 package com.miniBOM.config;
 
-import org.apache.hc.client5.http.classic.HttpClient;
-import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
-import org.apache.hc.client5.http.io.HttpClientConnectionManager;
+import com.huawei.innovation.rdm.delegate.exception.RdmDelegateException;
+
+import org.apache.http.HttpHost;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.web.client.RestTemplate;
-
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+/**
+ * RestTemplate 配置
+ *
+ * @since 2024-04-10
+ */
 @Configuration
 public class RestTemplateConfig {
-
     /**
-     * http连接管理器
-     * @return
+     * 构建 RestTemplate 对象，忽略证书校验。
+     *
+     * @return RestTemplate 对象
      */
     @Bean
-    public HttpClientConnectionManager poolingHttpClientConnectionManager() {
-        /*// 注册http和https请求
-        Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("http", PlainConnectionSocketFactory.getSocketFactory())
-                .register("https", SSLConnectionSocketFactory.getSocketFactory())
+    public RestTemplateBuilder restTemplateBuilder() {
+        return new RestTemplateBuilder();
+    }
+
+    /**
+     * 构建 RestTemplate 对象，忽略证书校验。
+     *
+     * @param builder builder
+     * @return RestTemplate 对象
+     */
+    @Bean
+    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+        TrustManager[] trustAllCerts = new TrustManager[] {
+                new X509TrustManager() {
+                    /**
+                     * 获取证书颁发者列表
+                     *
+                     * @return 证书颁发者列表
+                     */
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return new X509Certificate[0];
+                    }
+
+                    /**
+                     * 校验客户端证书
+                     *
+                     * @param certs the peer certificate chain
+                     * @param authType the authentication type based on the client certificate
+                     */
+                    public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                    }
+
+                    /**
+                     * 校验服务端证书
+                     *
+                     * @param certs the peer certificate chain
+                     * @param authType the key exchange algorithm used
+                     */
+                    public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                    }
+                }
+        };
+        SSLContext sslContext = null;
+        try {
+            sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            throw new RdmDelegateException("config.1", e.getMessage());
+        }
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setSSLContext(sslContext)
+                .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                // 需要替换为自己的代理服务器，如果没有，需要去除
+                .setProxy(new HttpHost("proxy.huawei.com", 8080))
                 .build();
-        PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager(registry);*/
+        HttpComponentsClientHttpRequestFactory customRequestFactory = new HttpComponentsClientHttpRequestFactory();
+        customRequestFactory.setHttpClient(httpClient);
 
-        PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager();
-        // 最大连接数
-        poolingHttpClientConnectionManager.setMaxTotal(500);
-        // 同路由并发数（每个主机的并发）
-        poolingHttpClientConnectionManager.setDefaultMaxPerRoute(100);
-        return poolingHttpClientConnectionManager;
+        return builder.requestFactory(() -> customRequestFactory).build();
     }
-
-    /**
-     * HttpClient
-     * @param poolingHttpClientConnectionManager
-     * @return
-     */
-    @Bean
-    public HttpClient httpClient(HttpClientConnectionManager poolingHttpClientConnectionManager) {
-        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
-        // 设置http连接管理器
-        httpClientBuilder.setConnectionManager(poolingHttpClientConnectionManager);
-
-        /*// 设置重试次数
-        httpClientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler(3, true));*/
-
-        // 设置默认请求头
-        /*List<Header> headers = new ArrayList<>();
-        headers.add(new BasicHeader("Connection", "Keep-Alive"));
-        httpClientBuilder.setDefaultHeaders(headers);*/
-
-        return httpClientBuilder.build();
-    }
-
-    /**
-     * 请求连接池配置
-     * @param httpClient
-     * @return
-     */
-    @Bean
-    public ClientHttpRequestFactory clientHttpRequestFactory(HttpClient httpClient) {
-        HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-        // httpClient创建器
-        clientHttpRequestFactory.setHttpClient(httpClient);
-        // 连接超时时间/毫秒（连接上服务器(握手成功)的时间，超出抛出connect timeout）
-        clientHttpRequestFactory.setConnectTimeout(5 * 1000);
-        // 数据读取超时时间(socketTimeout)/毫秒（务器返回数据(response)的时间，超过抛出read timeout）
-        clientHttpRequestFactory.setConnectTimeout(10 * 1000);
-        // 连接池获取请求连接的超时时间，不宜过长，必须设置/毫秒（超时间未拿到可用连接，会抛出org.apache.http.conn.ConnectionPoolTimeoutException: Timeout waiting for connection from pool）
-        clientHttpRequestFactory.setConnectionRequestTimeout(10 * 1000);
-        return clientHttpRequestFactory;
-    }
-
-    /**
-     * rest模板
-     * @return
-     */
-    @Bean
-    public RestTemplate restTemplate(ClientHttpRequestFactory clientHttpRequestFactory) {
-        // boot中可使用RestTemplateBuilder.build创建
-        RestTemplate restTemplate = new RestTemplate();
-        // 配置请求工厂
-        restTemplate.setRequestFactory(clientHttpRequestFactory);
-        return restTemplate;
-    }
-
 }
-
-

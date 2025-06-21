@@ -2,9 +2,7 @@ package com.miniBOM.service;
 
 import com.miniBOM.pojo.Result;
 import com.miniBOM.pojo.User;
-import jakarta.validation.constraints.Pattern;
 
-import java.util.Map;
 
 public interface UserService {
 
