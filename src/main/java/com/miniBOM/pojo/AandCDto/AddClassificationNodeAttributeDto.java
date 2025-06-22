@@ -1,4 +1,4 @@
-package com.miniBOM.dto;
+package com.miniBOM.pojo.AandCDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,3 +13,5 @@ public class AddClassificationNodeAttributeDto {
     Integer holderId;
     List<Integer> attrIds;
 }
+
+//暂时弃用

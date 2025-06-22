@@ -1,4 +1,4 @@
-package com.miniBOM.dto;
+package com.miniBOM.pojo.AandCDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,3 +12,6 @@ import java.util.List;
 public class DeleteClassificationNodeAttributeDto {
     List<Integer> linkIds;
 }
+
+
+//暂时弃用

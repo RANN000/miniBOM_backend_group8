@@ -1,9 +1,9 @@
 package com.miniBOM.service.impl;
 import com.miniBOM.dao.AttributeDao;
-import com.miniBOM.dto.CreateAttributeDto;
-import com.miniBOM.dto.DeleteAttributeDto;
-import com.miniBOM.dto.QueryAttributeDto;
-import com.miniBOM.dto.UpdateAttributeDto;
+import com.miniBOM.pojo.AandCDto.CreateAttributeDto;
+import com.miniBOM.pojo.AandCDto.DeleteAttributeDto;
+import com.miniBOM.pojo.AandCDto.ListAttributeDto;
+import com.miniBOM.pojo.AandCDto.UpdateAttributeDto;
 import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.service.AttributeService;
@@ -31,8 +31,9 @@ public class AttributeServiceImpl implements AttributeService {
     }
 
     @Override
-    public Result<Pair> query(QueryAttributeDto attributeDto, short pageSize, short curPage) {
-        return attributeDao.query(attributeDto,pageSize,curPage);
+    public Result<Pair> list(ListAttributeDto attributeDto, short pageSize, short curPage) {
+        return attributeDao.list(attributeDto,pageSize,curPage);
     }
+
 
 }

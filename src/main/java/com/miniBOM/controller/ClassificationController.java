@@ -1,7 +1,9 @@
 package com.miniBOM.controller;
 
 
-import com.miniBOM.dto.*;
+import com.miniBOM.pojo.AandCDto.CreateClassificationDto;
+import com.miniBOM.pojo.AandCDto.DeleteClassificationDto;
+import com.miniBOM.pojo.AandCDto.UpdateClassificationDto;
 import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.service.ClassificationService;
@@ -9,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/classification")
+@RequestMapping("/category")
 public class ClassificationController {
     @Autowired
     private ClassificationService service;
@@ -19,10 +21,10 @@ public class ClassificationController {
         return service.add(classificationDto);
     }
 
-    @GetMapping("/get")
-    public Result<Pair> get(@RequestBody GetClassicificationDto classificationDto) {
-        return service.get(classificationDto);
-    }
+//    @GetMapping("/get")
+//    public Result<Pair> get(@RequestBody GetClassicificationDto classificationDto) {
+//        return service.get(classificationDto);
+//    }
 
     @GetMapping("/list")
     public Result<Pair> list(short pageSize,short curPage) {
@@ -39,13 +41,13 @@ public class ClassificationController {
         return service.delete(classificationDto);
     }
 
-    @PostMapping("/add_attribute")
-    public Result addAttribute(@RequestBody AddClassificationNodeAttributeDto classificationNodeAttributeDto) {
-        return service.addAttribute(classificationNodeAttributeDto);
-    }
-
-    @DeleteMapping("delete_attribute")
-    public Result deleteAttribute(@RequestBody DeleteClassificationNodeAttributeDto classificationNodeAttributeDto) {
-        return service.deleteAttribute(classificationNodeAttributeDto);
-    }
+//    @PostMapping("/add_attribute")
+//    public Result addAttribute(@RequestBody AddClassificationNodeAttributeDto classificationNodeAttributeDto) {
+//        return service.addAttribute(classificationNodeAttributeDto);
+//    }
+//
+//    @DeleteMapping("delete_attribute")
+//    public Result deleteAttribute(@RequestBody DeleteClassificationNodeAttributeDto classificationNodeAttributeDto) {
+//        return service.deleteAttribute(classificationNodeAttributeDto);
+//    }
 }

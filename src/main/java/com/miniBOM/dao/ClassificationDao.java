@@ -1,6 +1,8 @@
 package com.miniBOM.dao;
 
-import com.miniBOM.dto.*;
+import com.miniBOM.pojo.AandCDto.CreateClassificationDto;
+import com.miniBOM.pojo.AandCDto.DeleteClassificationDto;
+import com.miniBOM.pojo.AandCDto.UpdateClassificationDto;
 import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 
@@ -41,16 +43,17 @@ public class ClassificationDao {
 
 
     public Result<Pair> add(CreateClassificationDto params) {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
-                "publicservices/rdm/basic/api/ClassificationNode/create";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<CreateClassificationDto> request = new HttpEntity<>(params, headers);
-
         try {
+            RestTemplate restTemplate = new RestTemplate();
+            String url = "https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
+                    "publicservices/rdm/basic/api/ClassificationNode/create";
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<CreateClassificationDto> request = new HttpEntity<>(params, headers);
+
+
             ResponseEntity<Result<Pair>> response = restTemplate.exchange(
                     url,
                     HttpMethod.POST,
@@ -65,17 +68,18 @@ public class ClassificationDao {
     }
 
     public Result<Pair> update(UpdateClassificationDto params) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        String url = "https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
-                "publicservices/rdm/basic/api/ClassificationNode/update";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<UpdateClassificationDto> request = new HttpEntity<>(params, headers);
-
         try {
+            RestTemplate restTemplate = new RestTemplate();
+
+            String url = "https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
+                    "publicservices/rdm/basic/api/ClassificationNode/update";
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<UpdateClassificationDto> request = new HttpEntity<>(params, headers);
+
+
             ResponseEntity<Result<Pair>> response = restTemplate.exchange(
                     url,
                     HttpMethod.POST,
@@ -90,16 +94,17 @@ public class ClassificationDao {
     }
 
     public Result<Pair> delete(DeleteClassificationDto params) {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
-                "publicservices/rdm/basic/api/ClassificationNode/delete";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<DeleteClassificationDto> request = new HttpEntity<>(params, headers);
-
         try {
+            RestTemplate restTemplate = new RestTemplate();
+            String url = "https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
+                    "publicservices/rdm/basic/api/ClassificationNode/delete";
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<DeleteClassificationDto> request = new HttpEntity<>(params, headers);
+
+
             ResponseEntity<Result<Pair>> response = restTemplate.exchange(
                     url,
                     HttpMethod.POST,
@@ -113,29 +118,30 @@ public class ClassificationDao {
         }
     }
 
-    public Result<Pair> get(GetClassicificationDto params) {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
-                "publicservices/rdm/common/api/ClassificationNode/get";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<GetClassicificationDto> request = new HttpEntity<>(params, headers);
-
-        try {
-            ResponseEntity<Result<Pair>> response = restTemplate.exchange(
-                    url,
-                    HttpMethod.GET,
-                    request,
-                    new ParameterizedTypeReference<Result<Pair>>() {}
-            );
-
-            return response.getBody();
-        } catch (RestClientException e) {
-            return Result.error("获取失败：" + e.getMessage());
-        }
-    }
+//    public Result<Pair> get(GetClassicificationDto params) {
+//        try {
+//            RestTemplate restTemplate = new RestTemplate();
+//            String url = "https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/" +
+//                    "publicservices/rdm/common/api/ClassificationNode/get";
+//
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//            HttpEntity<GetClassicificationDto> request = new HttpEntity<>(params, headers);
+//
+//
+//            ResponseEntity<Result<Pair>> response = restTemplate.exchange(
+//                    url,
+//                    HttpMethod.GET,
+//                    request,
+//                    new ParameterizedTypeReference<Result<Pair>>() {}
+//            );
+//
+//            return response.getBody();
+//        } catch (RestClientException e) {
+//            return Result.error("获取失败：" + e.getMessage());
+//        }
+//    }
 
     public Result<Pair> list(short pageSize,short curPage) {
         try {
@@ -164,17 +170,17 @@ public class ClassificationDao {
         }
     }
 
-    public Result addAttribute(AddClassificationNodeAttributeDto params) {
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
-                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/rdm/basic/api/" +
-                "ClassificationNode/attribute/add", params, Result.class);
-    }
-
-    public Result deleteAttribute(DeleteClassificationNodeAttributeDto params) {
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
-                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/rdm/basic/api/" +
-                "ClassificationNode/attribute/remove", params, Result.class);
-    }
+//    public Result addAttribute(AddClassificationNodeAttributeDto params) {
+//        RestTemplate restTemplate = new RestTemplate();
+//        return restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
+//                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/rdm/basic/api/" +
+//                "ClassificationNode/attribute/add", params, Result.class);
+//    }
+//
+//    public Result deleteAttribute(DeleteClassificationNodeAttributeDto params) {
+//        RestTemplate restTemplate = new RestTemplate();
+//        return restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
+//                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/rdm/basic/api/" +
+//                "ClassificationNode/attribute/remove", params, Result.class);
+//    }
 }

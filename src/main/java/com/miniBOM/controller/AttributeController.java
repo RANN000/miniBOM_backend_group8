@@ -1,9 +1,9 @@
 package com.miniBOM.controller;
 
-import com.miniBOM.dto.CreateAttributeDto;
-import com.miniBOM.dto.DeleteAttributeDto;
-import com.miniBOM.dto.QueryAttributeDto;
-import com.miniBOM.dto.UpdateAttributeDto;
+import com.miniBOM.pojo.AandCDto.CreateAttributeDto;
+import com.miniBOM.pojo.AandCDto.DeleteAttributeDto;
+import com.miniBOM.pojo.AandCDto.ListAttributeDto;
+import com.miniBOM.pojo.AandCDto.UpdateAttributeDto;
 import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.service.AttributeService;
@@ -21,9 +21,9 @@ public class AttributeController {
         return attributeService.add(attributeDto);
     }
 
-    @GetMapping("/query")
-    public Result<Pair> query(@RequestBody QueryAttributeDto attributeDto, short pageSize, short curPage){
-        return attributeService.query(attributeDto,pageSize,curPage);
+    @GetMapping("/list")
+    public Result<Pair> list(@RequestBody ListAttributeDto attributeDto, short pageSize, short curPage){
+        return attributeService.list(attributeDto,pageSize,curPage);
     }
 
     @PutMapping("/update")

@@ -1,7 +1,9 @@
 package com.miniBOM.service.impl;
 
 import com.miniBOM.dao.ClassificationDao;
-import com.miniBOM.dto.*;
+import com.miniBOM.pojo.AandCDto.CreateClassificationDto;
+import com.miniBOM.pojo.AandCDto.DeleteClassificationDto;
+import com.miniBOM.pojo.AandCDto.UpdateClassificationDto;
 import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.service.ClassificationService;
@@ -18,10 +20,10 @@ public class ClassificationServiceImpl implements ClassificationService {
         return classificationDao.add(classificationDto);
     }
 
-    @Override
-    public Result<Pair> get(GetClassicificationDto classificationDto) {
-        return classificationDao.get(classificationDto);
-    }
+//    @Override
+//    public Result<Pair> get(GetClassicificationDto classificationDto) {
+//        return classificationDao.get(classificationDto);
+//    }
 
     @Override
     public Result<Pair> update(UpdateClassificationDto classificationDto) {
@@ -38,13 +40,13 @@ public class ClassificationServiceImpl implements ClassificationService {
         return classificationDao.list(pageSize,curPage);
     }
 
-    @Override
-    public Result addAttribute(AddClassificationNodeAttributeDto classificationNodeAttributeDto) {
-        return classificationDao.addAttribute(classificationNodeAttributeDto);
-    }
-
-    @Override
-    public Result deleteAttribute(DeleteClassificationNodeAttributeDto classificationNodeAttributeDto) {
-        return classificationDao.deleteAttribute(classificationNodeAttributeDto);
-    }
+//    @Override
+//    public Result addAttribute(AddClassificationNodeAttributeDto classificationNodeAttributeDto) {
+//        return classificationDao.addAttribute(classificationNodeAttributeDto);
+//    }
+//
+//    @Override
+//    public Result deleteAttribute(DeleteClassificationNodeAttributeDto classificationNodeAttributeDto) {
+//        return classificationDao.deleteAttribute(classificationNodeAttributeDto);
+//    }
 }

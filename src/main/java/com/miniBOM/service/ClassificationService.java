@@ -1,6 +1,8 @@
 package com.miniBOM.service;
 
-import com.miniBOM.dto.*;
+import com.miniBOM.pojo.AandCDto.CreateClassificationDto;
+import com.miniBOM.pojo.AandCDto.DeleteClassificationDto;
+import com.miniBOM.pojo.AandCDto.UpdateClassificationDto;
 import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 
@@ -8,7 +10,7 @@ public interface ClassificationService {
 
     Result<Pair> add(CreateClassificationDto classificationDto);
 
-    Result<Pair> get(GetClassicificationDto classificationDto);
+//    Result<Pair> get(GetClassicificationDto classificationDto);
 
     Result<Pair> update(UpdateClassificationDto classificationDto);
 
@@ -16,7 +18,7 @@ public interface ClassificationService {
 
     Result<Pair> list(short pageSize,short curPage);
 
-    Result addAttribute(AddClassificationNodeAttributeDto classificationNodeAttributeDto);
-
-    Result deleteAttribute(DeleteClassificationNodeAttributeDto classificationNodeAttributeDto);
+//    Result addAttribute(AddClassificationNodeAttributeDto classificationNodeAttributeDto);
+//
+//    Result deleteAttribute(DeleteClassificationNodeAttributeDto classificationNodeAttributeDto);
 }
