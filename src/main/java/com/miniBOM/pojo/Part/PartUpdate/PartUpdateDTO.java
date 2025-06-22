@@ -14,5 +14,6 @@ import java.util.Map;
 public class PartUpdateDTO {
     String code;
     String name;
+    String category;
     Map<String, String> attributes;
 }

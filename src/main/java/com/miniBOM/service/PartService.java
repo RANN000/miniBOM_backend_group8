@@ -27,7 +27,7 @@ public interface PartService {
 
     void delete(String id);
 
-    List<Part> list(String searchKey);
+//    List<Part> list(String searchKey);
 
 
     List<String> listCategoryAttr(String categoryId);

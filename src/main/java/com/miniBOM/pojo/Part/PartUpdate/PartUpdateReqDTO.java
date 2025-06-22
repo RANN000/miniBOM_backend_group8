@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -18,11 +19,13 @@ public class PartUpdateReqDTO {
     String id;
     //"IAM2 91b433d47aec415fab90774eb9150549"
     //要求当前用户是该数据实例的修改者才可以修改
-    String modifier;
+    String modifier="IAM2 91b433d47aec415fab90774eb9150549";
     String name;
     String defaultUnit;
-    //    Pair[] extAttrs;
+
+    //用来更改分类
     List<Pair> extAttrs;
+    List<Map<String,Map<String,String >>> clsAttrs;
     String applicationId;
 
 

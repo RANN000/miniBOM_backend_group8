@@ -19,7 +19,6 @@ public class PartController {
     @Autowired
     private PartService partService;
     //需求接口，创建part
-    //TODO 修改拓展属性，从拓展属性加入分类属性
     @PostMapping("/create")
     public Result<PartCreateVO> create(@RequestBody PartCreateDTO partCreateDTO) {
         PartCreateVO partCreateVO=partService.add(partCreateDTO);
@@ -56,8 +55,8 @@ public class PartController {
     }
     //需求接口，根据分类id提供分类可选属性
     @GetMapping("/attributeTemplate")
-    public Result<List<String>> attributeTemplate(String categoryId){
-        List<String> p =partService.listCategoryAttr(categoryId);
+    public Result<List<String>> attributeTemplate(String category){
+        List<String> p =partService.listCategoryAttr(category);
         return Result.success(p);
     }
 
