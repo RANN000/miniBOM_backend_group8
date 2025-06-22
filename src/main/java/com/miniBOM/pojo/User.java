@@ -1,8 +1,9 @@
 package com.miniBOM.pojo;
 
 import javax.validation.constraints.Email;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import net.minidev.json.annotate.JsonIgnore;
 
 @Data
 public class User {

@@ -3,6 +3,8 @@ package com.miniBOM.interceptors;
 import com.miniBOM.utils.JwtUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.miniBOM.utils.ThreadLocalUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -16,10 +18,16 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         try{
             Map<String,Object> claims= JwtUtil.parseToken(token);
+            ThreadLocalUtil.set(claims);
             return true;
         }catch (Exception e){
             response.setStatus(401);
             return false;
         }
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        ThreadLocalUtil.remove();
     }
 }

@@ -90,7 +90,7 @@ public class RestTemplateConfig {
                 .setSSLContext(sslContext)
                 .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
                 // 需要替换为自己的代理服务器，如果没有，需要去除
-                .setProxy(new HttpHost("proxy.huawei.com", 8080))
+                //.setProxy(new HttpHost("proxy.huawei.com", 8080))
                 .build();
         HttpComponentsClientHttpRequestFactory customRequestFactory = new HttpComponentsClientHttpRequestFactory();
         customRequestFactory.setHttpClient(httpClient);

@@ -34,13 +34,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result registerUser(String username,
                                 String password,
-                                String email,
-                                String telephone) {
+                                String phoneNumber,
+                                String email) {
 
         //密码加密
         String psw = Md5Util.getMD5String(password);
 
-        return userDao.insertUser(username, email, telephone, psw);
+        return userDao.insertUser(username, psw, phoneNumber, email);
     }
 
     // 用户登录
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
             //登录成功
             Map<String, Object> claims = new HashMap<String, Object>();
             claims.put("id", user.getId());
-            claims.put("name", user.getName());
+            claims.put("username", user.getName());
             String token = JwtUtil.genToken(claims);
 
             return Result.success(token);
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
 
         String psw2 = Md5Util.getMD5String(new_pwd);
         user.setPassword(psw2);
-        userDao.update(user);
+        userDao.updatePwd(user);
         return Result.success();
     }
 }

@@ -57,6 +57,10 @@ public class UserDao {
 
     //新增用户
     public Result insertUser(String name, String password, String phoneNumber, String email) {
+        User user = getUserByUserName(name);
+        if (user != null) {
+            return Result.error("用户名已存在");
+        }
         UserCreateDTO userCreateDTO = new UserCreateDTO();
         userCreateDTO.setName(name);
         userCreateDTO.setUserPassword(password);
@@ -66,17 +70,39 @@ public class UserDao {
         return Result.success(resultVo.getId());
     }
 
-    //更新用户信息
+    //更新用户信息，邮箱电话
     public Result update(User user) {
         UserUpdateDTO userUpdateDTO = new UserUpdateDTO();
         Long id = getIdByUserName(user.getName());
         userUpdateDTO.setId(id);
+        userUpdateDTO.setName(user.getName());
         userUpdateDTO.setPhoneNumber(user.getPhoneNumber());
         userUpdateDTO.setEmail(user.getEmail());
+        UserViewDTO userViewDTO = userDelegator.update(userUpdateDTO);
+        User user1 = new User();
+        user1.setId(userViewDTO.getId());
+        user1.setName(userViewDTO.getName());
+        user1.setEmail(userViewDTO.getEmail());
+        user1.setPhoneNumber(userViewDTO.getPhoneNumber());
+        return Result.success(user1);
+    }
+
+    //更新密码
+    public Result updatePwd(User user) {
+        UserUpdateDTO userUpdateDTO = new UserUpdateDTO();
+        Long id = getIdByUserName(user.getName());
+        userUpdateDTO.setId(id);
         userUpdateDTO.setUserPassword(user.getPassword());
         UserViewDTO userViewDTO = userDelegator.update(userUpdateDTO);
-        return Result.success(userViewDTO.getId());
+        User user1 = new User();
+        user1.setId(userViewDTO.getId());
+        user1.setName(userViewDTO.getName());
+        user1.setEmail(userViewDTO.getEmail());
+        user1.setPhoneNumber(userViewDTO.getPhoneNumber());
+        return Result.success(user1);
     }
+
+
 
 
 

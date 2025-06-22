@@ -8,7 +8,7 @@ public interface UserService {
 
     User findByUsername(String name);
 
-    Result registerUser(String username, String email, String telephone, String password);
+    Result registerUser(String username, String password, String phoneNumber, String email);
 
     Result<String> loginUser(String username, String password);
 
