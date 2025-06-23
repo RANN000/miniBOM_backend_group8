@@ -1,8 +1,8 @@
 package com.miniBOM.dao;
 
-import com.miniBOM.pojo.AandCDto.CreateClassificationDto;
-import com.miniBOM.pojo.AandCDto.DeleteClassificationDto;
-import com.miniBOM.pojo.AandCDto.UpdateClassificationDto;
+import com.miniBOM.pojo.ClassificationDto.CreateClassificationDto;
+import com.miniBOM.pojo.ClassificationDto.DeleteClassificationDto;
+import com.miniBOM.pojo.ClassificationDto.UpdateClassificationDto;
 import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 

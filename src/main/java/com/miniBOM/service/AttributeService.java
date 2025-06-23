@@ -1,21 +1,26 @@
 package com.miniBOM.service;
 
-import com.miniBOM.pojo.AandCDto.CreateAttributeDto;
-import com.miniBOM.pojo.AandCDto.DeleteAttributeDto;
-import com.miniBOM.pojo.AandCDto.ListAttributeDto;
-import com.miniBOM.pojo.AandCDto.UpdateAttributeDto;
-import com.miniBOM.pojo.Pair;
-import com.miniBOM.pojo.Result;
+import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdsModifierDTO;
+import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionCreateDTO;
+import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionUpdateDTO;
+import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionViewDTO;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 
 public interface AttributeService {
 
 
-    Result<Pair> list(ListAttributeDto attributeDto, short pageSize, short curPage);
+    List<EXADefinitionViewDTO> list(String searchKey, Integer pageSize, Integer curPage);
 
-    Result<Pair> update(UpdateAttributeDto attributeDto);
+    EXADefinitionViewDTO update(EXADefinitionUpdateDTO attributeDto);
 
-    Result<Pair> add(CreateAttributeDto attributeDto);
+    EXADefinitionViewDTO add(EXADefinitionCreateDTO attributeDto);
 
-    Result<Pair> delete(DeleteAttributeDto attributeDto);
+    void delete(PersistObjectIdsModifierDTO attributeDto);
 
+    long count(String searchKey);
+
+    List<EXADefinitionViewDTO> getById(Long id);
 }
