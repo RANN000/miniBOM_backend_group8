@@ -78,13 +78,12 @@ public class UserServiceImpl implements UserService {
         if(!user.getPassword().equals(psw1)) {
             return Result.error("原密码输入错误");
         }
-        if(!new_pwd.matches("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+])\\S{6,20}$")){
+        if(!new_pwd.matches("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+])\\S{8,32}$")){
             return Result.error("新密码输入格式错误");
         }
 
         String psw2 = Md5Util.getMD5String(new_pwd);
         user.setPassword(psw2);
-        userDao.updatePwd(user);
-        return Result.success();
+        return userDao.updatePwd(user);
     }
 }

@@ -31,8 +31,8 @@ public class UserController {
     //用户注册
     @PostMapping("/register")
     public Result registerUser(
-            @RequestParam @Pattern(regexp = "^(?=.*[a-zA-Z0-9_-])\\S{2,20}$") String username,
-            @RequestParam @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+])\\S{6,20}$") String password,
+            @RequestParam @Pattern(regexp = "^(?=.*[a-zA-Z0-9_-])\\S{6,32}$") String username,
+            @RequestParam @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+])\\S{8,32}$") String password,
             @RequestParam String phoneNumber,
             @RequestParam String email) {
 
@@ -46,8 +46,8 @@ public class UserController {
     //用户登录
     @PostMapping("/login")
     public Result<String> loginUser(
-            @RequestParam @Pattern(regexp = "^(?=.*[a-zA-Z0-9_-])\\S{2,20}$") String username,
-            @RequestParam @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+])\\S{6,20}$") String password) {
+            @RequestParam @Pattern(regexp = "^(?=.*[a-zA-Z0-9_-])\\S{2,32}$") String username,
+            @RequestParam @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+])\\S{6,32}$") String password) {
 
         try {
             return userService.loginUser(username, password);
@@ -73,8 +73,10 @@ public class UserController {
     //修改用户信息（电话/邮箱）
     @PutMapping("/update")
     public Result updateUserInfo(@RequestBody Map<String, String> params) {
+        Map<String,Object> map = ThreadLocalUtil.get();
+        String name = map.get("username").toString();
         User user = new User();
-        user.setName(params.get("username"));
+        user.setName(name);
         user.setEmail(params.get("email"));
         user.setPhoneNumber(params.get("phoneNumber"));
         if (!user.getEmail().isEmpty()) {
@@ -95,10 +97,10 @@ public class UserController {
         }
     }
 
+    //用户更新密码
     @PatchMapping("/updatePwd")
-    public Result updateUserPwd(
-            @RequestHeader(name = "Authorization") String token,
-            @RequestBody Map<String, String> params) {
+    public Result updateUserPwd(@RequestBody Map<String, String> params) {
+
         String old_pwd = params.get("old_pwd");
         String new_pwd = params.get("new_pwd");
         String re_pwd = params.get("re_pwd");
@@ -107,8 +109,12 @@ public class UserController {
             return Result.error("缺少必要参数");
         }
 
-        Map<String, Object> map = JwtUtil.parseToken(token);
-        String name = (String) map.get("username");
+        if(!new_pwd.equals(re_pwd)){
+            return Result.error("两次密码输入不一致");
+        }
+
+        Map<String,Object> map = ThreadLocalUtil.get();
+        String name = map.get("username").toString();
 
         try {
             return userService.updatePwd(name, old_pwd, new_pwd);
@@ -117,5 +123,6 @@ public class UserController {
         }
 
     }
+
 
 }

@@ -23,6 +23,9 @@ public class UserDao {
         UserNameDTO userNameDTO = new UserNameDTO();
         userNameDTO.setName(name);
         UserViewDTO userViewDTO = userDelegator.getByName(userNameDTO);
+        if(userViewDTO == null) {
+            return null;
+        }
         User user = new User();
         user.setId(userViewDTO.getId());
         user.setName(userViewDTO.getName());
@@ -48,11 +51,11 @@ public class UserDao {
 
     //根据用户名查找id
     public Long getIdByUserName(String name) {
-        QueryRequestVo queryRequestVo = new QueryRequestVo();
-        queryRequestVo.addCondition("Name", ConditionType.EQUAL, name);
-        List<UserQueryViewDTO> userQueryViewDTO = userDelegator.query(queryRequestVo, new RDMPageVO(1, 1));
-        UserQueryViewDTO userInfo = userQueryViewDTO.get(0);
-        return userInfo.getId();
+        User user = getUserByUserName(name);
+        if(user == null) {
+            return null;
+        }
+        return user.getId();
     }
 
     //新增用户
@@ -74,8 +77,10 @@ public class UserDao {
     public Result update(User user) {
         UserUpdateDTO userUpdateDTO = new UserUpdateDTO();
         Long id = getIdByUserName(user.getName());
+        if(id == null) {
+            return Result.error("用户不存在");
+        }
         userUpdateDTO.setId(id);
-        userUpdateDTO.setName(user.getName());
         userUpdateDTO.setPhoneNumber(user.getPhoneNumber());
         userUpdateDTO.setEmail(user.getEmail());
         UserViewDTO userViewDTO = userDelegator.update(userUpdateDTO);
@@ -91,6 +96,9 @@ public class UserDao {
     public Result updatePwd(User user) {
         UserUpdateDTO userUpdateDTO = new UserUpdateDTO();
         Long id = getIdByUserName(user.getName());
+        if(id == null) {
+            return Result.error("用户不存在");
+        }
         userUpdateDTO.setId(id);
         userUpdateDTO.setUserPassword(user.getPassword());
         UserViewDTO userViewDTO = userDelegator.update(userUpdateDTO);
