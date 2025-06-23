@@ -111,7 +111,11 @@ public class AttributeController {
 
     }
 
-    //转换DTO为展示VO--工具函数
+    /**
+     * 工具函数
+     * 转换DTO为VO
+     * @return VO列表
+     */
     private static List<OneAttributeVo> getOneAttributeVos(List<EXADefinitionViewDTO> attributeDefinitions) {
         List<OneAttributeVo> attributeViews = new ArrayList<>(attributeDefinitions.size());
         for (EXADefinitionViewDTO definition : attributeDefinitions) {

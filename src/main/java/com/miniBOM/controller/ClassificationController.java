@@ -1,14 +1,20 @@
 package com.miniBOM.controller;
 
 
-import com.miniBOM.pojo.ClassificationDto.CreateClassificationDto;
-import com.miniBOM.pojo.ClassificationDto.DeleteClassificationDto;
-import com.miniBOM.pojo.ClassificationDto.UpdateClassificationDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionViewDTO;
+import com.miniBOM.pojo.AttributeVo.OneAttributeVo;
+import com.miniBOM.pojo.ClassificationDto.*;
+import com.miniBOM.pojo.ClassificationVo.ListClassificationVo;
+import com.miniBOM.pojo.ClassificationVo.OneClassificationVo;
 import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.service.ClassificationService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/category")
@@ -17,29 +23,30 @@ public class ClassificationController {
     private ClassificationService service;
 
     @PostMapping("/create")
-    public Result<Pair> add(@RequestBody CreateClassificationDto classificationDto) {
+    public Result<OneClassificationVo> add(@RequestBody CreateClassificationDto classificationDto) {
         return service.add(classificationDto);
     }
 
-//    @GetMapping("/get")
-//    public Result<Pair> get(@RequestBody GetClassicificationDto classificationDto) {
-//        return service.get(classificationDto);
-//    }
-
     @GetMapping("/list")
-    public Result<Pair> list(short pageSize,short curPage) {
-        return service.list(pageSize,curPage);
+    public Result<ListClassificationVo> list(@RequestBody ListClassificationDto classificationDto) throws JsonProcessingException {
+        return service.list(classificationDto);
+    }
+
+    @GetMapping("/get/{id}")
+    public Result<OneClassificationVo> getById(@PathVariable("id") Long id) {
+        return service.getById(id);
     }
 
     @PutMapping("/update")
-    public Result<Pair> update(@RequestBody UpdateClassificationDto classificationDto) {
+    public Result<OneClassificationVo> update(@RequestBody UpdateClassificationDto classificationDto) {
         return service.update(classificationDto);
     }
 
-    @DeleteMapping("/delete")
-    public Result<Pair> delete(@RequestBody DeleteClassificationDto classificationDto) {
-        return service.delete(classificationDto);
+    @DeleteMapping("/delete/{id}")
+    public Result delete(@PathVariable("id") Long deleteId) {
+        return service.delete(deleteId);
     }
+
 
 //    @PostMapping("/add_attribute")
 //    public Result addAttribute(@RequestBody AddClassificationNodeAttributeDto classificationNodeAttributeDto) {

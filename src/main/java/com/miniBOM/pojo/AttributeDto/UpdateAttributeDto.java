@@ -12,9 +12,11 @@ public class UpdateAttributeDto {
     //属性id
     private Long id;
 
+    //改不了
     //属性中文名
     private String name;
 
+    //改不了
     //属性英文名
     private String nameEn;
 

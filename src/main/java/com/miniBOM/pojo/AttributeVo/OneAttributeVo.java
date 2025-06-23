@@ -20,6 +20,5 @@ public class OneAttributeVo {
     private String type;
     private Boolean disableFlag;
     private String code;
-    private Long classificationId;
-    private List<Long> sourceIds;
+
 }

@@ -36,7 +36,7 @@ public class AttributeDao {
     public List<EXADefinitionViewDTO> getById(Long id) {
         // 构建查询条件
         QueryRequestVo queryRequestVo = new QueryRequestVo();
-        queryRequestVo.addCondition(AttributeConstant.ID, ConditionType.EQUAL, id);
+        queryRequestVo.addCondition("id", ConditionType.EQUAL, id);
 
         // 构建分页参数（仅查询1条记录）
         RDMPageVO rdmPageVO = new RDMPageVO();
@@ -57,7 +57,7 @@ public class AttributeDao {
 
         // 当搜索关键词有效时添加模糊查询条件
         if (StringUtils.hasText(searchKey)) {
-            queryRequestVo.addCondition(AttributeConstant.NAME, ConditionType.LIKE, searchKey);
+            queryRequestVo.addCondition("name", ConditionType.LIKE, searchKey);
         }
 
         return exaDefinitionDelegator.count(queryRequestVo);
@@ -136,7 +136,7 @@ public class AttributeDao {
 
         QueryRequestVo queryRequestVo = new QueryRequestVo();
         if (StringUtils.hasText(searchKey)) {
-            queryRequestVo.addCondition(AttributeConstant.NAME, ConditionType.LIKE, searchKey);
+            queryRequestVo.addCondition("name", ConditionType.LIKE, searchKey);
         }
 
         RDMPageVO rdmPageVO = new RDMPageVO();

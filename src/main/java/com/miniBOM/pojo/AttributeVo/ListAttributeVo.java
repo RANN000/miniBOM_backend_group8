@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class ListAttributeVo {
-
     private Integer number;
     private List<OneAttributeVo> list;
 }

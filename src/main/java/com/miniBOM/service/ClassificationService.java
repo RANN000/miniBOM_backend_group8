@@ -1,22 +1,24 @@
 package com.miniBOM.service;
 
-import com.miniBOM.pojo.ClassificationDto.CreateClassificationDto;
-import com.miniBOM.pojo.ClassificationDto.DeleteClassificationDto;
-import com.miniBOM.pojo.ClassificationDto.UpdateClassificationDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.miniBOM.pojo.ClassificationDto.*;
+import com.miniBOM.pojo.ClassificationVo.ListClassificationVo;
+import com.miniBOM.pojo.ClassificationVo.OneClassificationVo;
 import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 
 public interface ClassificationService {
 
-    Result<Pair> add(CreateClassificationDto classificationDto);
+    Result<OneClassificationVo> add(CreateClassificationDto classificationDto);
 
-//    Result<Pair> get(GetClassicificationDto classificationDto);
 
-    Result<Pair> update(UpdateClassificationDto classificationDto);
+    Result<OneClassificationVo> update(UpdateClassificationDto classificationDto);
 
-    Result<Pair> delete(DeleteClassificationDto classificationDto);
+    Result delete(Long deleteId);
 
-    Result<Pair> list(short pageSize,short curPage);
+    Result<ListClassificationVo> list(ListClassificationDto dto) throws JsonProcessingException;
+
+    Result<OneClassificationVo> getById(Long id);
 
 //    Result addAttribute(AddClassificationNodeAttributeDto classificationNodeAttributeDto);
 //

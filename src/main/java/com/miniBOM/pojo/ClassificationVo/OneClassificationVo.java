@@ -1,18 +1,23 @@
-package com.miniBOM.pojo.ClassificationDto;
+package com.miniBOM.pojo.ClassificationVo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class UpdateClassificationDto {
+public class OneClassificationVo {
     private Long id;
     private String name;
     private String nameEn;
     private String description;
     private String descriptionEn;
+    private Long parentId;
+    private Boolean status;
+    boolean instantiable=true;
 }
