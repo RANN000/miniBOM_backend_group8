@@ -20,7 +20,7 @@ public class PartCreateReqDTO {
     String id;
     String name;
     String defaultUnit;
-//    Pair[] extAttrs;
+    String userId;
     List<Pair> extAttrs;
     Master master;
     Branch branch;

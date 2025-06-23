@@ -13,5 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class PartSearchCondition {
     String conditionName;
-    List<String> conditionValue;
+    List<String> conditionValues;
+    String operator;
 }

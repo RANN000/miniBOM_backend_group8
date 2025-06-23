@@ -15,6 +15,7 @@ import java.util.Map;
 public class PartSearchReqVO {
     String id;
     String name;
+    String userId;
     String version;
     String iteration;
     List<Map<String,Object>> extAttrs;

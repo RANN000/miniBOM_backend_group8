@@ -13,6 +13,7 @@ import java.util.Map;
 public class PartSerchVO {
     String code;
     String name;
+    String userId;
     String version;
     String category;
     Map<String, String> attributes;

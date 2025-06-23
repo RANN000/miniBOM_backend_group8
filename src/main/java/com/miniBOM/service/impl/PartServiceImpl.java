@@ -18,6 +18,7 @@ import com.miniBOM.pojo.Part.PartSearch.PartSerchVO;
 import com.miniBOM.pojo.Part.PartUpdate.PartUpdateDTO;
 import com.miniBOM.pojo.Part.PartUpdate.PartUpdateReqDTO;
 import com.miniBOM.service.PartService;
+import com.miniBOM.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,10 @@ public class PartServiceImpl implements PartService {
         if (partDTO.getDefaultUnit() != null) {
             partCreateDTO.setDefaultUnit(partDTO.getDefaultUnit());
         }
+        //TODO TODO 从threadlocal中获取用户id，并传入
+//        Map<String, Object> claims = ThreadLocalUtil.get();
+//        partCreateDTO.setUserId(claims.get("id").toString());
+        partCreateDTO.setUserId("1");
         Master master = new Master();
 
         Branch branch = new Branch();
@@ -111,9 +116,12 @@ public class PartServiceImpl implements PartService {
         List<PartSerchVO> partSearchList = new ArrayList<>();
         if(partSearchReqVOList!=null&& !partSearchReqVOList.isEmpty()){
             for (PartSearchReqVO partSearchReqVO : partSearchReqVOList) {
+
                 PartSerchVO partSerchVO = new PartSerchVO();
                 partSerchVO.setCode(partSearchReqVO.getId());
                 partSerchVO.setName(partSearchReqVO.getName());
+                partSerchVO.setUserId(partSearchReqVO.getUserId());
+
                 if(partSearchReqVO.getVersion()!=null&& partSearchReqVO.getIteration()!=null){
                     partSerchVO.setVersion(partSearchReqVO.getVersion() + "." + partSearchReqVO.getIteration());
                 }
