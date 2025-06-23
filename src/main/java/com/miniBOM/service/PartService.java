@@ -1,7 +1,6 @@
 package com.miniBOM.service;
 
 
-import com.miniBOM.pojo.Part.Part;
 import com.miniBOM.pojo.Part.PartCreate.PartCreateVO;
 import com.miniBOM.pojo.Part.PartCreate.PartCreateDTO;
 import com.miniBOM.pojo.Part.PartHistory.PartHistoryVO;

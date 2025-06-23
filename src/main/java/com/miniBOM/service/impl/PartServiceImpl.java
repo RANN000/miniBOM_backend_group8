@@ -5,7 +5,6 @@ import com.miniBOM.dao.PartDao;
 import com.miniBOM.pojo.*;
 import com.miniBOM.pojo.Part.Branch;
 import com.miniBOM.pojo.Part.Master;
-import com.miniBOM.pojo.Part.Part;
 import com.miniBOM.pojo.Part.PartCategoryAttr.PartCategoryAttrReqVO;
 import com.miniBOM.pojo.Part.PartCreate.PartCreateReqDTO;
 import com.miniBOM.pojo.Part.PartCreate.PartCreateVO;
