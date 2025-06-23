@@ -1,4 +1,4 @@
-package com.miniBOM.pojo.AandCDto;
+package com.miniBOM.pojo.ClassificationDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

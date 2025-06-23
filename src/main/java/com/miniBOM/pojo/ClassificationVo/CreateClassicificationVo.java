@@ -1,4 +1,4 @@
-package com.miniBOM.pojo.AandCVo;
+package com.miniBOM.pojo.ClassificationVo;
 
 public class CreateClassicificationVo {
 }

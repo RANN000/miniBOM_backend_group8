@@ -1,21 +1,21 @@
-package com.miniBOM.pojo.AandCDto;
+package com.miniBOM.pojo.ClassificationDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class UpdateAttributeDto {
-    Long ID;
-    String businessCode="string";
-    String constraint="string";
+
+public class CreateClassificationDto {
     String name;
     String nameEn;
     String description;
     String descriptionEn;
+    String businessCode="string";
     boolean disableFlag=false;
-    String type="字符串定义";
-
+    Map.Entry<Integer,String> parent;
 }

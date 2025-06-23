@@ -1,14 +1,15 @@
 package com.miniBOM.service.impl;
+import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdsModifierDTO;
+import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionCreateDTO;
+import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionUpdateDTO;
+import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionViewDTO;
 import com.miniBOM.dao.AttributeDao;
-import com.miniBOM.pojo.AandCDto.CreateAttributeDto;
-import com.miniBOM.pojo.AandCDto.DeleteAttributeDto;
-import com.miniBOM.pojo.AandCDto.ListAttributeDto;
-import com.miniBOM.pojo.AandCDto.UpdateAttributeDto;
-import com.miniBOM.pojo.Pair;
-import com.miniBOM.pojo.Result;
 import com.miniBOM.service.AttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class AttributeServiceImpl implements AttributeService {
@@ -16,24 +17,32 @@ public class AttributeServiceImpl implements AttributeService {
     private AttributeDao attributeDao;
 
     @Override
-    public Result<Pair> add(CreateAttributeDto attributeDto) {
+    public EXADefinitionViewDTO add(EXADefinitionCreateDTO attributeDto) {
         return attributeDao.add(attributeDto);
     }
 
     @Override
-    public Result<Pair> update(UpdateAttributeDto attributeDto) {
+    public EXADefinitionViewDTO update(EXADefinitionUpdateDTO attributeDto) {
         return attributeDao.update(attributeDto);
     }
 
     @Override
-    public Result<Pair> delete(DeleteAttributeDto attributeDto) {
-        return attributeDao.delete(attributeDto);
+    public void delete(PersistObjectIdsModifierDTO attributeDto) {
+        attributeDao.delete(attributeDto);
     }
 
     @Override
-    public Result<Pair> list(ListAttributeDto attributeDto, short pageSize, short curPage) {
-        return attributeDao.list(attributeDto,pageSize,curPage);
+    public List<EXADefinitionViewDTO> list(String searchKey, Integer pageSize, Integer curPage) {
+        return attributeDao.list(searchKey,pageSize,curPage);
     }
 
+    @Override
+    public long count(String searchKey) {
+        return attributeDao.count(searchKey);
+    }
 
+    @Override
+    public List<EXADefinitionViewDTO> getById(Long id) {
+        return attributeDao.getById(id);
+    }
 }
