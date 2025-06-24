@@ -43,8 +43,9 @@ public class BOMDao {
         BOMCreateVO  bomCreateVO = new BOMCreateVO();
 
         BOMLinkCreateDTO bomLinkCreateDTO = new BOMLinkCreateDTO();
-        bomLinkCreateDTO.setSequenceNumber(bomLinkCreateDTO.getSequenceNumber());
+        bomLinkCreateDTO.setSequenceNumber(bomCreateDTO.getSequenceNumber());
         bomLinkCreateDTO.setQuantity(bomCreateDTO.getQuantity());
+        bomLinkCreateDTO.setReferenceDesignator(bomCreateDTO.getReferenceDesignator());
 
         ObjectReferenceParamDTO sourceDTO =new ObjectReferenceParamDTO();
         sourceDTO.setId(bomCreateDTO.getSourceId());
@@ -59,8 +60,10 @@ public class BOMDao {
         BOMLinkViewDTO bomLinkViewDTO= delegator.create(bomLinkCreateDTO);
         //TODO 数据迁移
         bomCreateVO.setId(bomLinkViewDTO.getId());
-        bomCreateVO.setSequenceNumber(bomLinkViewDTO.getSequenceNumber().toString());
+        bomCreateVO.setSequenceNumber(bomLinkViewDTO.getSequenceNumber());
         bomCreateVO.setQuantity(bomLinkViewDTO.getQuantity());
+        bomCreateVO.setReferenceDesignator(bomLinkViewDTO.getReferenceDesignator());
+        bomCreateVO.setTargetName(bomLinkViewDTO.getTarget().getName());
 
         return bomCreateVO;
     }
@@ -91,6 +94,9 @@ public class BOMDao {
                 }
                 if(temp.getSequenceNumber()!=null){
                     BOMShowVO.setSequenceNumber(temp.getSequenceNumber());
+                }
+                if(temp.getReferenceDesignator()!=null){
+                    BOMShowVO.setReferenceDesignator(temp.getReferenceDesignator());
                 }
                 if(temp.getTarget().getId()!=null){
                     BOMShowVO.setTargetId(temp.getTarget().getId());

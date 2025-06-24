@@ -15,8 +15,8 @@ public class BOMCreateDTO {
 
     Long sourceId;
     Long targetId;
-    String sequenceNumber;
+    Long sequenceNumber;
     BigDecimal quantity;
-
+    String referenceDesignator;//位号名称
 
 }

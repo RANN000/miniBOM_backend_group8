@@ -14,7 +14,8 @@ import java.math.BigDecimal;
 public class BOMCreateVO {
     Long id;
     BigDecimal quantity;
-    String sequenceNumber;
+    Long sequenceNumber;
+    String referenceDesignator;
     Long sourceId;
     String sourceName;
     Long targetId;

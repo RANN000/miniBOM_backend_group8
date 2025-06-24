@@ -17,5 +17,6 @@ public class BOMShowVO {
     private BigDecimal quantity;
     private Long sequenceNumber;
     private Long targetId;
-
+    private String targetName;
+    private String referenceDesignator;//位号名称
 }
