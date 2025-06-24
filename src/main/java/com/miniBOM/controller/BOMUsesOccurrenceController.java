@@ -16,6 +16,8 @@ public class BOMUsesOccurrenceController {
     @Autowired
     private BOMUsesOccurrenceService bomUsesOccurrenceService;
 
+    //TODO 有效性验证
+
     @PostMapping("/create")
     public Result create(@RequestBody BOMUsesOccurrence bomUsesOccurrence) {
         try {

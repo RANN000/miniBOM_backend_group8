@@ -30,9 +30,9 @@ public class BOMServiceImpl implements BOMService {
     }
 
     @Override
-    public List<BOMShowVO> show(String code) {
+    public List<BOMShowVO> show(Long sourceId) {
         try {
-            return BOMDao.show(code);
+            return BOMDao.show(sourceId);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BOMCreateVO {
-    String id;
+    Long id;
     BigDecimal quantity;
     String sequenceNumber;
 }

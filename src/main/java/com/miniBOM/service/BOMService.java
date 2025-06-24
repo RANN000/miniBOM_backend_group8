@@ -14,5 +14,5 @@ public interface BOMService {
 
     BOMCreateVO add(BOMCreateDTO bomCreateDTO);
 
-    List<BOMShowVO> show(String code);
+    List<BOMShowVO> show(Long sourceId);
 }

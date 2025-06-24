@@ -5,15 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class BOMShowVO {
 
-    String BOMLinkId;
-    String quantity;
-    String sequenceNumber;
-    String targetId;
+    private Long BOMLinkId;
+    private BigDecimal quantity;
+    private Long sequenceNumber;
+    private Long targetId;
 
 }

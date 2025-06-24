@@ -4,7 +4,9 @@ package com.miniBOM.dao;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huawei.innovation.rdm.coresdk.basic.dto.GenericLinkQueryDTO;
 import com.huawei.innovation.rdm.coresdk.basic.dto.ObjectReferenceParamDTO;
+import com.huawei.innovation.rdm.coresdk.basic.vo.RDMPageVO;
 import com.huawei.innovation.rdm.minibom.delegator.BOMLinkDelegator;
 import com.huawei.innovation.rdm.minibom.dto.relation.BOMLinkCreateDTO;
 import com.huawei.innovation.rdm.minibom.dto.relation.BOMLinkViewDTO;
@@ -63,47 +65,35 @@ public class BOMDao {
         return bomCreateVO;
     }
     //BOMSearch
-    public List<BOMShowVO> show(String code) throws JsonProcessingException {
+    public List<BOMShowVO> show(Long sourceId) throws JsonProcessingException {
 
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("applicationId", applicationId);
-        Map<String,String> map = new HashMap<>();
-        map.put("objectId",code);
-        map.put("role","source");
-        paramMap.put("params", map);
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); // 全局忽略null
-        String requestBody = objectMapper.writeValueAsString(paramMap);
+        GenericLinkQueryDTO queryDTO = new GenericLinkQueryDTO();
+        queryDTO.setObjectId(sourceId);
+        queryDTO.setRole("source");
+        queryDTO.setLatestOnly(true);
+        RDMPageVO page = new RDMPageVO();
+        page.setCurPage(1);
+        page.setPageSize(10);
+        List<BOMLinkViewDTO> bomLinkList = delegator.queryRelationship(queryDTO, page);
 
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add("x-auth-token",token);
-
-        HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
-
-
-        Result<List<Map<String, Object>>> result=restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/BOMLink/queryRelationship/10/1", requestEntity, Result.class);
-
-        List<Map<String, Object>> BOMLinkList = result.data;
         List<BOMShowVO> BOMShowVOList = new ArrayList<>();
 
-        if(BOMLinkList!=null &&!BOMLinkList.isEmpty()){
-            for(Map<String, Object> temp:BOMLinkList){
+        if(bomLinkList!=null &&!bomLinkList.isEmpty()){
+            for(BOMLinkViewDTO temp:bomLinkList){
 
                 BOMShowVO BOMShowVO = new BOMShowVO();
-                if(temp.get("id")!=null&&!temp.get("id").equals("")){
-                    BOMShowVO.setBOMLinkId(temp.get("id").toString());
+
+                if(temp.getId()!=null){
+                    BOMShowVO.setBOMLinkId(temp.getId());
                 }
-                if(temp.get("quantity")!=null&&!temp.get("quantity").equals("")){
-                    BOMShowVO.setQuantity(temp.get("quantity").toString());
+                if(temp.getQuantity()!=null){
+                    BOMShowVO.setQuantity(temp.getQuantity());
                 }
-                if(temp.get("sequenceNumber")!=null&&!temp.get("sequenceNumber").equals("")){
-                    BOMShowVO.setSequenceNumber(temp.get("sequenceNumber").toString());
+                if(temp.getSequenceNumber()!=null){
+                    BOMShowVO.setSequenceNumber(temp.getSequenceNumber());
                 }
-                if(temp.get("target")!=null){
-                    Map<String,Object> target=(Map<String,Object>)temp.get("target");
-                    BOMShowVO.setTargetId(target.get("id").toString());
+                if(temp.getTarget().getId()!=null){
+                    BOMShowVO.setTargetId(temp.getTarget().getId());
                 }
 
                 BOMShowVOList.add(BOMShowVO);

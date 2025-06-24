@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class BOMLink {
     private Long id;
     private Long sequenceNumber;
+    private String referenceDesignator;//位号名称
     private BigDecimal quantity;
     private Long sourceID;
     private Long targetID;

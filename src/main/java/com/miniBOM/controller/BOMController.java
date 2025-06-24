@@ -25,8 +25,8 @@ public class BOMController {
     }
 
     @GetMapping("/show")
-    public Result<List<BOMShowVO>> show(String code) {
-        List<BOMShowVO> bomShowVOList=BOMService.show(code);
+    public Result<List<BOMShowVO>> show(Long sourceId) {
+        List<BOMShowVO> bomShowVOList=BOMService.show(sourceId);
         return Result.success(bomShowVOList);
     }
 
