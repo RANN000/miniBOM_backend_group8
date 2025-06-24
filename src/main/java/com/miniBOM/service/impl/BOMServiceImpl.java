@@ -5,8 +5,10 @@ import com.miniBOM.dao.BOMDao;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateDTO;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreatePartDTO;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateVO;
-import com.miniBOM.pojo.Bom.BOMSearch.BOMShowDTO;
-import com.miniBOM.pojo.Bom.BOMSearch.BOMShowVO;
+import com.miniBOM.pojo.Bom.BOMDelete.BOMDeleteDTO;
+import com.miniBOM.pojo.Bom.BOMShow.BOMShowVO;
+import com.miniBOM.pojo.Bom.BOMUpdate.BOMUpdateDTO;
+import com.miniBOM.pojo.Bom.BOMUpdate.BOMUpdateVO;
 import com.miniBOM.service.BOMService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,20 @@ public class BOMServiceImpl implements BOMService {
     public BOMCreateVO addPart(BOMCreatePartDTO bomCreatePartDTO) {
         try {
             return BOMDao.addPart(bomCreatePartDTO);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public BOMUpdateVO update(BOMUpdateDTO bomUpdateDTO) {
+        return BOMDao.update(bomUpdateDTO);
+    }
+
+    @Override
+    public void delete(BOMDeleteDTO bomDeleteDTO) {
+        try {
+            BOMDao.delete(bomDeleteDTO);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

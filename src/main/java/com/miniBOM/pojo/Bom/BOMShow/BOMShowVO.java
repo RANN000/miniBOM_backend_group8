@@ -1,4 +1,4 @@
-package com.miniBOM.pojo.Bom.BOMSearch;
+package com.miniBOM.pojo.Bom.BOMShow;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
