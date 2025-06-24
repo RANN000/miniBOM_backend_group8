@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class OneClassificationVo {
-    private Long id;
+    private Long code;
     private String name;
     private String nameEn;
     private String description;

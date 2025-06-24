@@ -7,6 +7,8 @@ import com.miniBOM.pojo.ClassificationVo.OneClassificationVo;
 import com.miniBOM.pojo.Pair;
 import com.miniBOM.pojo.Result;
 
+import java.util.List;
+
 public interface ClassificationService {
 
     Result<OneClassificationVo> add(CreateClassificationDto classificationDto);
@@ -16,7 +18,7 @@ public interface ClassificationService {
 
     Result delete(Long deleteId);
 
-    Result<ListClassificationVo> list(ListClassificationDto dto) throws JsonProcessingException;
+    Result<List<OneClassificationVo>> list(ListClassificationDto dto) throws JsonProcessingException;
 
     Result<OneClassificationVo> getById(Long id);
 

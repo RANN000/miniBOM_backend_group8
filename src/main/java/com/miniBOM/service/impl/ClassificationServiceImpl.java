@@ -41,9 +41,9 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
     @Override
-    public Result<ListClassificationVo> list(ListClassificationDto classificationDto) throws JsonProcessingException {
+    public Result<List<OneClassificationVo>> list(ListClassificationDto classificationDto) throws JsonProcessingException {
         ListClassificationVo listClassificationVo = classificationDao.list(classificationDto);
-        return Result.success(listClassificationVo);
+        return Result.success(listClassificationVo.getList());
     }
 
     @Override

@@ -76,7 +76,17 @@ public class AttributeDao {
      * @return 新增后的属性视图对象，包含完整属性信息
      */
     public EXADefinitionViewDTO add(EXADefinitionCreateDTO exaDefinitionCreateDTO) {
+        if(exaDefinitionCreateDTO.getName()==null){
+            exaDefinitionCreateDTO.setName("未定义");
+        }
+        if(exaDefinitionCreateDTO.getNameEn()==null){
+            exaDefinitionCreateDTO.setNameEn("undefined");
+        }
         String type = exaDefinitionCreateDTO.getType();
+        if(type==null){
+            exaDefinitionCreateDTO.setType("STRING");
+            type = exaDefinitionCreateDTO.getType();
+        }
         if(Objects.equals(type, "STRING")){
             exaDefinitionCreateDTO.setConstraint("{\"associationType\":\"STRONG\",\"caseMode\":\"DEFAULT\"," +
                     "\"compose\":false,\"encryption\":false,\"graphIndex\":false,\"index\":false," +

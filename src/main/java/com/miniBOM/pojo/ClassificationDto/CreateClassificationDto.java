@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class CreateClassificationDto {
-    Long id;
-    String name;
-    String nameEn;
-    String description;
-    String descriptionEn;
+    Long code;
+    String name="未定义";
+    String nameEn="undefined";
+    String description="undefined";
+    String descriptionEn="undefined";
     String businessCode="string";
     boolean status=true;
     boolean isInstance=true;

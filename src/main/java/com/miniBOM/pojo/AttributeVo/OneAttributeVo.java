@@ -19,6 +19,5 @@ public class OneAttributeVo {
 
     private String type;
     private Boolean disableFlag;
-    private String code;
 
 }
