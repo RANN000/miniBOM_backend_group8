@@ -55,15 +55,21 @@ public class BOMDao {
         bomLinkCreateDTO.setTarget(targetDTO);
 
         BOMLinkViewDTO bomLinkViewDTO= delegator.create(bomLinkCreateDTO);
-        //TODO 数据迁移
+
         bomCreateVO.setId(bomLinkViewDTO.getId().toString());
         bomCreateVO.setSequenceNumber(bomLinkViewDTO.getSequenceNumber().toString());
         bomCreateVO.setQuantity(bomLinkViewDTO.getQuantity());
+        bomCreateVO.setSourceId(bomLinkViewDTO.getSource().getId().toString());
+        bomCreateVO.setSourceName(bomLinkViewDTO.getSource().getName());
+        bomCreateVO.setTargetId(bomLinkViewDTO.getTarget().getId().toString());
+        bomCreateVO.setTargetName(bomLinkViewDTO.getTarget().getName());
 
         return bomCreateVO;
     }
     //BOMSearch
     public List<BOMShowVO> show(String code) throws JsonProcessingException {
+
+
 
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applicationId", applicationId);
@@ -104,6 +110,7 @@ public class BOMDao {
                 if(temp.get("target")!=null){
                     Map<String,Object> target=(Map<String,Object>)temp.get("target");
                     BOMShowVO.setTargetId(target.get("id").toString());
+                    BOMShowVO.setTargetName(target.get("name").toString());
                 }
 
                 BOMShowVOList.add(BOMShowVO);

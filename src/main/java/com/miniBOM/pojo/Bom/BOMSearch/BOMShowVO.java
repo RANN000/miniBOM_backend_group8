@@ -15,5 +15,6 @@ public class BOMShowVO {
     String quantity;
     String sequenceNumber;
     String targetId;
+    String targetName;
 
 }

@@ -15,4 +15,8 @@ public class BOMCreateVO {
     String id;
     BigDecimal quantity;
     String sequenceNumber;
+    String sourceId;
+    String sourceName;
+    String targetId;
+    String targetName;
 }
