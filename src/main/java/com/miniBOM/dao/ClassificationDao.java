@@ -77,8 +77,8 @@ public class ClassificationDao {
         createRequest.setDescription(classificationDto.getDescription());
         createRequest.setDescriptionEn(classificationDto.getDescriptionEn());
         createRequest.setBusinessCode(classificationDto.getBusinessCode());
-        createRequest.setDisableFlag(classificationDto.getDisableFlag());
-        createRequest.setInstantiable(classificationDto.getIsInstantiable());
+        createRequest.setDisableFlag(!classificationDto.getStatus());
+        createRequest.setInstantiable(classificationDto.getIsInstance());
 
         // 设置父节点信息（如果存在）
         if (classificationDto.getParentId() != null) {

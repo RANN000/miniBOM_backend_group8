@@ -47,8 +47,8 @@ public class AttributeServiceImpl implements AttributeService {
     }
 
     @Override
-    public Result delete(PersistObjectIdsModifierDTO attributeDto) {
-        attributeDao.delete(attributeDto);
+    public Result deleteAttributes(PersistObjectIdsModifierDTO attributeDto) {
+        attributeDao.deleteAttributes(attributeDto);
         return Result.success();
     }
 
@@ -75,5 +75,11 @@ public class AttributeServiceImpl implements AttributeService {
         OneAttributeVo attributeVO = new OneAttributeVo();
         BeanUtils.copyProperties(list.get(0), attributeVO);
         return Result.success(attributeVO);
+    }
+
+    @Override
+    public Result delete(Long deleteId) {
+        attributeDao.delete(deleteId);
+        return Result.success("删除成功");
     }
 }
