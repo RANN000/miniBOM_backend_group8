@@ -9,10 +9,11 @@ import com.miniBOM.pojo.Part.PartSearch.PartSerchVO;
 import com.miniBOM.pojo.Part.PartUpdate.PartUpdateDTO;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface PartService {
-    PartCreateVO add(PartCreateDTO partCreateDTO);
+    Map<String,Object> add(PartCreateDTO partCreateDTO);
 
     List<PartSerchVO> find(PartSearchDTO partSearchDTO);
 

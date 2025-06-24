@@ -1,6 +1,7 @@
 package com.miniBOM.controller;
 
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateDTO;
+import com.miniBOM.pojo.Bom.BOMCreate.BOMCreatePartDTO;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateVO;
 import com.miniBOM.pojo.Bom.BOMSearch.BOMShowDTO;
 import com.miniBOM.pojo.Bom.BOMSearch.BOMShowVO;
@@ -29,6 +30,12 @@ public class BOMController {
     public Result<List<BOMShowVO>> show(@RequestParam Long sourceId) {
         List<BOMShowVO> bomShowVOList=BOMService.show(sourceId);
         return Result.success(bomShowVOList);
+    }
+
+    @PostMapping("/createPart")
+    public Result<BOMCreateVO> createPart(@RequestBody BOMCreatePartDTO bomCreatePartDTO) {
+        BOMCreateVO bomCreateVO=BOMService.addPart(bomCreatePartDTO);
+        return Result.success(bomCreateVO);
     }
 
 }
