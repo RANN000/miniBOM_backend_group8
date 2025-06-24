@@ -6,13 +6,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huawei.innovation.rdm.coresdk.basic.dto.GenericLinkQueryDTO;
 import com.huawei.innovation.rdm.coresdk.basic.dto.ObjectReferenceParamDTO;
+import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdDecryptDTO;
 import com.huawei.innovation.rdm.coresdk.basic.vo.RDMPageVO;
 import com.huawei.innovation.rdm.minibom.delegator.BOMLinkDelegator;
+import com.huawei.innovation.rdm.minibom.delegator.PartDelegator;
+import com.huawei.innovation.rdm.minibom.dto.entity.PartViewDTO;
 import com.huawei.innovation.rdm.minibom.dto.relation.BOMLinkCreateDTO;
 import com.huawei.innovation.rdm.minibom.dto.relation.BOMLinkViewDTO;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateDTO;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateVO;
+import com.miniBOM.pojo.Bom.BOMSearch.BOMRootVo;
 import com.miniBOM.pojo.Bom.BOMSearch.BOMShowDTO;
+import com.miniBOM.pojo.Bom.BOMSearch.BOMShowFatherVO;
 import com.miniBOM.pojo.Bom.BOMSearch.BOMShowVO;
 import com.miniBOM.pojo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +42,8 @@ public class BOMDao {
 
     @Autowired
     BOMLinkDelegator delegator;
+    @Autowired
+    private PartDelegator partDelegator;
 
     public BOMCreateVO add(BOMCreateDTO bomCreateDTO) throws JsonProcessingException {
 
@@ -67,7 +74,9 @@ public class BOMDao {
 
         return bomCreateVO;
     }
-    //BOMSearch
+
+    //BOM查询所有子项
+    //TODO 无子项处理
     public List<BOMShowVO> show(Long sourceId) throws JsonProcessingException {
 
         GenericLinkQueryDTO queryDTO = new GenericLinkQueryDTO();
@@ -76,7 +85,7 @@ public class BOMDao {
         queryDTO.setLatestOnly(true);
         RDMPageVO page = new RDMPageVO();
         page.setCurPage(1);
-        page.setPageSize(10);
+        page.setPageSize(1000);
         List<BOMLinkViewDTO> bomLinkList = delegator.queryRelationship(queryDTO, page);
 
         List<BOMShowVO> BOMShowVOList = new ArrayList<>();
@@ -101,6 +110,9 @@ public class BOMDao {
                 if(temp.getTarget().getId()!=null){
                     BOMShowVO.setTargetId(temp.getTarget().getId());
                 }
+                if(temp.getTarget().getName()!=null){
+                    BOMShowVO.setTargetName(temp.getTarget().getName());
+                }
 
                 BOMShowVOList.add(BOMShowVO);
 
@@ -108,5 +120,59 @@ public class BOMDao {
         }
 
         return BOMShowVOList;
+    }
+
+
+    //查找父项
+    public BOMShowFatherVO showFather(Long partId) {
+        GenericLinkQueryDTO queryDTO = new GenericLinkQueryDTO();
+        queryDTO.setObjectId(partId);
+        queryDTO.setRole("target");
+        queryDTO.setLatestOnly(true);
+        RDMPageVO page = new RDMPageVO();
+        page.setCurPage(1);
+        page.setPageSize(1000);
+        List<BOMLinkViewDTO> bomLinkList = delegator.queryRelationship(queryDTO, page);
+
+        if(bomLinkList == null || bomLinkList.isEmpty()){
+            return null;
+        }
+
+        BOMLinkViewDTO result = bomLinkList.get(0);
+        BOMShowFatherVO bomShowFatherVO = new BOMShowFatherVO();
+        bomShowFatherVO.setBOMLinkId(result.getId());
+        bomShowFatherVO.setSequenceNumber(result.getSequenceNumber());
+        bomShowFatherVO.setQuantity(result.getQuantity());
+        bomShowFatherVO.setReferenceDesignator(result.getReferenceDesignator());
+        bomShowFatherVO.setSourceId(result.getSource().getId());
+        bomShowFatherVO.setSourceName(result.getSource().getName());
+        return bomShowFatherVO;
+    }
+
+    //查找根part
+    public BOMShowFatherVO showRoot(Long partId) {
+        BOMShowFatherVO bomShowFatherVO = showFather(partId);
+        if(bomShowFatherVO==null){
+            return bomShowFatherVO;
+        }
+        bomShowFatherVO = showFather(bomShowFatherVO.getSourceId());
+        return bomShowFatherVO;
+    }
+
+    //根part转格式
+    public BOMRootVo toRoot(BOMShowFatherVO bomShowFatherVO){
+        BOMRootVo bomRootVO = new BOMRootVo();
+        bomRootVO.setPartId(bomShowFatherVO.getSourceId());
+        bomRootVO.setPartName(bomShowFatherVO.getSourceName());
+        return bomRootVO;
+    }
+
+    //根据partId查找partName
+    public String findPartNameById(Long partId){
+        PartDelegator partDelegator = new PartDelegator();
+        PersistObjectIdDecryptDTO partDTO = new PersistObjectIdDecryptDTO();
+        partDTO.setId(partId);
+        PartViewDTO partViewDTO = partDelegator.get(partDTO);
+        return partViewDTO.getName();
     }
 }
