@@ -24,11 +24,19 @@ public class Result <T> {
     }
 
     public static Result success(){
-        return new Result(0,"SUCCESS",null,null);
+        return new Result(200,"SUCCESS",null,null);
+    }
+
+    public static Result success(String result){
+        return new Result(200,"result",null,null);
+    }
+
+    public static <E> Result<E> success(String result,E data){
+        return new Result(200,"result",data,null);
     }
 
     public static <E> Result<E> success(E data){
-        return new Result(0,"SUCCESS",data,null);
+        return new Result(200,"SUCCESS",data,null);
     }
 
     //其他逻辑错误

@@ -1,8 +1,5 @@
 package com.miniBOM.dao;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huawei.innovation.rdm.coresdk.basic.dto.ObjectReferenceParamDTO;
 import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdModifierDTO;
 import com.huawei.innovation.rdm.coresdk.basic.dto.QueryChildListDTO;
@@ -11,29 +8,16 @@ import com.huawei.innovation.rdm.coresdk.basic.vo.QueryRequestVo;
 import com.huawei.innovation.rdm.coresdk.basic.vo.RDMPageVO;
 import com.huawei.innovation.rdm.xdm.delegator.ClassificationNodeDelegator;
 import com.huawei.innovation.rdm.xdm.dto.entity.*;
-import com.miniBOM.constant.AttributeConstant;
 import com.miniBOM.pojo.ClassificationDto.*;
 import com.miniBOM.pojo.ClassificationVo.ListClassificationVo;
 import com.miniBOM.pojo.ClassificationVo.OneClassificationVo;
-import com.miniBOM.pojo.Pair;
-import com.miniBOM.pojo.Part.PartSearch.PartSearchCondition;
-import com.miniBOM.pojo.Part.PartSearch.PartSearchReqVO;
-import com.miniBOM.pojo.Result;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class ClassificationDao {
@@ -136,18 +120,25 @@ public class ClassificationDao {
         ClassificationNodeUpdateDTO updateRequest = new ClassificationNodeUpdateDTO();
         updateRequest.setId(classificationDto.getId());
 
-        if (StringUtils.hasText(classificationDto.getName())) {
+        if (classificationDto.getName()!=null) {
             updateRequest.setName(classificationDto.getName());
         }
-        if (StringUtils.hasText(classificationDto.getNameEn())) {
+        if (classificationDto.getNameEn()!=null) {
             updateRequest.setNameEn(classificationDto.getNameEn());
         }
-        if (StringUtils.hasText(classificationDto.getDescription())) {
+        if (classificationDto.getDescription()!=null) {
             updateRequest.setDescription(classificationDto.getDescription());
         }
-        if (StringUtils.hasText(classificationDto.getDescriptionEn())) {
+        if (classificationDto.getDescriptionEn()!=null) {
             updateRequest.setDescriptionEn(classificationDto.getDescriptionEn());
         }
+        if (classificationDto.getStatus()) {
+            updateRequest.setDisableFlag(!classificationDto.getStatus());
+        }
+        if (classificationDto.getIsInstance()) {
+            updateRequest.setInstantiable(classificationDto.getIsInstance());
+        }
+
 
         // 3. 执行更新并转换结果
         ClassificationNodeViewDTO updatedCategory = delegator.update(updateRequest);
@@ -158,6 +149,7 @@ public class ClassificationDao {
         resultVo.setNameEn(updatedCategory.getNameEn());
         resultVo.setDescription(updatedCategory.getDescription());
         resultVo.setDescriptionEn(updatedCategory.getDescriptionEn());
+
 
         return resultVo;
     }
@@ -230,7 +222,7 @@ public class ClassificationDao {
             queryRequest.addCondition("id", ConditionType.EQUAL, classificationDto.getId());
         }
 
-        if (StringUtils.hasText(classificationDto.getName())) {
+        if (classificationDto.getName() != null) {
             queryRequest.addCondition("name", ConditionType.LIKE, classificationDto.getName());
         }
 

@@ -4,18 +4,16 @@ import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdsModifierDTO;
 import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionCreateDTO;
 import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionUpdateDTO;
 import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionViewDTO;
-import com.miniBOM.pojo.AttributeDto.UpdateAttributeDto;
+import com.miniBOM.pojo.AttributeDto.ListAttributeDto;
 import com.miniBOM.pojo.AttributeVo.ListAttributeVo;
 import com.miniBOM.pojo.AttributeVo.OneAttributeVo;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.service.AttributeService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 
 @RestController
@@ -32,29 +30,7 @@ public class AttributeController {
      */
     @PostMapping("/create")
     public Result<OneAttributeVo> add(@RequestBody EXADefinitionCreateDTO createRequest){
-        String type = createRequest.getType();
-        if(Objects.equals(type, "STRING")){
-            createRequest.setConstraint("{\"associationType\":\"STRONG\",\"caseMode\":\"DEFAULT\"," +
-                    "\"compose\":false,\"encryption\":false,\"graphIndex\":false,\"index\":false," +
-                    "\"legalValueType\":\"\",\"length\":256,\"multiValue\":false,\"notnull\":false," +
-                    "\"optionalValue\":\"LEGAL_VALUE_TYPE\",\"precision\":0,\"secretLevel\":\"internal\"," +
-                    "\"stockInDB\":true,\"variable\":true}");
-        }
-        if(Objects.equals(type, "INTEGER")) {
-            createRequest.setConstraint("{\"associationType\":\"STRONG\",\"caseMode\":\"DEFAULT\"," +
-                    "\"compose\":false,\"encryption\":false,\"graphIndex\":false,\"index\":false," +
-                    "\"legalValueType\":\"\",\"length\":0,\"multiValue\":false,\"notnull\":false," +
-                    "\"optionalValue\":\"LEGAL_VALUE_TYPE\",\"precision\":0,\"range\":\"\",\"secretLevel\"" +
-                    ":\"internal\",\"stockInDB\":true,\"variable\":true}");
-        }
-        // 调用服务层创建属性
-        EXADefinitionViewDTO createdAttribute = attributeService.add(createRequest);
-
-        // 转换为前端视图对象
-        OneAttributeVo resultView = new OneAttributeVo();
-        BeanUtils.copyProperties(createdAttribute, resultView);
-
-        return Result.success(resultView);
+        return attributeService.add(createRequest);
     }
 
     /**
@@ -64,93 +40,52 @@ public class AttributeController {
      */
     @GetMapping("/get/{id}")
     public Result<OneAttributeVo> getById(@PathVariable Long id) {
-        List<EXADefinitionViewDTO> list = attributeService.getById(id);
-        OneAttributeVo attributeVO = new OneAttributeVo();
-
-        // 增加空值校验
-        if (list == null || list.isEmpty()) {
-            return Result.error("未找到对应ID的属性");
-        }
-
-        BeanUtils.copyProperties(list.get(0), attributeVO);
-        return Result.success(attributeVO);
+        return attributeService.getById(id);
     }
 
 
     /**
      * 分页查询属性定义列表
      *
-     * @param searchKey 搜索关键词，匹配属性名称或编码
-     * @param pageSize      每页记录数
-     * @param curPage   当前页码
+     * @param attributeDto 请求体
      * @return 分页结果，包含属性列表和总记录数
      */
-    @GetMapping({"/list/{searchKey}/{pageSize}/{curPage}","/list/{pageSize}/{curPage}"})
-    public Result<ListAttributeVo> list(
-            @PathVariable(required = false) String searchKey,
-            @PathVariable Integer pageSize,
-            @PathVariable Integer curPage
-    ) {
-        // 1. 查询属性列表
-        List<EXADefinitionViewDTO> attributeDefinitions = attributeService
-                .list(searchKey, pageSize, curPage);
-
-        // 2. 转换DTO为展示VO
-        List<OneAttributeVo> attributeViews = getOneAttributeVos(attributeDefinitions);
-
-        // 3. 查询总记录数
-        long totalRecords = attributeService.count(searchKey);
-
-        // 4. 构建分页结果
-        ListAttributeVo pagedResult = ListAttributeVo.builder()
-                .list(attributeViews)
-                .number((int) totalRecords)
-                .build();
-
-        return Result.success(pagedResult);
+    @GetMapping({"/list"})
+    public Result<ListAttributeVo> list(@RequestBody ListAttributeDto attributeDto) {
+        return attributeService.list(attributeDto);
 
     }
 
-    /**
-     * 工具函数
-     * 转换DTO为VO
-     * @return VO列表
-     */
-    private static List<OneAttributeVo> getOneAttributeVos(List<EXADefinitionViewDTO> attributeDefinitions) {
-        List<OneAttributeVo> attributeViews = new ArrayList<>(attributeDefinitions.size());
-        for (EXADefinitionViewDTO definition : attributeDefinitions) {
-            OneAttributeVo view = new OneAttributeVo();
-            view.setId(definition.getId());
-            view.setName(definition.getName());
-            view.setNameEn(definition.getNameEn());
-            view.setDescription(definition.getDescription());
-            view.setDescriptionEn(definition.getDescriptionEn());
-            view.setType(definition.getType());
-            view.setDisableFlag(definition.getDisableFlag());
-            attributeViews.add(view);
-        }
-        return attributeViews;
-    }
+//    /**
+//     * 工具函数
+//     * 转换DTO为VO
+//     * @return VO列表
+//     */
+//    private static List<OneAttributeVo> getOneAttributeVos(List<EXADefinitionViewDTO> attributeDefinitions) {
+//        List<OneAttributeVo> attributeViews = new ArrayList<>(attributeDefinitions.size());
+//        for (EXADefinitionViewDTO definition : attributeDefinitions) {
+//            OneAttributeVo view = new OneAttributeVo();
+//            view.setId(definition.getId());
+//            view.setName(definition.getName());
+//            view.setNameEn(definition.getNameEn());
+//            view.setDescription(definition.getDescription());
+//            view.setDescriptionEn(definition.getDescriptionEn());
+//            view.setType(definition.getType());
+//            view.setDisableFlag(definition.getDisableFlag());
+//            attributeViews.add(view);
+//        }
+//        return attributeViews;
+//    }
 
     /**
      * 更新属性定义
      *
-     * @param request 更新请求DTO，包含属性定义的更新数据
+     * @param updateRequest 更新请求DTO，包含属性定义的更新数据
      * @return 更新后的属性信息
      */
     @PutMapping("/update")
-    public Result<UpdateAttributeDto> updateAttribute(@RequestBody UpdateAttributeDto request) {
-        // 转换请求DTO为服务层使用的更新DTO
-        EXADefinitionUpdateDTO serviceRequest = new EXADefinitionUpdateDTO();
-        BeanUtils.copyProperties(request, serviceRequest);
-
-        // 调用服务层执行更新操作
-        EXADefinitionViewDTO updatedRecord = attributeService.update(serviceRequest);
-
-        // 将更新后的实体数据回写到响应DTO
-        BeanUtils.copyProperties(updatedRecord, request);
-
-        return Result.success(request);
+    public Result<OneAttributeVo> updateAttribute(@RequestBody EXADefinitionUpdateDTO updateRequest) {
+        return attributeService.update(updateRequest);
     }
 
     /**
@@ -162,11 +97,8 @@ public class AttributeController {
     @DeleteMapping("/delete")
     public Result deleteAttributes(@RequestBody PersistObjectIdsModifierDTO deleteRequest) {
 
-        // 调用服务层执行批量删除操作
-        attributeService.delete(deleteRequest);
-
         // 返回无数据的成功响应
-        return Result.success();
+        return attributeService.delete(deleteRequest);
     }
 }
 

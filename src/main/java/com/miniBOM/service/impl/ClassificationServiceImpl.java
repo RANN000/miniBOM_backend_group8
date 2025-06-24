@@ -25,19 +25,19 @@ public class ClassificationServiceImpl implements ClassificationService {
     @Override
     public Result<OneClassificationVo> add(CreateClassificationDto classificationDto) {
         OneClassificationVo oneClassificationVo = classificationDao.add(classificationDto);
-        return Result.success(oneClassificationVo);
+        return Result.success("新增分类成功", oneClassificationVo);
     }
 
     @Override
     public Result<OneClassificationVo> update(UpdateClassificationDto classificationDto) {
         OneClassificationVo oneClassificationVo = classificationDao.update(classificationDto);
-        return Result.success(oneClassificationVo);
+        return Result.success("修改成功",oneClassificationVo);
     }
 
     @Override
     public Result delete(Long deleteId) {
         classificationDao.delete(deleteId);
-        return Result.success();
+        return Result.success("删除成功");
     }
 
     @Override
@@ -49,13 +49,13 @@ public class ClassificationServiceImpl implements ClassificationService {
     @Override
     public Result<OneClassificationVo> getById(Long id) {
         List<ClassificationNodeViewDTO> list = classificationDao.getById(id);
-        OneClassificationVo oneClassificationVo = new OneClassificationVo();
 
         // 增加空值校验
         if (list == null || list.isEmpty()) {
-            return Result.error("未找到对应ID的属性");
+            return Result.error("未找到分类");
         }
 
+        OneClassificationVo oneClassificationVo = new OneClassificationVo();
         BeanUtils.copyProperties(list.get(0), oneClassificationVo);
         return Result.success(oneClassificationVo);
     }

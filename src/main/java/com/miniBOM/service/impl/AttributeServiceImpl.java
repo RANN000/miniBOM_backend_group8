@@ -4,7 +4,12 @@ import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionCreateDTO;
 import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionUpdateDTO;
 import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionViewDTO;
 import com.miniBOM.dao.AttributeDao;
+import com.miniBOM.pojo.AttributeDto.ListAttributeDto;
+import com.miniBOM.pojo.AttributeVo.ListAttributeVo;
+import com.miniBOM.pojo.AttributeVo.OneAttributeVo;
+import com.miniBOM.pojo.Result;
 import com.miniBOM.service.AttributeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,23 +22,40 @@ public class AttributeServiceImpl implements AttributeService {
     private AttributeDao attributeDao;
 
     @Override
-    public EXADefinitionViewDTO add(EXADefinitionCreateDTO attributeDto) {
-        return attributeDao.add(attributeDto);
+    public Result<OneAttributeVo> add(EXADefinitionCreateDTO attributeDto) {
+
+        // 调用dao层创建属性
+        EXADefinitionViewDTO createdAttribute = attributeDao.add(attributeDto);
+
+        // 转换为前端视图对象
+        OneAttributeVo resultView = new OneAttributeVo();
+        BeanUtils.copyProperties(createdAttribute, resultView);
+
+        return Result.success(resultView);
     }
 
     @Override
-    public EXADefinitionViewDTO update(EXADefinitionUpdateDTO attributeDto) {
-        return attributeDao.update(attributeDto);
+    public Result<OneAttributeVo> update(EXADefinitionUpdateDTO attributeDto) {
+
+        // 调用dao层更新属性
+        EXADefinitionViewDTO updateAttribute = attributeDao.update(attributeDto);
+
+        // 转换为前端视图对象
+        OneAttributeVo resultView = new OneAttributeVo();
+        BeanUtils.copyProperties(updateAttribute, resultView);
+        return Result.success(resultView);
     }
 
     @Override
-    public void delete(PersistObjectIdsModifierDTO attributeDto) {
+    public Result delete(PersistObjectIdsModifierDTO attributeDto) {
         attributeDao.delete(attributeDto);
+        return Result.success();
     }
 
     @Override
-    public List<EXADefinitionViewDTO> list(String searchKey, Integer pageSize, Integer curPage) {
-        return attributeDao.list(searchKey,pageSize,curPage);
+    public Result<ListAttributeVo> list(ListAttributeDto attributeDto) {
+        ListAttributeVo listAttributeVo = attributeDao.list(attributeDto);
+        return Result.success(listAttributeVo);
     }
 
     @Override
@@ -42,7 +64,16 @@ public class AttributeServiceImpl implements AttributeService {
     }
 
     @Override
-    public List<EXADefinitionViewDTO> getById(Long id) {
-        return attributeDao.getById(id);
+    public Result<OneAttributeVo> getById(Long id) {
+        List<EXADefinitionViewDTO> list = attributeDao.getById(id);
+
+        // 增加空值校验
+        if (list == null || list.isEmpty()) {
+            return Result.error("未找到属性");
+        }
+
+        OneAttributeVo attributeVO = new OneAttributeVo();
+        BeanUtils.copyProperties(list.get(0), attributeVO);
+        return Result.success(attributeVO);
     }
 }

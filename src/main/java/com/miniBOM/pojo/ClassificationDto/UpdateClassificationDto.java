@@ -15,4 +15,15 @@ public class UpdateClassificationDto {
     private String nameEn;
     private String description;
     private String descriptionEn;
+    private boolean status;
+    private boolean isInstance;
+
+
+    public boolean getIsInstance() {
+        return isInstance;
+    }
+
+    public boolean getStatus() {
+        return status;
+    }
 }
