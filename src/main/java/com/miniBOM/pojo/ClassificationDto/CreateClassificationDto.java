@@ -15,6 +15,7 @@ import java.util.Map;
 @Data
 @Builder
 public class CreateClassificationDto {
+    Long id;
     String name;
     String nameEn;
     String description;

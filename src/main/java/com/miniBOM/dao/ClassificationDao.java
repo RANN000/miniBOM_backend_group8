@@ -12,6 +12,7 @@ import com.miniBOM.pojo.ClassificationDto.*;
 import com.miniBOM.pojo.ClassificationVo.ListClassificationVo;
 import com.miniBOM.pojo.ClassificationVo.OneClassificationVo;
 
+import com.miniBOM.pojo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -70,6 +71,7 @@ public class ClassificationDao {
     public OneClassificationVo add(CreateClassificationDto classificationDto) {
         // 构建分类创建请求DTO
         ClassificationNodeCreateDTO createRequest = new ClassificationNodeCreateDTO();
+        createRequest.setId(classificationDto.getId());
         createRequest.setName(classificationDto.getName());
         createRequest.setNameEn(classificationDto.getNameEn());
         createRequest.setDescription(classificationDto.getDescription());

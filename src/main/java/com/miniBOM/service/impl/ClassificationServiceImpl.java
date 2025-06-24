@@ -61,6 +61,11 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
 //    @Override
+//    public Result getAttribute(Long id) {
+//        return classificationDao.getAttribute(id);
+//    }
+
+//    @Override
 //    public Result addAttribute(AddClassificationNodeAttributeDto classificationNodeAttributeDto) {
 //        return classificationDao.addAttribute(classificationNodeAttributeDto);
 //    }

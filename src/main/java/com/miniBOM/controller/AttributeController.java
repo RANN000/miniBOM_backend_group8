@@ -3,7 +3,6 @@ package com.miniBOM.controller;
 import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdsModifierDTO;
 import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionCreateDTO;
 import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionUpdateDTO;
-import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionViewDTO;
 import com.miniBOM.pojo.AttributeDto.ListAttributeDto;
 import com.miniBOM.pojo.AttributeVo.ListAttributeVo;
 import com.miniBOM.pojo.AttributeVo.OneAttributeVo;
@@ -47,7 +46,7 @@ public class AttributeController {
     /**
      * 分页查询属性定义列表
      *
-     * @param attributeDto 请求体
+     * @param attributeDto 包含页面信息及搜索关键词
      * @return 分页结果，包含属性列表和总记录数
      */
     @GetMapping({"/list"})
@@ -55,27 +54,6 @@ public class AttributeController {
         return attributeService.list(attributeDto);
 
     }
-
-//    /**
-//     * 工具函数
-//     * 转换DTO为VO
-//     * @return VO列表
-//     */
-//    private static List<OneAttributeVo> getOneAttributeVos(List<EXADefinitionViewDTO> attributeDefinitions) {
-//        List<OneAttributeVo> attributeViews = new ArrayList<>(attributeDefinitions.size());
-//        for (EXADefinitionViewDTO definition : attributeDefinitions) {
-//            OneAttributeVo view = new OneAttributeVo();
-//            view.setId(definition.getId());
-//            view.setName(definition.getName());
-//            view.setNameEn(definition.getNameEn());
-//            view.setDescription(definition.getDescription());
-//            view.setDescriptionEn(definition.getDescriptionEn());
-//            view.setType(definition.getType());
-//            view.setDisableFlag(definition.getDisableFlag());
-//            attributeViews.add(view);
-//        }
-//        return attributeViews;
-//    }
 
     /**
      * 更新属性定义
