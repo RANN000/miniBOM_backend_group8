@@ -11,6 +11,7 @@ import com.miniBOM.service.PartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/part")
@@ -21,8 +22,8 @@ public class PartController {
     //需求接口，创建part
     @PostMapping("/create")
     public Result<PartCreateVO> create(@RequestBody PartCreateDTO partCreateDTO) {
-        PartCreateVO partCreateVO=partService.add(partCreateDTO);
-        return Result.success(partCreateVO);
+        Map<String,Object> map=partService.add(partCreateDTO);
+        return Result.success((PartCreateVO)map.get("partCreateVO"));
     }
 
     //需求接口，根据条件查询part

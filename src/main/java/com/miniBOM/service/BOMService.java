@@ -2,6 +2,7 @@ package com.miniBOM.service;
 
 
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateDTO;
+import com.miniBOM.pojo.Bom.BOMCreate.BOMCreatePartDTO;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateVO;
 import com.miniBOM.pojo.Bom.BOMSearch.BOMShowDTO;
 import com.miniBOM.pojo.Bom.BOMSearch.BOMShowFatherVO;
@@ -17,6 +18,8 @@ public interface BOMService {
     BOMCreateVO add(BOMCreateDTO bomCreateDTO);
 
     List<BOMShowVO> show(Long sourceId);
+
+    BOMCreateVO addPart(BOMCreatePartDTO bomCreatePartDTO);
 
     Result showFather(Long partId);
 

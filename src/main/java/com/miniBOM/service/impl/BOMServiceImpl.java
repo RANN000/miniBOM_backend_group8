@@ -3,6 +3,7 @@ package com.miniBOM.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.miniBOM.dao.BOMDao;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateDTO;
+import com.miniBOM.pojo.Bom.BOMCreate.BOMCreatePartDTO;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateVO;
 import com.miniBOM.pojo.Bom.BOMSearch.BOMRootVo;
 import com.miniBOM.pojo.Bom.BOMSearch.BOMShowDTO;
@@ -61,5 +62,14 @@ public class BOMServiceImpl implements BOMService {
             return Result.success(bomRootVo);
         }
         return Result.success(BOMDao.toRoot(root));
+    }
+
+    @Override
+    public BOMCreateVO addPart(BOMCreatePartDTO bomCreatePartDTO) {
+        try {
+            return BOMDao.addPart(bomCreatePartDTO);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

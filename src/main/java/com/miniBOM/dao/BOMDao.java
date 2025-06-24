@@ -1,9 +1,6 @@
 package com.miniBOM.dao;
 
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huawei.innovation.rdm.coresdk.basic.dto.GenericLinkQueryDTO;
 import com.huawei.innovation.rdm.coresdk.basic.dto.ObjectReferenceParamDTO;
 import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdDecryptDTO;
@@ -14,21 +11,18 @@ import com.huawei.innovation.rdm.minibom.dto.entity.PartViewDTO;
 import com.huawei.innovation.rdm.minibom.dto.relation.BOMLinkCreateDTO;
 import com.huawei.innovation.rdm.minibom.dto.relation.BOMLinkViewDTO;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateDTO;
+import com.miniBOM.pojo.Bom.BOMCreate.BOMCreatePartDTO;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateVO;
 import com.miniBOM.pojo.Bom.BOMSearch.BOMRootVo;
 import com.miniBOM.pojo.Bom.BOMSearch.BOMShowDTO;
 import com.miniBOM.pojo.Bom.BOMSearch.BOMShowFatherVO;
 import com.miniBOM.pojo.Bom.BOMSearch.BOMShowVO;
-import com.miniBOM.pojo.Result;
+import com.miniBOM.pojo.Part.PartCreate.PartCreateVO;
+import com.miniBOM.service.PartService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,8 +36,10 @@ public class BOMDao {
 
     @Autowired
     BOMLinkDelegator delegator;
+
     @Autowired
-    private PartDelegator partDelegator;
+    PartService partService;
+
 
     public BOMCreateVO add(BOMCreateDTO bomCreateDTO) throws JsonProcessingException {
 
@@ -174,5 +170,57 @@ public class BOMDao {
         partDTO.setId(partId);
         PartViewDTO partViewDTO = partDelegator.get(partDTO);
         return partViewDTO.getName();
+    }
+
+    public BOMCreateVO addPart(BOMCreatePartDTO bomCreatePartDTO)throws JsonProcessingException {
+
+        BOMCreateVO  bomCreateVO = new BOMCreateVO();
+
+        BOMLinkCreateDTO bomLinkCreateDTO = new BOMLinkCreateDTO();
+
+        ObjectReferenceParamDTO sourceDTO =new ObjectReferenceParamDTO();
+
+        sourceDTO.setId(bomCreatePartDTO.getSourceId());
+
+
+        ObjectReferenceParamDTO targetDTO =new ObjectReferenceParamDTO();
+
+        //没有targetId说明需要创建子对象，先创建子对象，再给出masterId/targetId
+
+            Map<String,Object>map=partService.add(bomCreatePartDTO.getPartCreateDTO());
+            String masterId=map.get("masterId").toString();
+            String name=map.get("name").toString();
+            targetDTO.setId(Long.parseLong(masterId));
+
+        bomLinkCreateDTO.setSource(sourceDTO);
+        bomLinkCreateDTO.setTarget(targetDTO);
+
+
+
+        bomLinkCreateDTO.setSequenceNumber(bomCreatePartDTO.getSequenceNumber());
+        bomLinkCreateDTO.setReferenceDesignator(bomCreatePartDTO.getReferenceDesignator());
+        bomLinkCreateDTO.setQuantity(bomCreatePartDTO.getQuantity());
+
+        System.out.println("bomLinkCreateDTO:"+bomLinkCreateDTO);
+        BOMLinkViewDTO bomLinkViewDTO= delegator.create(bomLinkCreateDTO);
+        System.out.println("bomLinkViewDTO:"+bomLinkViewDTO);
+
+
+        bomCreateVO.setId(bomLinkViewDTO.getId());
+
+        bomCreateVO.setSequenceNumber(bomLinkViewDTO.getSequenceNumber());
+        bomCreateVO.setReferenceDesignator(bomLinkViewDTO.getReferenceDesignator());
+        bomCreateVO.setQuantity(bomLinkViewDTO.getQuantity());
+        bomCreateVO.setSourceId(bomLinkViewDTO.getSource().getId());
+        System.out.println("bomLinkViewDTO.getSource().getId():"+bomLinkViewDTO.getSource().getId());
+        bomCreateVO.setSourceName(bomLinkViewDTO.getSource().getName());
+        System.out.println("bomLinkViewDTO.getSource().getName()"+bomLinkViewDTO.getSource().getName());
+        bomCreateVO.setTargetId(bomLinkViewDTO.getTarget().getId());
+        System.out.println("bomLinkViewDTO.getTarget().getId():"+bomLinkViewDTO.getTarget().getId());
+        bomCreateVO.setTargetName(bomLinkViewDTO.getTarget().getName());
+        System.out.println("bomLinkViewDTO.getTarget().getName()"+bomLinkViewDTO.getTarget().getName());
+//        bomCreateVO.setTargetName(name);
+        return bomCreateVO;
+
     }
 }

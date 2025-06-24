@@ -34,7 +34,7 @@ public class PartServiceImpl implements PartService {
     private PartDao partDao;
 
     @Override
-    public PartCreateVO add(PartCreateDTO partDTO) {
+    public Map<String,Object> add(PartCreateDTO partDTO) {
 
         PartCreateReqDTO partCreateDTO = new PartCreateReqDTO();
         if (partDTO.getCode() != null) {
@@ -93,9 +93,13 @@ public class PartServiceImpl implements PartService {
                 partCreateDTO.setClsAttrs(attrs);
             }
         }
-
+        Map<String,Object> map = new HashMap<>();
+        map.put("masterId",master.getId());
+        map.put("name",partCreateDTO.getName());
         try {
-            return partDao.add(partCreateDTO);
+            map.put("PartCreateVO",partDao.add(partCreateDTO));
+            return map;
+
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
