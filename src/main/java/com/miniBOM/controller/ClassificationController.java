@@ -44,7 +44,7 @@ public class ClassificationController {
      * @throws JsonProcessingException JSON处理异常
      */
     @GetMapping("/list")
-    public Result<ListClassificationVo> list(@RequestBody ListClassificationDto classificationDto) throws JsonProcessingException {
+    public Result<List<OneClassificationVo>> list(@RequestBody ListClassificationDto classificationDto) throws JsonProcessingException {
         return service.list(classificationDto);
     }
 

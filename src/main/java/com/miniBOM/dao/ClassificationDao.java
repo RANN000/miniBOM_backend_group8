@@ -71,7 +71,7 @@ public class ClassificationDao {
     public OneClassificationVo add(CreateClassificationDto classificationDto) {
         // 构建分类创建请求DTO
         ClassificationNodeCreateDTO createRequest = new ClassificationNodeCreateDTO();
-        createRequest.setId(classificationDto.getId());
+        createRequest.setId(classificationDto.getCode());
         createRequest.setName(classificationDto.getName());
         createRequest.setNameEn(classificationDto.getNameEn());
         createRequest.setDescription(classificationDto.getDescription());
@@ -90,7 +90,7 @@ public class ClassificationDao {
         // 执行创建并转换结果
         ClassificationNodeViewDTO result = delegator.create(createRequest);
         OneClassificationVo resultVo = new OneClassificationVo();
-        resultVo.setId(result.getId());
+        resultVo.setCode(result.getId());
 
         return resultVo;
     }
@@ -142,11 +142,12 @@ public class ClassificationDao {
         }
 
 
+
         // 3. 执行更新并转换结果
         ClassificationNodeViewDTO updatedCategory = delegator.update(updateRequest);
 
         OneClassificationVo resultVo = new OneClassificationVo();
-        resultVo.setId(updatedCategory.getId());
+        resultVo.setCode(updatedCategory.getId());
         resultVo.setName(updatedCategory.getName());
         resultVo.setNameEn(updatedCategory.getNameEn());
         resultVo.setDescription(updatedCategory.getDescription());
@@ -220,8 +221,8 @@ public class ClassificationDao {
         }
 
         // 添加查询条件
-        if (classificationDto.getId() != null) {
-            queryRequest.addCondition("id", ConditionType.EQUAL, classificationDto.getId());
+        if (classificationDto.getCode() != null) {
+            queryRequest.addCondition("id", ConditionType.EQUAL, classificationDto.getCode());
         }
 
         if (classificationDto.getName() != null) {
@@ -255,7 +256,7 @@ public class ClassificationDao {
             OneClassificationVo vo = new OneClassificationVo();
 
             // 基础属性映射
-            vo.setId(dto.getId());
+            vo.setCode(dto.getId());
             vo.setName(dto.getName());
             vo.setNameEn(dto.getNameEn());
             vo.setDescription(dto.getDescription());

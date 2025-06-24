@@ -31,7 +31,7 @@ public class AttributeServiceImpl implements AttributeService {
         OneAttributeVo resultView = new OneAttributeVo();
         BeanUtils.copyProperties(createdAttribute, resultView);
 
-        return Result.success(resultView);
+        return Result.success("新增属性成功",resultView);
     }
 
     @Override
