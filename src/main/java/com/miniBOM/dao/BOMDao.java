@@ -58,7 +58,7 @@ public class BOMDao {
 
         BOMLinkViewDTO bomLinkViewDTO= delegator.create(bomLinkCreateDTO);
         //TODO 数据迁移
-        bomCreateVO.setId(bomLinkViewDTO.getId().toString());
+        bomCreateVO.setId(bomLinkViewDTO.getId());
         bomCreateVO.setSequenceNumber(bomLinkViewDTO.getSequenceNumber().toString());
         bomCreateVO.setQuantity(bomLinkViewDTO.getQuantity());
 
