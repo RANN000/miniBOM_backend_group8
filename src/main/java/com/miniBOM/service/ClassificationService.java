@@ -20,6 +20,8 @@ public interface ClassificationService {
 
     Result<OneClassificationVo> getById(Long id);
 
+//    Result getAttribute(Long id);
+
 //    Result addAttribute(AddClassificationNodeAttributeDto classificationNodeAttributeDto);
 //
 //    Result deleteAttribute(DeleteClassificationNodeAttributeDto classificationNodeAttributeDto);

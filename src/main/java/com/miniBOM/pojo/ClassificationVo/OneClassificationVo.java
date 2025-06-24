@@ -19,5 +19,5 @@ public class OneClassificationVo {
     private String descriptionEn;
     private Long parentId;
     private Boolean status;
-    boolean instantiable=true;
+    boolean isinstance=true;
 }

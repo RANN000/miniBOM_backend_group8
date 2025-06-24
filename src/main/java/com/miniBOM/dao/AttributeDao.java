@@ -1,20 +1,26 @@
 package com.miniBOM.dao;
 
+import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdModifierDTO;
 import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdsModifierDTO;
+import com.huawei.innovation.rdm.coresdk.basic.dto.QueryChildListDTO;
 import com.huawei.innovation.rdm.coresdk.basic.enums.ConditionType;
 import com.huawei.innovation.rdm.coresdk.basic.vo.QueryRequestVo;
 import com.huawei.innovation.rdm.coresdk.basic.vo.RDMPageVO;
 import com.huawei.innovation.rdm.xdm.delegator.EXADefinitionDelegator;
-import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionCreateDTO;
-import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionUpdateDTO;
-import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionViewDTO;
-import com.miniBOM.constant.AttributeConstant;
+import com.huawei.innovation.rdm.xdm.dto.entity.*;
 
+import com.miniBOM.pojo.AttributeDto.ListAttributeDto;
+import com.miniBOM.pojo.AttributeVo.ListAttributeVo;
+import com.miniBOM.pojo.AttributeVo.OneAttributeVo;
+import com.miniBOM.pojo.ClassificationVo.ListClassificationVo;
+import com.miniBOM.pojo.ClassificationVo.OneClassificationVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 属性数据访问对象(DAO)
@@ -70,6 +76,21 @@ public class AttributeDao {
      * @return 新增后的属性视图对象，包含完整属性信息
      */
     public EXADefinitionViewDTO add(EXADefinitionCreateDTO exaDefinitionCreateDTO) {
+        String type = exaDefinitionCreateDTO.getType();
+        if(Objects.equals(type, "STRING")){
+            exaDefinitionCreateDTO.setConstraint("{\"associationType\":\"STRONG\",\"caseMode\":\"DEFAULT\"," +
+                    "\"compose\":false,\"encryption\":false,\"graphIndex\":false,\"index\":false," +
+                    "\"legalValueType\":\"\",\"length\":256,\"multiValue\":false,\"notnull\":false," +
+                    "\"optionalValue\":\"LEGAL_VALUE_TYPE\",\"precision\":0,\"secretLevel\":\"internal\"," +
+                    "\"stockInDB\":true,\"variable\":true}");
+        }
+        if(Objects.equals(type, "INTEGER")) {
+            exaDefinitionCreateDTO.setConstraint("{\"associationType\":\"STRONG\",\"caseMode\":\"DEFAULT\"," +
+                    "\"compose\":false,\"encryption\":false,\"graphIndex\":false,\"index\":false," +
+                    "\"legalValueType\":\"\",\"length\":0,\"multiValue\":false,\"notnull\":false," +
+                    "\"optionalValue\":\"LEGAL_VALUE_TYPE\",\"precision\":0,\"range\":\"\",\"secretLevel\"" +
+                    ":\"internal\",\"stockInDB\":true,\"variable\":true}");
+        }
         return exaDefinitionDelegator.create(exaDefinitionCreateDTO);
     }
 
@@ -106,7 +127,7 @@ public class AttributeDao {
      * @param persistObjectIdsModifierDTO 包含待删除属性ID列表的DTO
      * @throws IllegalArgumentException 当ID列表为空时抛出
      */
-    public void delete(PersistObjectIdsModifierDTO persistObjectIdsModifierDTO) {
+    public void deleteAttributes(PersistObjectIdsModifierDTO persistObjectIdsModifierDTO) {
         // 校验ID列表有效性
         if (persistObjectIdsModifierDTO == null || persistObjectIdsModifierDTO.getIds() == null ||
                 persistObjectIdsModifierDTO.getIds().isEmpty()) {
@@ -119,30 +140,96 @@ public class AttributeDao {
     /**
      * 分页查询属性列表
      *
-     * @param searchKey 搜索关键词（基于属性名称模糊查询），可为null或空字符串
-     * @param pageSize 每页记录数
-     * @param curPage 当前页码（从1开始）
+     * @param listAttributeDto 请求体
      * @return 符合条件的属性视图对象列表，可能为空列表但不会为null
      * @throws IllegalArgumentException 当页码或页大小为非正数时抛出
      */
-    public List<EXADefinitionViewDTO> list(String searchKey, Integer pageSize, Integer curPage) {
-        // 校验分页参数有效性
-        if (pageSize == null || pageSize <= 0) {
-            throw new IllegalArgumentException("页大小必须为正整数");
-        }
-        if (curPage == null || curPage <= 0) {
-            throw new IllegalArgumentException("页码必须为正整数");
+    public ListAttributeVo list(ListAttributeDto listAttributeDto) {
+        QueryRequestVo queryRequest = new QueryRequestVo();
+        RDMPageVO rdm = new RDMPageVO();
+
+        // 设置分页参数
+        Integer currentPage = listAttributeDto.getCurPage();
+        Integer pageSize = listAttributeDto.getPageSize();
+
+        if (currentPage != null) {
+            rdm.setCurPage(currentPage);
+        } else {
+            rdm.setCurPage(1);
         }
 
-        QueryRequestVo queryRequestVo = new QueryRequestVo();
-        if (StringUtils.hasText(searchKey)) {
-            queryRequestVo.addCondition("name", ConditionType.LIKE, searchKey);
+        if (pageSize != null) {
+            rdm.setPageSize(pageSize);
+        } else {
+            rdm.setPageSize(10);
         }
 
-        RDMPageVO rdmPageVO = new RDMPageVO();
-        rdmPageVO.setCurPage(curPage);
-        rdmPageVO.setPageSize(pageSize);
+        // 添加查询条件
+        if (listAttributeDto.getId() != null) {
+            queryRequest.addCondition("id", ConditionType.EQUAL, listAttributeDto.getId());
+        }
 
-        return exaDefinitionDelegator.find(queryRequestVo, rdmPageVO);
+        if (listAttributeDto.getName() != null) {
+            queryRequest.addCondition("name", ConditionType.LIKE, listAttributeDto.getName());
+        }
+
+        long totalCount = exaDefinitionDelegator.count(queryRequest);
+        List<EXADefinitionViewDTO> resultList = exaDefinitionDelegator.find(queryRequest, rdm);
+
+        // 转换结果并封装分页信息
+        List<OneAttributeVo> attributeVos = getOneAttributeVos(resultList);
+
+        return ListAttributeVo.builder()
+                .number((int) totalCount)
+                .list(attributeVos)
+                .build();
+
+    }
+
+    /**
+     * 工具函数
+     * 转换DTO为VO
+     * @return VO列表
+     */
+    private static List<OneAttributeVo> getOneAttributeVos(List<EXADefinitionViewDTO> attributeDefinitions) {
+        List<OneAttributeVo> attributeViews = new ArrayList<>(attributeDefinitions.size());
+        for (EXADefinitionViewDTO definition : attributeDefinitions) {
+            OneAttributeVo view = new OneAttributeVo();
+            view.setId(definition.getId());
+            view.setName(definition.getName());
+            view.setNameEn(definition.getNameEn());
+            view.setDescription(definition.getDescription());
+            view.setDescriptionEn(definition.getDescriptionEn());
+            view.setType(definition.getType());
+            view.setDisableFlag(definition.getDisableFlag());
+            attributeViews.add(view);
+        }
+        return attributeViews;
+    }
+
+    /**
+     * 删除属性
+     *
+     * @param deleteId 待删除属性ID
+     */
+    public void delete(Long deleteId) {
+        // 检查是否存在
+        QueryRequestVo queryRequest = new QueryRequestVo();
+        queryRequest.addCondition("id", ConditionType.EQUAL, deleteId);
+
+        RDMPageVO pageParams = new RDMPageVO();
+        pageParams.setCurPage(1);
+        pageParams.setPageSize(1);
+
+        List<EXADefinitionViewDTO> resultList = exaDefinitionDelegator.find(queryRequest, pageParams);
+        if (resultList.isEmpty()) {
+            throw new RuntimeException("属性不存在，无法删除");
+        }
+
+        // 删除操作
+        PersistObjectIdModifierDTO deleteRequest = new PersistObjectIdModifierDTO();
+        deleteRequest.setId(deleteId);
+
+        exaDefinitionDelegator.delete(deleteRequest);
     }
 }

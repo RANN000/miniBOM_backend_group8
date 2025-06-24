@@ -1,13 +1,15 @@
-package com.miniBOM.pojo.ClassificationDto;
+package com.miniBOM.pojo.AttributeDto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ListClassificationDto {
+@Builder
+public class ListAttributeDto {
     Long id;
     String name;
     Integer pageSize;
