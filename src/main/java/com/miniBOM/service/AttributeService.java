@@ -21,9 +21,11 @@ public interface AttributeService {
 
     Result<OneAttributeVo> add(EXADefinitionCreateDTO attributeDto);
 
-    Result delete(PersistObjectIdsModifierDTO attributeDto);
+    Result deleteAttributes(PersistObjectIdsModifierDTO attributeDto);
 
     long count(String searchKey);
 
     Result<OneAttributeVo> getById(Long id);
+
+    Result delete(Long deleteId);
 }

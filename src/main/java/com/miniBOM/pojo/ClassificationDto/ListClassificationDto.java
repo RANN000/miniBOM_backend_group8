@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ListClassificationDto {
-    Integer id;
+    Long id;
     String name;
     Integer pageSize;
     Integer curPage;

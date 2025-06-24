@@ -1,14 +1,13 @@
 package com.miniBOM.dao;
 
+import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdModifierDTO;
 import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdsModifierDTO;
+import com.huawei.innovation.rdm.coresdk.basic.dto.QueryChildListDTO;
 import com.huawei.innovation.rdm.coresdk.basic.enums.ConditionType;
 import com.huawei.innovation.rdm.coresdk.basic.vo.QueryRequestVo;
 import com.huawei.innovation.rdm.coresdk.basic.vo.RDMPageVO;
 import com.huawei.innovation.rdm.xdm.delegator.EXADefinitionDelegator;
-import com.huawei.innovation.rdm.xdm.dto.entity.ClassificationNodeViewDTO;
-import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionCreateDTO;
-import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionUpdateDTO;
-import com.huawei.innovation.rdm.xdm.dto.entity.EXADefinitionViewDTO;
+import com.huawei.innovation.rdm.xdm.dto.entity.*;
 
 import com.miniBOM.pojo.AttributeDto.ListAttributeDto;
 import com.miniBOM.pojo.AttributeVo.ListAttributeVo;
@@ -128,7 +127,7 @@ public class AttributeDao {
      * @param persistObjectIdsModifierDTO 包含待删除属性ID列表的DTO
      * @throws IllegalArgumentException 当ID列表为空时抛出
      */
-    public void delete(PersistObjectIdsModifierDTO persistObjectIdsModifierDTO) {
+    public void deleteAttributes(PersistObjectIdsModifierDTO persistObjectIdsModifierDTO) {
         // 校验ID列表有效性
         if (persistObjectIdsModifierDTO == null || persistObjectIdsModifierDTO.getIds() == null ||
                 persistObjectIdsModifierDTO.getIds().isEmpty()) {
@@ -206,5 +205,31 @@ public class AttributeDao {
             attributeViews.add(view);
         }
         return attributeViews;
+    }
+
+    /**
+     * 删除属性
+     *
+     * @param deleteId 待删除属性ID
+     */
+    public void delete(Long deleteId) {
+        // 检查是否存在
+        QueryRequestVo queryRequest = new QueryRequestVo();
+        queryRequest.addCondition("id", ConditionType.EQUAL, deleteId);
+
+        RDMPageVO pageParams = new RDMPageVO();
+        pageParams.setCurPage(1);
+        pageParams.setPageSize(1);
+
+        List<EXADefinitionViewDTO> resultList = exaDefinitionDelegator.find(queryRequest, pageParams);
+        if (resultList.isEmpty()) {
+            throw new RuntimeException("属性不存在，无法删除");
+        }
+
+        // 删除操作
+        PersistObjectIdModifierDTO deleteRequest = new PersistObjectIdModifierDTO();
+        deleteRequest.setId(deleteId);
+
+        exaDefinitionDelegator.delete(deleteRequest);
     }
 }

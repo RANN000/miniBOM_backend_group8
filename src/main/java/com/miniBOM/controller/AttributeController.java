@@ -10,9 +10,6 @@ import com.miniBOM.pojo.Result;
 import com.miniBOM.service.AttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.List;
-
 
 
 @RestController
@@ -62,8 +59,19 @@ public class AttributeController {
      * @return 更新后的属性信息
      */
     @PutMapping("/update")
-    public Result<OneAttributeVo> updateAttribute(@RequestBody EXADefinitionUpdateDTO updateRequest) {
+    public Result<OneAttributeVo> update(@RequestBody EXADefinitionUpdateDTO updateRequest) {
         return attributeService.update(updateRequest);
+    }
+
+    /**
+     * 删除属性
+     *
+     * @param deleteId 待删除记录ID
+     * @return 操作结果
+     */
+    @DeleteMapping("/delete/{id}")
+    public Result delete(@PathVariable("id") Long deleteId) {
+        return attributeService.delete(deleteId);
     }
 
     /**
@@ -76,7 +84,7 @@ public class AttributeController {
     public Result deleteAttributes(@RequestBody PersistObjectIdsModifierDTO deleteRequest) {
 
         // 返回无数据的成功响应
-        return attributeService.delete(deleteRequest);
+        return attributeService.deleteAttributes(deleteRequest);
     }
 }
 

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class ListAttributeDto {
-    String id;
+    Long id;
     String name;
     Integer pageSize;
     Integer curPage;
