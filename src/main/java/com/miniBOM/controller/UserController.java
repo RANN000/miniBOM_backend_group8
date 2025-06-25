@@ -9,6 +9,8 @@ import javax.validation.constraints.Pattern;
 
 import com.miniBOM.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +25,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -60,7 +65,7 @@ public class UserController {
     //获取用户信息
     @GetMapping("/userInfo")
     public Result<User> infoUser() {
-        Map<String,Object> map = ThreadLocalUtil.get();
+        Map<String, Object> map = ThreadLocalUtil.get();
         String name = map.get("username").toString();
         try {
             User user = userService.findByUsername(name);
@@ -73,7 +78,7 @@ public class UserController {
     //修改用户信息（电话/邮箱）
     @PutMapping("/update")
     public Result updateUserInfo(@RequestBody Map<String, String> params) {
-        Map<String,Object> map = ThreadLocalUtil.get();
+        Map<String, Object> map = ThreadLocalUtil.get();
         String name = map.get("username").toString();
         User user = new User();
         user.setName(name);
@@ -99,7 +104,8 @@ public class UserController {
 
     //用户更新密码
     @PatchMapping("/updatePwd")
-    public Result updateUserPwd(@RequestBody Map<String, String> params) {
+    public Result updateUserPwd(@RequestBody Map<String, String> params,
+                                @RequestHeader("Authorization") String token) {
 
         String old_pwd = params.get("old_pwd");
         String new_pwd = params.get("new_pwd");
@@ -109,19 +115,32 @@ public class UserController {
             return Result.error("缺少必要参数");
         }
 
-        if(!new_pwd.equals(re_pwd)){
+        if (!new_pwd.equals(re_pwd)) {
             return Result.error("两次密码输入不一致");
         }
 
-        Map<String,Object> map = ThreadLocalUtil.get();
+        Map<String, Object> map = ThreadLocalUtil.get();
         String name = map.get("username").toString();
 
         try {
-            return userService.updatePwd(name, old_pwd, new_pwd);
+            Result result = userService.updatePwd(name, old_pwd, new_pwd);
+            if (result.getCode() == 200) {
+                ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
+                operations.getOperations().delete(token);
+            }
+            return result;
         } catch (Exception e) {
             return Result.error(e.getMessage());
         }
 
+    }
+
+    //登出
+    @PostMapping("/logout")
+    public Result logout(@RequestHeader("Authorization")String token){
+        ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
+        operations.getOperations().delete(token);
+        return Result.success("登出成功");
     }
 
 
