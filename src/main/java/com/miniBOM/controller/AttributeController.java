@@ -46,8 +46,21 @@ public class AttributeController {
      * @param attributeDto 包含页面信息及搜索关键词
      * @return 分页结果，包含属性列表和总记录数
      */
+    @PostMapping({"/query"})
+    public Result<ListAttributeVo> query(@RequestBody ListAttributeDto attributeDto) {
+        return attributeService.list(attributeDto);
+
+    }
+
+    /**
+     * 分页查询属性定义列表
+     * @return 分页结果，包含属性列表和总记录数
+     */
     @GetMapping({"/list"})
-    public Result<ListAttributeVo> list(@RequestBody ListAttributeDto attributeDto) {
+    public Result<ListAttributeVo> list() {
+        ListAttributeDto attributeDto=new ListAttributeDto();
+        attributeDto.setCurPage(1);
+        attributeDto.setPageSize(1000);
         return attributeService.list(attributeDto);
 
     }

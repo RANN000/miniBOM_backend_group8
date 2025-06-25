@@ -39,12 +39,15 @@ public class ClassificationController {
 
     /**
      * 获取分类列表
+     * @param classificationDto 列表查询条件
      * @return 分类列表结果
      * @throws JsonProcessingException JSON处理异常
      */
     @GetMapping("/list")
     public Result<List<OneClassificationVo>> list() throws JsonProcessingException {
         ListClassificationDto classificationDto=new ListClassificationDto();
+        classificationDto.setPageSize(1000);
+        classificationDto.setCurPage(1);
         return service.list(classificationDto);
     }
 
@@ -54,7 +57,7 @@ public class ClassificationController {
      * @return 分类列表结果
      * @throws JsonProcessingException JSON处理异常
      */
-    @GetMapping("/query")
+    @PostMapping("/query")
     public Result<List<OneClassificationVo>> query(ListClassificationDto classificationDto) throws JsonProcessingException {
         return service.list(classificationDto);
     }

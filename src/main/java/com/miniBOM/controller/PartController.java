@@ -49,9 +49,9 @@ public class PartController {
 
 
     //需求接口，删除part
-    @DeleteMapping("/delete")
-    public Result delete(String code) {
-        partService.delete(code);
+    @DeleteMapping("/delete/{id}")
+    public Result delete(@PathVariable String id) {
+        partService.delete(id);
         return Result.success("删除成功");
     }
     //需求接口，根据分类id提供分类可选属性

@@ -11,6 +11,13 @@
 
 ### SDK 依赖配置
 在运行项目前，**必须**修改 `pom.xml` 文件中的 SDK 依赖路径
+### Redis服务启用
+在运行项目前，需安装并启用redis服务
+```yaml
+redis-server.exe
+redis-cli.exe
+```
+
 
 
 ### 模块说明
