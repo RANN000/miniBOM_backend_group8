@@ -38,7 +38,7 @@ public class ClassificationController {
     }
 
     /**
-     * 获取分类列表
+     * 获取全部分类列表
      * @param classificationDto 列表查询条件
      * @return 分类列表结果
      * @throws JsonProcessingException JSON处理异常
@@ -52,7 +52,7 @@ public class ClassificationController {
     }
 
     /**
-     * 获取分类列表
+     * 查询获取分类列表
      * @param classificationDto 列表查询条件
      * @return 分类列表结果
      * @throws JsonProcessingException JSON处理异常
