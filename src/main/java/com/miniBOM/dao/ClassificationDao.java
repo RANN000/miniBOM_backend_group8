@@ -26,6 +26,7 @@ public class ClassificationDao {
     @Autowired
     private ClassificationNodeDelegator delegator;
 
+
     /**
      * 统计符合搜索条件的分类节点数量
      *
@@ -115,8 +116,6 @@ public class ClassificationDao {
         if (resultList.isEmpty()) {
             throw new RuntimeException("分类信息不存在");
         }
-
-        ClassificationNodeViewDTO existingCategory = resultList.get(0);
 
         // 2. 构建更新请求DTO（只更新有值的字段）
         ClassificationNodeUpdateDTO updateRequest = new ClassificationNodeUpdateDTO();
