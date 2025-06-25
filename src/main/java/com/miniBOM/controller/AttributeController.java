@@ -53,6 +53,17 @@ public class AttributeController {
     }
 
     /**
+     * 分页查询属性定义列表
+     * @return 分页结果，包含属性列表和总记录数
+     */
+    @GetMapping({"/query"})
+    public Result<ListAttributeVo> query() {
+        ListAttributeDto attributeDto=new ListAttributeDto();
+        return attributeService.list(attributeDto);
+
+    }
+
+    /**
      * 更新属性定义
      *
      * @param updateRequest 更新请求DTO，包含属性定义的更新数据
