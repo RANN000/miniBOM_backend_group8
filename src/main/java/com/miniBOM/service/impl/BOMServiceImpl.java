@@ -33,7 +33,7 @@ public class BOMServiceImpl implements BOMService {
 
         try {
             return BOMDao.add(bomCreateDTO);
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

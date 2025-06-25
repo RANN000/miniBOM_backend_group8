@@ -23,8 +23,18 @@ public class BOMController {
 
     @PostMapping("/create")
     public Result<BOMCreateVO> create(@RequestBody BOMCreateDTO bomCreateDTO) {
-        BOMCreateVO bomCreateVO = BOMService.add(bomCreateDTO);
-        return Result.success(bomCreateVO);
+        BOMCreateVO bomCreateVO = null;
+        try {
+            bomCreateVO = BOMService.add(bomCreateDTO);
+            return Result.success(bomCreateVO);
+        } catch (Exception e) {
+
+                return Result.error("发生错误:"+e.getCause().getMessage());
+            }
+
+
+
+
     }
 
     //展示所有子项
