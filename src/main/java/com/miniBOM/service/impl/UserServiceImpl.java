@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
             claims.put("username", user.getName());
             String token = JwtUtil.genToken(claims);
 
-            return Result.success(token);
+            return Result.success("SUCCESS",token);
         }
 
         return Result.error("密码错误");

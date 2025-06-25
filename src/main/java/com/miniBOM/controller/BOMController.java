@@ -28,7 +28,7 @@ public class BOMController {
     }
 
     //展示所有子项
-    @GetMapping("/show")
+    @PostMapping("/show")
     public Result<List<BOMShowVO>> show(@RequestParam Long sourceId) {
         List<BOMShowVO> bomShowVOList = BOMService.show(sourceId);
         return Result.success(bomShowVOList);

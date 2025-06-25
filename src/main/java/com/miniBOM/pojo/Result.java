@@ -28,11 +28,11 @@ public class Result <T> {
     }
 
     public static Result success(String result){
-        return new Result(200,"result",null,null);
+        return new Result(200,result,null,null);
     }
 
     public static <E> Result<E> success(String result,E data){
-        return new Result(200,"result",data,null);
+        return new Result(200,result,data,null);
     }
 
     public static <E> Result<E> success(E data){

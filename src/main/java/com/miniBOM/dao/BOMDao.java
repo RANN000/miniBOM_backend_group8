@@ -38,6 +38,9 @@ public class BOMDao {
     BOMLinkDelegator delegator;
 
     @Autowired
+    PartDelegator partDelegator;
+
+    @Autowired
     PartService partService;
 
 
@@ -67,6 +70,9 @@ public class BOMDao {
         bomCreateVO.setQuantity(bomLinkViewDTO.getQuantity());
         bomCreateVO.setReferenceDesignator(bomLinkViewDTO.getReferenceDesignator());
         bomCreateVO.setTargetName(bomLinkViewDTO.getTarget().getName());
+        bomCreateVO.setSourceName(bomLinkViewDTO.getSource().getName());
+        bomCreateVO.setSourceId(bomLinkViewDTO.getSource().getId());
+        bomCreateVO.setTargetId(bomLinkViewDTO.getTarget().getId());
 
         return bomCreateVO;
     }
@@ -122,7 +128,8 @@ public class BOMDao {
     //查找父项
     public BOMShowFatherVO showFather(Long partId) {
         GenericLinkQueryDTO queryDTO = new GenericLinkQueryDTO();
-        queryDTO.setObjectId(partId);
+        Long masterId = findMasterIdById(partId);
+        queryDTO.setObjectId(masterId);
         queryDTO.setRole("target");
         queryDTO.setLatestOnly(true);
         RDMPageVO page = new RDMPageVO();
@@ -149,9 +156,12 @@ public class BOMDao {
     public BOMShowFatherVO showRoot(Long partId) {
         BOMShowFatherVO bomShowFatherVO = showFather(partId);
         if(bomShowFatherVO==null){
+            bomShowFatherVO = new BOMShowFatherVO();
+            bomShowFatherVO.setSourceId(partId);
+            bomShowFatherVO.setSourceName(findPartNameById(partId));
             return bomShowFatherVO;
         }
-        bomShowFatherVO = showFather(bomShowFatherVO.getSourceId());
+        bomShowFatherVO = showRoot(bomShowFatherVO.getSourceId());
         return bomShowFatherVO;
     }
 
@@ -165,11 +175,18 @@ public class BOMDao {
 
     //根据partId查找partName
     public String findPartNameById(Long partId){
-        PartDelegator partDelegator = new PartDelegator();
         PersistObjectIdDecryptDTO partDTO = new PersistObjectIdDecryptDTO();
         partDTO.setId(partId);
         PartViewDTO partViewDTO = partDelegator.get(partDTO);
         return partViewDTO.getName();
+    }
+
+    //根据partId查找masterId
+    public Long findMasterIdById(Long partId){
+        PersistObjectIdDecryptDTO partDTO = new PersistObjectIdDecryptDTO();
+        partDTO.setId(partId);
+        PartViewDTO partViewDTO = partDelegator.get(partDTO);
+        return partViewDTO.getMaster().getId();
     }
 
     public BOMCreateVO addPart(BOMCreatePartDTO bomCreatePartDTO)throws JsonProcessingException {
