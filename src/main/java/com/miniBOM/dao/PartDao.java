@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdDecryptDTO;
+import com.huawei.innovation.rdm.minibom.delegator.PartDelegator;
+import com.huawei.innovation.rdm.minibom.dto.entity.PartViewDTO;
+import com.miniBOM.pojo.Bom.BOMDelete.BOMDeleteDTO;
 import com.miniBOM.pojo.Part.PartCategoryAttr.PartCategoryAttrReqVO;
 import com.miniBOM.pojo.Part.PartCreate.PartCreateReqDTO;
 import com.miniBOM.pojo.Part.PartCreate.PartCreateVO;
@@ -16,6 +20,7 @@ import com.miniBOM.pojo.Result;
 
 import com.miniBOM.utils.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -32,6 +37,10 @@ public class PartDao {
     /*
         part创建
      */
+
+    @Autowired
+    PartDelegator partDelegator;
+
     public String applicationId="4fc7a89107bf434faa3292b41c635750";
 
     public String token=getToken();
@@ -393,7 +402,10 @@ public class PartDao {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applicationId", applicationId);
         Map<String,String> map=new HashMap<>();
-        map.put("masterId",id);
+
+        String masterId = findMasterIdById(Long.parseLong(id)).toString();
+
+        map.put("masterId",masterId);
         paramMap.put("params", map);
         RestTemplate restTemplate = new RestTemplate();
 
@@ -461,6 +473,15 @@ public class PartDao {
 
         return list;
 
+    }
+
+
+    //根据partId查找masterId
+    public Long findMasterIdById(Long partId){
+        PersistObjectIdDecryptDTO partDTO = new PersistObjectIdDecryptDTO();
+        partDTO.setId(partId);
+        PartViewDTO partViewDTO = partDelegator.get(partDTO);
+        return partViewDTO.getMaster().getId();
     }
 
 }
