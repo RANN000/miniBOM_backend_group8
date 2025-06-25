@@ -64,7 +64,7 @@ public class BOMController {
         return Result.success();
     }
 
-    //展示所有父项
+    //展示父项
     @GetMapping("/showFather")
     public Result showFather(@RequestParam Long partId) {
         try {

@@ -140,9 +140,9 @@ public class PartDao {
 
         //必定加入的条件，当前用户id
         //TODO threadlocal 用户id转化
-        Map<String, Object> claims = ThreadLocalUtil.get();
-        String userId=claims.get("id").toString();
-//        String userId="1";
+//        Map<String, Object> claims = ThreadLocalUtil.get();
+//        String userId=claims.get("id").toString();
+        String userId="1";
         if(userId!=null&&!userId.isEmpty()){
             PartSearchCondition partSearchCondition = new PartSearchCondition();
             partSearchCondition.setConditionName("userId");
