@@ -14,6 +14,7 @@ import com.miniBOM.pojo.Part.PartSearch.PartSearchDTO;
 import com.miniBOM.pojo.Part.PartUpdate.PartUpdateReqDTO;
 import com.miniBOM.pojo.Result;
 
+import com.miniBOM.utils.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -138,10 +139,10 @@ public class PartDao {
         List<PartSearchCondition> conditions = new ArrayList<>();
 
         //必定加入的条件，当前用户id
-        //TODO 从threadlocal中获取用户id，并传入
-//        Map<String, Object> claims = ThreadLocalUtil.get();
-//        String userId=claims.get("id").toString();
-        String userId="1";
+        //TODO threadlocal 用户id转化
+        Map<String, Object> claims = ThreadLocalUtil.get();
+        String userId=claims.get("id").toString();
+//        String userId="1";
         if(userId!=null&&!userId.isEmpty()){
             PartSearchCondition partSearchCondition = new PartSearchCondition();
             partSearchCondition.setConditionName("userId");
