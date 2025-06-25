@@ -16,7 +16,6 @@ import com.miniBOM.pojo.Result;
 
 import com.miniBOM.utils.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -235,9 +234,6 @@ public class PartDao {
 
     /*
         查询part所有历史版本对象
-        pageSizePath 页大小
-        urPagePath 第几页 从1开始
-
      */
     public List<PartHistoryResDTO> listAllVersion(String masterId) {
         Map<String, Object> paramMap = new HashMap<>();
@@ -423,27 +419,6 @@ public class PartDao {
                 "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Part/delete", requestEntity, Result.class);
     }
 
-    /*
-        分页查询，暂时不知道条件查询参数
-        pageSizePath 页大小
-        urPagePath 第几页 从1开始
-        identifier 应用标识
-        modelName 模型类型
-
-     */
-//    public List<Part> list(String searchKey){
-//        int pageSize = 10;
-//        int curPage = 1;
-//        RestTemplate restTemplate=new RestTemplate();
-//        Result<List<Part>> result = restTemplate.getForObject("https://dme.cn-north-4.huaweicloud.com/" +
-//                "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Part/find/{pageSize}/{curPage}", Result.class,pageSize,curPage);
-//        if (result != null) {
-//            return result.data;
-//        }
-//        return null;
-//    }
-
-
     public List<PartCategoryAttrReqVO> listCategoryAttr(String categoryId) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applicationId", "string");
@@ -470,7 +445,7 @@ public class PartDao {
         log.info(requestBody);
         log.info(requestEntity.toString());
 
-        //TODO 分页的大小和第几页默认写死了
+
         Result<List<Map<String,Object>>> result=restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/" +
                 "rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/rdm/basic/api/ClassificationNode/getAttributesInfos/10/1", requestEntity, Result.class);
         List<PartCategoryAttrReqVO> list= new ArrayList<>();

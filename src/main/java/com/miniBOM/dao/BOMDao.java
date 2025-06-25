@@ -86,7 +86,7 @@ public class BOMDao {
         bomLinkCreateDTO.setTarget(targetDTO);
 
         BOMLinkViewDTO bomLinkViewDTO= delegator.create(bomLinkCreateDTO);
-        //TODO 数据迁移
+
         bomCreateVO.setId(bomLinkViewDTO.getId());
         bomCreateVO.setSequenceNumber(bomLinkViewDTO.getSequenceNumber());
         bomCreateVO.setQuantity(bomLinkViewDTO.getQuantity());
@@ -224,12 +224,11 @@ public class BOMDao {
 
         ObjectReferenceParamDTO targetDTO =new ObjectReferenceParamDTO();
 
-        //没有targetId说明需要创建子对象，先创建子对象，再给出masterId/targetId
 
-            Map<String,Object>map=partService.add(bomCreatePartDTO.getPartCreateDTO());
-            String masterId=map.get("masterId").toString();
-            String name=map.get("name").toString();
-            targetDTO.setId(Long.parseLong(masterId));
+
+        Map<String,Object>map=partService.add(bomCreatePartDTO.getPartCreateDTO());
+        String masterId=map.get("masterId").toString();
+        targetDTO.setId(Long.parseLong(masterId));
 
         bomLinkCreateDTO.setSource(sourceDTO);
         bomLinkCreateDTO.setTarget(targetDTO);
@@ -251,14 +250,10 @@ public class BOMDao {
         bomCreateVO.setReferenceDesignator(bomLinkViewDTO.getReferenceDesignator());
         bomCreateVO.setQuantity(bomLinkViewDTO.getQuantity());
         bomCreateVO.setSourceId(bomLinkViewDTO.getSource().getId());
-        System.out.println("bomLinkViewDTO.getSource().getId():"+bomLinkViewDTO.getSource().getId());
         bomCreateVO.setSourceName(bomLinkViewDTO.getSource().getName());
-        System.out.println("bomLinkViewDTO.getSource().getName()"+bomLinkViewDTO.getSource().getName());
         bomCreateVO.setTargetId(bomLinkViewDTO.getTarget().getId());
-        System.out.println("bomLinkViewDTO.getTarget().getId():"+bomLinkViewDTO.getTarget().getId());
         bomCreateVO.setTargetName(bomLinkViewDTO.getTarget().getName());
-        System.out.println("bomLinkViewDTO.getTarget().getName()"+bomLinkViewDTO.getTarget().getName());
-//        bomCreateVO.setTargetName(name);
+
         return bomCreateVO;
 
     }
@@ -311,12 +306,11 @@ public class BOMDao {
         versionMasterDTO.setMasterId(targetId);
         RDMPageVO rdmPageVO = new RDMPageVO();
         rdmPageVO.setCurPage(1);
-        rdmPageVO.setPageSize(100);
+        rdmPageVO.setPageSize(1000);
 
         List<PartQueryViewDTO> partMasterViewDTO = partDelegator.getAllVersions(versionMasterDTO,rdmPageVO);
 
         //根据targetId查找它的BOMLink
-
         //传入的需要是版本id而不是masterid
         for(PartQueryViewDTO partQueryViewDTO:partMasterViewDTO){
             Long tempId=partQueryViewDTO.getId();
@@ -337,20 +331,7 @@ public class BOMDao {
             persistObjectIdModifierDTO.setId(bomDeleteDTO.getBomLinkId());
             delegator.delete(persistObjectIdModifierDTO);
         }
-//        List<BOMShowVO> list=show(partMasterViewDTO.get(0).getId());
 
-        //查询
-//        if(list!=null){
-//            for(BOMShowVO boMShowVO:list){
-//                //通过targetId作为sourceId继续向下找BOMLinkId
-//                BOMDeleteDTO tempDeleteDTO = new BOMDeleteDTO();
-//                tempDeleteDTO.setBomLinkId(boMShowVO.getBOMLinkId());
-//                //递归
-//                delete(tempDeleteDTO);
-//
-//            }
-//
-//        }
 //        //删除BOMLink关系
 //        PersistObjectIdModifierDTO persistObjectIdModifierDTO = new PersistObjectIdModifierDTO();
 //        persistObjectIdModifierDTO.setId(bomDeleteDTO.getBomLinkId());

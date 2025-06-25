@@ -129,14 +129,10 @@ public class PartServiceImpl implements PartService {
                     partSerchVO.setVersion(partSearchReqVO.getVersion() + "." + partSearchReqVO.getIteration());
                 }
                 if(partSearchReqVO.getExtAttrs()!=null&&!partSearchReqVO.getExtAttrs().isEmpty()){
-//                    System.out.println("extattrs:"+partSearchReqVO.getExtAttrs());
-                    //List<Map<String,Map<String,String>>>
                     for (Map<String,Object> map : partSearchReqVO.getExtAttrs()) {
                         System.out.println(map.toString());
                         if (map.get("name").equals("Classcification")) {
-                            //Map<String,String>
                             Map<String,String> classcificaitonAttr=(Map<String,String>)map.get("value");
-                            //value可能为null
                             if(classcificaitonAttr!=null && !classcificaitonAttr.isEmpty()){
                                 partSerchVO.setCategory(classcificaitonAttr.get("id"));
                             }
@@ -161,7 +157,7 @@ public class PartServiceImpl implements PartService {
                 partSearchList.add(partSerchVO);
             }
         }
-        //存在缺陷，在service判断，则分页和dao分页不符合，基于dao分页后的数据再进行筛选
+
         return partSearchList;
     }
 
@@ -177,11 +173,7 @@ public class PartServiceImpl implements PartService {
         }
         return partHistoryVOS;
     }
-//
-//    @Override
-//    public List<Part> list(String searchKey) {
-//        return partDao.list(searchKey);
-//    }
+
 
     @Override
     public List<String> listCategoryAttr(String categoryId) {
