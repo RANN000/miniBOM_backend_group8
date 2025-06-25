@@ -3,15 +3,15 @@ package com.miniBOM.controller;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateDTO;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreatePartDTO;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateVO;
-import com.miniBOM.pojo.Bom.BOMSearch.BOMShowDTO;
-import com.miniBOM.pojo.Bom.BOMSearch.BOMShowFatherVO;
-import com.miniBOM.pojo.Bom.BOMSearch.BOMShowVO;
+import com.miniBOM.pojo.Bom.BOMDelete.BOMDeleteDTO;
+import com.miniBOM.pojo.Bom.BOMShow.BOMShowVO;
+import com.miniBOM.pojo.Bom.BOMUpdate.BOMUpdateDTO;
+import com.miniBOM.pojo.Bom.BOMUpdate.BOMUpdateVO;
 import com.miniBOM.pojo.Result;
 import com.miniBOM.service.BOMService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -38,6 +38,20 @@ public class BOMController {
     public Result<BOMCreateVO> createPart(@RequestBody BOMCreatePartDTO bomCreatePartDTO) {
         BOMCreateVO bomCreateVO=BOMService.addPart(bomCreatePartDTO);
         return Result.success(bomCreateVO);
+    }
+
+    @PutMapping("/update")
+    public Result<BOMUpdateVO> update(@RequestBody BOMUpdateDTO bomUpdateDTO) {
+        System.out.println("bomUpdateDTO:"+bomUpdateDTO);
+        BOMUpdateVO bomUpdateVO=BOMService.update(bomUpdateDTO);
+        return Result.success(bomUpdateVO);
+    }
+
+    @DeleteMapping("/delete")
+    public Result update(@RequestBody BOMDeleteDTO bomDeleteDTO) {
+
+        BOMService.delete(bomDeleteDTO);
+        return Result.success();
     }
 
     //展示所有父项

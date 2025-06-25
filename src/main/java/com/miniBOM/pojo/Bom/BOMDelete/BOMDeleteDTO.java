@@ -1,4 +1,4 @@
-package com.miniBOM.pojo.Bom.BOMSearch;
+package com.miniBOM.pojo.Bom.BOMDelete;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BOMShowDTO {
-
-    String code;
+public class BOMDeleteDTO {
+    Long bomLinkId;
 }

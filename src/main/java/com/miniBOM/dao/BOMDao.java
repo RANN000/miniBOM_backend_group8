@@ -1,6 +1,7 @@
 package com.miniBOM.dao;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.huawei.innovation.rdm.coresdk.basic.dto.*;
 import com.huawei.innovation.rdm.coresdk.basic.dto.GenericLinkQueryDTO;
 import com.huawei.innovation.rdm.coresdk.basic.dto.ObjectReferenceParamDTO;
 import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdDecryptDTO;
@@ -9,15 +10,17 @@ import com.huawei.innovation.rdm.minibom.delegator.BOMLinkDelegator;
 import com.huawei.innovation.rdm.minibom.delegator.PartDelegator;
 import com.huawei.innovation.rdm.minibom.dto.entity.PartViewDTO;
 import com.huawei.innovation.rdm.minibom.dto.relation.BOMLinkCreateDTO;
+import com.huawei.innovation.rdm.minibom.dto.relation.BOMLinkUpdateDTO;
 import com.huawei.innovation.rdm.minibom.dto.relation.BOMLinkViewDTO;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateDTO;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreatePartDTO;
 import com.miniBOM.pojo.Bom.BOMCreate.BOMCreateVO;
 import com.miniBOM.pojo.Bom.BOMSearch.BOMRootVo;
-import com.miniBOM.pojo.Bom.BOMSearch.BOMShowDTO;
 import com.miniBOM.pojo.Bom.BOMSearch.BOMShowFatherVO;
-import com.miniBOM.pojo.Bom.BOMSearch.BOMShowVO;
-import com.miniBOM.pojo.Part.PartCreate.PartCreateVO;
+import com.miniBOM.pojo.Bom.BOMDelete.BOMDeleteDTO;
+import com.miniBOM.pojo.Bom.BOMShow.BOMShowVO;
+import com.miniBOM.pojo.Bom.BOMUpdate.BOMUpdateDTO;
+import com.miniBOM.pojo.Bom.BOMUpdate.BOMUpdateVO;
 import com.miniBOM.service.PartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -238,6 +241,77 @@ public class BOMDao {
         System.out.println("bomLinkViewDTO.getTarget().getName()"+bomLinkViewDTO.getTarget().getName());
 //        bomCreateVO.setTargetName(name);
         return bomCreateVO;
+
+    }
+
+    public BOMUpdateVO update(BOMUpdateDTO bomUpdateDTO) {
+
+        BOMLinkUpdateDTO bomLinkUpdateDTO = new BOMLinkUpdateDTO();
+        bomLinkUpdateDTO.setId(bomUpdateDTO.getBomLinkId());
+        bomLinkUpdateDTO.setSequenceNumber(bomUpdateDTO.getSequenceNumber());
+        bomLinkUpdateDTO.setQuantity(bomUpdateDTO.getQuantity());
+        bomLinkUpdateDTO.setReferenceDesignator(bomUpdateDTO.getReferenceDesignator());
+
+        System.out.println("bomLinkUpdateDTO:"+bomLinkUpdateDTO);
+        BOMLinkViewDTO bomLinkViewDTO = delegator.update(bomLinkUpdateDTO);
+
+        BOMUpdateVO  bomUpdateVO = new BOMUpdateVO();
+
+        bomUpdateVO.setId(bomLinkViewDTO.getId());
+        bomUpdateVO.setSequenceNumber(bomLinkViewDTO.getSequenceNumber());
+        bomUpdateVO.setQuantity(bomLinkViewDTO.getQuantity());
+        bomUpdateVO.setReferenceDesignator(bomLinkViewDTO.getReferenceDesignator());
+        bomUpdateVO.setSourceId(bomLinkViewDTO.getSource().getId());
+        bomUpdateVO.setSourceName(bomLinkViewDTO.getSource().getName());
+        bomUpdateVO.setTargetId(bomLinkViewDTO.getTarget().getId());
+        bomUpdateVO.setTargetName(bomLinkViewDTO.getTarget().getName());
+
+        System.out.println("bomUpdateVO:"+bomUpdateVO);
+        return bomUpdateVO;
+
+    }
+
+    public void delete(BOMDeleteDTO bomDeleteDTO) throws JsonProcessingException {
+        System.out.println(bomDeleteDTO);
+        if(bomDeleteDTO==null) return;
+
+
+        //根据BOMLinkId查找上下游
+        //有BOMLinkId一定有targetId
+        Long id=bomDeleteDTO.getBomLinkId();
+        System.out.println("bomDeleteDTO.getId():"+id);
+        PersistObjectIdDecryptDTO  persistObjectIdDecryptDTO = new PersistObjectIdDecryptDTO();
+        persistObjectIdDecryptDTO.setId(id);
+        persistObjectIdDecryptDTO.setDecrypt(true);
+        System.out.println("persistObjectIdDecryptDTO.getId():"+persistObjectIdDecryptDTO.getId());
+        BOMLinkViewDTO bomLinkViewDTO = delegator.get(persistObjectIdDecryptDTO);
+        System.out.println("bomLinkViewDTO:"+bomLinkViewDTO);
+        //根据targetId查找它的BOMLink
+        List<BOMShowVO> list=show(bomLinkViewDTO.getTarget().getId());
+        System.out.println(list);
+        //查询
+        if(list!=null){
+            for(BOMShowVO boMShowVO:list){
+                //通过targetId作为sourceId继续向下找BOMLinkId
+                BOMDeleteDTO tempDeleteDTO = new BOMDeleteDTO();
+                tempDeleteDTO.setBomLinkId(boMShowVO.getBOMLinkId());
+                //递归
+                delete(tempDeleteDTO);
+                //递归结束开始删除节点
+
+                //删除part
+                MasterIdModifierDTO masterIdModifierDTO = new MasterIdModifierDTO();
+                masterIdModifierDTO.setMasterId(bomLinkViewDTO.getTarget().getId());
+                partDelegator.delete(masterIdModifierDTO);
+
+                //删除BOMLink关系
+                PersistObjectIdModifierDTO persistObjectIdModifierDTO = new PersistObjectIdModifierDTO();
+                persistObjectIdModifierDTO.setId(bomDeleteDTO.getBomLinkId());
+                delegator.delete(persistObjectIdModifierDTO);
+
+
+            }
+        }
 
     }
 }
