@@ -24,8 +24,8 @@
         <!--SDK依赖-->
         <!--使用前请修改此路径为绝对路径-->
         <!--可以把你们的路径写到下面，到时候直接启用加注释就行-->
-<!--        <idme.jar.path>C:\app\DevelopProject\miniBOM\minibom-1.0.0-optimization-SNAPSHOT-user</idme.jar.path>-->
-        <idme.jar.path>C:\Users\28159\Desktop\miniBOM_backend_group8\minibom-1.0.0-optimization-SNAPSHOT-user</idme.jar.path>
+        <idme.jar.path>C:\app\DevelopProject\miniBOM\minibom-1.0.0-optimization-SNAPSHOT-user</idme.jar.path>
+<!--        <idme.jar.path>C:\Users\28159\Desktop\miniBOM_backend_group8\minibom-1.0.0-optimization-SNAPSHOT-user</idme.jar.path>-->
         <!--<idme.jar.path>.....</idme.jar.path>-->
 
         <idme.app.name>minibom</idme.app.name>
@@ -66,6 +66,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+        <!--redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
         <!--idme api-->
