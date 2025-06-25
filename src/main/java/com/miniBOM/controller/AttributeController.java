@@ -11,6 +11,8 @@ import com.miniBOM.service.AttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/attribute")
@@ -47,7 +49,7 @@ public class AttributeController {
      * @return 分页结果，包含属性列表和总记录数
      */
     @PostMapping({"/query"})
-    public Result<ListAttributeVo> query(@RequestBody ListAttributeDto attributeDto) {
+    public Result<List<OneAttributeVo>> query(@RequestBody ListAttributeDto attributeDto) {
         return attributeService.list(attributeDto);
 
     }
@@ -57,7 +59,7 @@ public class AttributeController {
      * @return 分页结果，包含属性列表和总记录数
      */
     @GetMapping({"/list"})
-    public Result<ListAttributeVo> list() {
+    public Result<List<OneAttributeVo>> list() {
         ListAttributeDto attributeDto=new ListAttributeDto();
         attributeDto.setCurPage(1);
         attributeDto.setPageSize(1000);

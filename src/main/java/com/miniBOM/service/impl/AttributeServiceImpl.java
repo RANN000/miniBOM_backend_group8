@@ -53,9 +53,9 @@ public class AttributeServiceImpl implements AttributeService {
     }
 
     @Override
-    public Result<ListAttributeVo> list(ListAttributeDto attributeDto) {
+    public Result<List<OneAttributeVo>> list(ListAttributeDto attributeDto) {
         ListAttributeVo listAttributeVo = attributeDao.list(attributeDto);
-        return Result.success(listAttributeVo);
+        return Result.success(listAttributeVo.getList());
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.List;
 public interface AttributeService {
 
 
-    Result<ListAttributeVo> list(ListAttributeDto listAttributeDto);
+    Result<List<OneAttributeVo>> list(ListAttributeDto listAttributeDto);
 
     Result<OneAttributeVo> update(EXADefinitionUpdateDTO attributeDto);
 
