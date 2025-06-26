@@ -180,14 +180,16 @@ public class PartDao {
             partSearchCondition.setConditionValues(searchValues);
             conditions.add(partSearchCondition);
 
-            PartSearchCondition namePartSearchCondition = new PartSearchCondition();
-            namePartSearchCondition.setConditionName("id");
-            namePartSearchCondition.setOperator("=");
-            List<String> nameSearchValues = new ArrayList<>();
-            nameSearchValues.add(partSearchDTO.getName());
-            namePartSearchCondition.setConditionValues(nameSearchValues);
-            conditions.add(namePartSearchCondition);
-            System.out.println("namepart"+namePartSearchCondition);
+            if (isDigit(partSearchDTO.getName())) {
+                PartSearchCondition namePartSearchCondition = new PartSearchCondition();
+                namePartSearchCondition.setConditionName("id");
+                namePartSearchCondition.setOperator("=");
+                List<String> nameSearchValues = new ArrayList<>();
+                nameSearchValues.add(partSearchDTO.getName());
+                namePartSearchCondition.setConditionValues(nameSearchValues);
+                conditions.add(namePartSearchCondition);
+                System.out.println("namepart"+namePartSearchCondition);
+            }
         }
 
         submap.put("conditions", conditions);
@@ -248,6 +250,14 @@ public class PartDao {
 
         return voList;
     }
+
+    public boolean isDigit(String s){
+        for(int i=0;i<s.length();i++){
+            if(!Character.isDigit(s.charAt(i))) return false;
+        }
+        return true;
+    }
+
 
     /*
         查询part所有历史版本对象
