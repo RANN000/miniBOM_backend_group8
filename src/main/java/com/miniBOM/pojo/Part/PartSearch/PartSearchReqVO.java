@@ -18,6 +18,7 @@ public class PartSearchReqVO {
     String userId;
     String version;
     String iteration;
+    String defaultUnit;
     List<Map<String,Object>> extAttrs;
     List<Map<String,Map<String,String>>> clsAttrs;
 }

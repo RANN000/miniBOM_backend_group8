@@ -124,7 +124,7 @@ public class PartServiceImpl implements PartService {
                 partSerchVO.setCode(partSearchReqVO.getId());
                 partSerchVO.setName(partSearchReqVO.getName());
                 partSerchVO.setUserId(partSearchReqVO.getUserId());
-
+                partSerchVO.setDefaultUnit(partSearchReqVO.getDefaultUnit());
                 if(partSearchReqVO.getVersion()!=null&& partSearchReqVO.getIteration()!=null){
                     partSerchVO.setVersion(partSearchReqVO.getVersion() + "." + partSearchReqVO.getIteration());
                 }

@@ -15,6 +15,7 @@ public class PartSerchVO {
     String name;
     String userId;
     String version;
+    String defaultUnit;
     String category;
     Map<String, String> attributes;
 }

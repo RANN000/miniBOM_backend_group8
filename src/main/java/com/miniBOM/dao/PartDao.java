@@ -225,8 +225,12 @@ public class PartDao {
                     vo.setUserId(temp.get("userId").toString());
                 }
 
-                if(temp.get("description")!=null&&temp.get("description")!=""){
+                if(temp.get("version")!=null&&temp.get("version")!=""){
                     vo.setVersion(temp.get("version").toString());
+                }
+
+                if(temp.get("defaultUnit")!=null&&temp.get("defaultUnit")!=""){
+                    vo.setDefaultUnit(temp.get("defaultUnit").toString());
                 }
 
                 if(temp.get("iteration")!=null&&temp.get("iteration")!=""){
