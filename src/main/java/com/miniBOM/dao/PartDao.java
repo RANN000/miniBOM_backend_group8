@@ -143,33 +143,33 @@ public class PartDao {
         paramMap.put("applicationId", applicationId);
         Map<String,Object> map = new HashMap<>();
         Map<String,Object> submap = new HashMap<>();
-        submap.put("joiner","and");
+        submap.put("joiner","or");
         List<PartSearchCondition> conditions = new ArrayList<>();
 
         //必定加入的条件，当前用户id
         //TODO threadlocal 用户id转化
 //        Map<String, Object> claims = ThreadLocalUtil.get();
 //        String userId=claims.get("id").toString();
-        String userId="1";
-        if(userId!=null&&!userId.isEmpty()){
-            PartSearchCondition partSearchCondition = new PartSearchCondition();
-            partSearchCondition.setConditionName("userId");
-            partSearchCondition.setOperator("=");
-            List<String> searchValues = new ArrayList<>();
-            searchValues.add(userId);
-            partSearchCondition.setConditionValues(searchValues);
-            conditions.add(partSearchCondition);
-        }
+//        String userId="1";
+//        if(userId!=null&&!userId.isEmpty()){
+//            PartSearchCondition partSearchCondition = new PartSearchCondition();
+//            partSearchCondition.setConditionName("userId");
+//            partSearchCondition.setOperator("=");
+//            List<String> searchValues = new ArrayList<>();
+//            searchValues.add(userId);
+//            partSearchCondition.setConditionValues(searchValues);
+//            conditions.add(partSearchCondition);
+//        }
 
-        if(partSearchDTO.getCode()!=null&& !partSearchDTO.getCode().isEmpty()){
-            PartSearchCondition partSearchCondition = new PartSearchCondition();
-            partSearchCondition.setConditionName("id");
-            partSearchCondition.setOperator("=");
-            List<String> searchValues = new ArrayList<>();
-            searchValues.add(partSearchDTO.getCode());
-            partSearchCondition.setConditionValues(searchValues);
-            conditions.add(partSearchCondition);
-        }
+//        if(partSearchDTO.getCode()!=null&& !partSearchDTO.getCode().isEmpty()){
+//            PartSearchCondition partSearchCondition = new PartSearchCondition();
+//            partSearchCondition.setConditionName("id");
+//            partSearchCondition.setOperator("=");
+//            List<String> searchValues = new ArrayList<>();
+//            searchValues.add(partSearchDTO.getCode());
+//            partSearchCondition.setConditionValues(searchValues);
+//            conditions.add(partSearchCondition);
+//        }
 
         if(partSearchDTO.getName()!=null&& !partSearchDTO.getName().isEmpty()){
             PartSearchCondition partSearchCondition = new PartSearchCondition();
@@ -179,10 +179,18 @@ public class PartDao {
             searchValues.add(partSearchDTO.getName());
             partSearchCondition.setConditionValues(searchValues);
             conditions.add(partSearchCondition);
+
+            PartSearchCondition namePartSearchCondition = new PartSearchCondition();
+            namePartSearchCondition.setConditionName("id");
+            namePartSearchCondition.setOperator("=");
+            List<String> nameSearchValues = new ArrayList<>();
+            nameSearchValues.add(partSearchDTO.getName());
+            namePartSearchCondition.setConditionValues(nameSearchValues);
+            conditions.add(namePartSearchCondition);
+            System.out.println("namepart"+namePartSearchCondition);
         }
 
-        map.put("conditions", conditions);
-
+        submap.put("conditions", conditions);
         map.put("filter", submap);
         paramMap.put("params", map);
         RestTemplate restTemplate = new RestTemplate();
