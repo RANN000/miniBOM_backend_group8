@@ -62,8 +62,12 @@ public class BOMDao {
 
     public BOMCreateVO add(BOMCreateDTO bomCreateDTO) throws JsonProcessingException {
 
-        Long id=bomCreateDTO.getSourceId();
-        if(showFather(id)!=null){
+
+        Long id=bomCreateDTO.getTargetId();
+
+
+
+        if(showFatherByMaster(id)!=null){
 
             throw new RuntimeException("已有父项");
         }
@@ -71,6 +75,7 @@ public class BOMDao {
         BOMCreateVO  bomCreateVO = new BOMCreateVO();
 
         BOMLinkCreateDTO bomLinkCreateDTO = new BOMLinkCreateDTO();
+
         bomLinkCreateDTO.setSequenceNumber(bomCreateDTO.getSequenceNumber());
         bomLinkCreateDTO.setQuantity(bomCreateDTO.getQuantity());
         bomLinkCreateDTO.setReferenceDesignator(bomCreateDTO.getReferenceDesignator());
@@ -84,9 +89,9 @@ public class BOMDao {
 
         bomLinkCreateDTO.setSource(sourceDTO);
         bomLinkCreateDTO.setTarget(targetDTO);
-
+        System.out.println(bomLinkCreateDTO);
         BOMLinkViewDTO bomLinkViewDTO= delegator.create(bomLinkCreateDTO);
-
+        System.out.println(bomLinkViewDTO);
         bomCreateVO.setId(bomLinkViewDTO.getId());
         bomCreateVO.setSequenceNumber(bomLinkViewDTO.getSequenceNumber());
         bomCreateVO.setQuantity(bomLinkViewDTO.getQuantity());
@@ -151,6 +156,31 @@ public class BOMDao {
     public BOMShowFatherVO showFather(Long partId) {
         GenericLinkQueryDTO queryDTO = new GenericLinkQueryDTO();
         Long masterId = findMasterIdById(partId);
+        queryDTO.setObjectId(masterId);
+        queryDTO.setRole("target");
+        queryDTO.setLatestOnly(true);
+        RDMPageVO page = new RDMPageVO();
+        page.setCurPage(1);
+        page.setPageSize(1000);
+        List<BOMLinkViewDTO> bomLinkList = delegator.queryRelationship(queryDTO, page);
+
+        if(bomLinkList == null || bomLinkList.isEmpty()){
+            return null;
+        }
+
+        BOMLinkViewDTO result = bomLinkList.get(0);
+        BOMShowFatherVO bomShowFatherVO = new BOMShowFatherVO();
+        bomShowFatherVO.setBOMLinkId(result.getId());
+        bomShowFatherVO.setSequenceNumber(result.getSequenceNumber());
+        bomShowFatherVO.setQuantity(result.getQuantity());
+        bomShowFatherVO.setReferenceDesignator(result.getReferenceDesignator());
+        bomShowFatherVO.setSourceId(result.getSource().getId());
+        bomShowFatherVO.setSourceName(result.getSource().getName());
+        return bomShowFatherVO;
+    }
+
+    public BOMShowFatherVO showFatherByMaster(Long masterId) {
+        GenericLinkQueryDTO queryDTO = new GenericLinkQueryDTO();
         queryDTO.setObjectId(masterId);
         queryDTO.setRole("target");
         queryDTO.setLatestOnly(true);

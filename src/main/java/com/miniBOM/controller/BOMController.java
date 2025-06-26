@@ -23,6 +23,7 @@ public class BOMController {
 
     @PostMapping("/create")
     public Result<BOMCreateVO> create(@RequestBody BOMCreateDTO bomCreateDTO) {
+        System.out.println(bomCreateDTO);
         BOMCreateVO bomCreateVO = null;
         try {
             bomCreateVO = BOMService.add(bomCreateDTO);

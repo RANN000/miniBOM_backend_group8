@@ -124,7 +124,7 @@ public class PartDao {
         log.info(requestEntity.toString());
 
         Result<List<Map<String, Object>>> result=restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Part/create", requestEntity, Result.class);
-
+        System.out.println(result);
         PartCreateVO partCreateVO=new PartCreateVO();
         if (result != null) {
             partCreateVO.setId(result.data.get(0).get("id").toString());

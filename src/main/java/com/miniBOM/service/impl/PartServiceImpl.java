@@ -46,9 +46,9 @@ public class PartServiceImpl implements PartService {
             partCreateDTO.setDefaultUnit(partDTO.getDefaultUnit());
         }
         //TODO TODO threadlocal中用户id转换
-        Map<String, Object> claims = ThreadLocalUtil.get();
-        partCreateDTO.setUserId(claims.get("id").toString());
-//        partCreateDTO.setUserId("1");
+//        Map<String, Object> claims = ThreadLocalUtil.get();
+//        partCreateDTO.setUserId(claims.get("id").toString());
+        partCreateDTO.setUserId("1");
         Master master = new Master();
 
         Branch branch = new Branch();

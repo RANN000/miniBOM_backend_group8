@@ -32,6 +32,7 @@ public class BOMServiceImpl implements BOMService {
     public BOMCreateVO add(BOMCreateDTO bomCreateDTO) {
 
         try {
+            System.out.println("service:"+bomCreateDTO);
             return BOMDao.add(bomCreateDTO);
         } catch (Exception e) {
             throw new RuntimeException(e);
