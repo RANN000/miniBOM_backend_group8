@@ -7,8 +7,8 @@ import com.miniBOM.pojo.Part.Branch;
 import com.miniBOM.pojo.Part.Master;
 import com.miniBOM.pojo.Part.PartCategoryAttr.PartCategoryAttrReqVO;
 import com.miniBOM.pojo.Part.PartCreate.PartCreateReqDTO;
-import com.miniBOM.pojo.Part.PartCreate.PartCreateVO;
 import com.miniBOM.pojo.Part.PartCreate.PartCreateDTO;
+import com.miniBOM.pojo.Part.PartGet.PartGetVO;
 import com.miniBOM.pojo.Part.PartHistory.PartHistoryResDTO;
 import com.miniBOM.pojo.Part.PartHistory.PartHistoryVO;
 import com.miniBOM.pojo.Part.PartSearch.PartSearchReqVO;
@@ -21,7 +21,6 @@ import com.miniBOM.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -183,6 +182,11 @@ public class PartServiceImpl implements PartService {
             attrList.add(partCategoryAttrReqVO.getName());
         }
         return attrList;
+    }
+
+    @Override
+    public PartGetVO detail(String id) {
+         return partDao.detail(id);
     }
 
     @Override

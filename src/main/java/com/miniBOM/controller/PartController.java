@@ -2,6 +2,7 @@ package com.miniBOM.controller;
 
 import com.miniBOM.pojo.Part.PartCreate.PartCreateVO;
 import com.miniBOM.pojo.Part.PartCreate.PartCreateDTO;
+import com.miniBOM.pojo.Part.PartGet.PartGetVO;
 import com.miniBOM.pojo.Part.PartHistory.PartHistoryVO;
 import com.miniBOM.pojo.Part.PartSearch.PartSearchDTO;
 import com.miniBOM.pojo.Part.PartSearch.PartSerchVO;
@@ -61,6 +62,11 @@ public class PartController {
         return Result.success(p);
     }
 
+    @GetMapping("/detail/{id}")
+    public Result detail(@PathVariable String id) {
+        PartGetVO partGetVO=partService.detail(id);
+        return Result.success(partGetVO);
+    }
 
     //    @PostMapping("/checkOut")
 //    public Result checkOut(@RequestBody Part part){

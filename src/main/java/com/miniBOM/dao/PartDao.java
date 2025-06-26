@@ -11,6 +11,7 @@ import com.miniBOM.pojo.Bom.BOMDelete.BOMDeleteDTO;
 import com.miniBOM.pojo.Part.PartCategoryAttr.PartCategoryAttrReqVO;
 import com.miniBOM.pojo.Part.PartCreate.PartCreateReqDTO;
 import com.miniBOM.pojo.Part.PartCreate.PartCreateVO;
+import com.miniBOM.pojo.Part.PartGet.PartGetVO;
 import com.miniBOM.pojo.Part.PartHistory.PartHistoryResDTO;
 import com.miniBOM.pojo.Part.PartSearch.PartSearchReqVO;
 import com.miniBOM.pojo.Part.PartSearch.PartSearchCondition;
@@ -268,7 +269,7 @@ public class PartDao {
      */
     public List<PartHistoryResDTO> listAllVersion(String masterId) {
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("applicationId", "string");
+        paramMap.put("applicationId", applicationId);
         Map<String,String> map=new HashMap<>();
         map.put("masterId",masterId);
         paramMap.put("params", map);
@@ -506,4 +507,63 @@ public class PartDao {
         return partViewDTO.getMaster().getId();
     }
 
+    public PartGetVO detail(String id) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("applicationId", applicationId);
+        Map<String,String> map=new HashMap<>();
+        map.put("id",id);
+        paramMap.put("params", map);
+        RestTemplate restTemplate = new RestTemplate();
+
+
+        HttpHeaders headers = new HttpHeaders();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); // 全局忽略null
+        String requestBody = null;
+        try {
+            requestBody = objectMapper.writeValueAsString(paramMap);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        headers.add("x-auth-token", token);
+        HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+
+        log.info(requestBody);
+        log.info(requestEntity.toString());
+
+
+        Result<List<Map<String,Object>>> result=restTemplate.postForObject("https://dme.cn-north-4.huaweicloud.com/rdm_4fc7a89107bf434faa3292b41c635750_app/publicservices/api/Part/get", requestEntity, Result.class);
+        System.out.println(result);
+        Map<String,Object> resultMap =result.data.get(0);
+        System.out.println(resultMap);
+        PartGetVO partGetVO = new PartGetVO();
+
+        if (resultMap.get("id")!=null) {
+            partGetVO.setCode(resultMap.get("id").toString());
+        }
+        if (resultMap.get("name")!=null) {
+            partGetVO.setName(resultMap.get("name").toString());
+        }
+        if (resultMap.get("defaultUnit")!=null) {
+            partGetVO.setDefaultUnit(resultMap.get("defaultUnit").toString());
+        }
+        String version = resultMap.get("version").toString();
+        String iteration=resultMap.get("iteration").toString();
+        partGetVO.setVersion(version+"."+iteration);
+        List<Map<String,String>> extList=(List<Map<String,String>>)resultMap.get("extAttrs");
+
+        if (extList!=null&&extList.size()>0) {
+            for(Map<String,String> extMap:extList){
+                if(extMap.get("Classcification")!=null){
+                    partGetVO.setCategory(extMap.get("Category"));
+                    break;
+                }
+            }
+        }
+
+        return  partGetVO;
+
+    }
 }
